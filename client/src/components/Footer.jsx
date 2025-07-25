@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="container">
         <div className="row gy-4">
           <div className="col-lg-4">
-            <h5 className="fw-bold mb-3">SNS NDT Learning</h5>
+            <h5 className="fw-bold mb-3">SAR NDT EDU Learning</h5>
             <p className="text-muted">
               Leading provider of Non-Destructive Testing training and certification.
               Empowering professionals with expertise in industry-standard testing methods.
@@ -76,7 +76,7 @@ export default function Footer() {
         
         <div className="row align-items-center">
           <div className="col-md-6 text-center text-md-start">
-            <p className="mb-0 text-muted">&copy; {currentYear} SNS NDT Learning. All rights reserved.</p>
+            <p className="mb-0 text-muted">&copy; {currentYear} SAR NDT EDU Learning. All rights reserved.</p>
           </div>
           <div className="col-md-6 text-center text-md-end mt-3 mt-md-0">
             <ul className="list-inline mb-0">

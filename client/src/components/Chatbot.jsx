@@ -90,7 +90,7 @@ const Chatbot = () => {
               <header className="chat-header">
                 <div className="flex items-center gap-3">
                   <div className="avatar-container">
-                    <img src="/technical-support.png" alt="SNS NDT" className="avatar-img" />
+                    <img src="/technical-support.png" alt="SAR NDT EDU" className="avatar-img" />
                     <span className="status-indicator" />
                   </div>
                   <div>
@@ -157,7 +157,7 @@ const Chatbot = () => {
                   </Button>
                 </form>
                 <p className="footer-text">
-                  Powered by SNS NDT Academy
+                  Powered by SAR NDT EDU Academy
                 </p>
               </footer>
             </motion.div>

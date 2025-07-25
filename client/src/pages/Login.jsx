@@ -135,7 +135,7 @@ export default function Login() {
         <div className="col-md-6 col-lg-5">
           <div className="text-center mb-4">
             <Link to="/" className="text-decoration-none">
-              <h1 className="text-primary fw-bold">SNS NDT Learning</h1>
+              <h1 className="text-primary fw-bold">SAR NDT EDU Learning</h1>
             </Link>
           </div>
           

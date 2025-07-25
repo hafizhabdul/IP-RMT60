@@ -129,7 +129,7 @@ export default function TechnicalHome() {
               <div className="space-y-6">
                 <h1 className="text-4xl md:text-6xl font-bold leading-tight">
                   <span className="bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
-                    NDT Pro
+                    SAR NDT EDU
                   </span>
                   <br />
                   <span className="font-mono text-3xl md:text-4xl">
@@ -276,7 +276,7 @@ export default function TechnicalHome() {
               <span className="font-mono">Professional Training</span> Features
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              Industry-leading technical education platform designed for NDT professionals 
+              Industry-leading technical education platform designed for SAR NDT EDU professionals 
               and quality control specialists.
             </p>
           </div>
@@ -441,7 +441,7 @@ export default function TechnicalHome() {
           <div className="flex items-center justify-between mb-12">
             <div>
               <h2 className="text-3xl font-bold text-slate-900 font-mono">Featured Training</h2>
-              <p className="text-slate-600 mt-2">Popular modules among NDT professionals</p>
+              <p className="text-slate-600 mt-2">Popular modules among SAR NDT EDU professionals</p>
             </div>
             <Link 
               to="/courses" 

@@ -189,7 +189,7 @@ export default function TechnicalProfile() {
             {/* User Info */}
             <div className="flex-1">
               <div className="flex items-center space-x-4 mb-4">
-                <h1 className="text-3xl font-bold font-mono">{user?.name || "NDT Professional"}</h1>
+                <h1 className="text-3xl font-bold font-mono">{user?.name || "SAR NDT EDU Professional"}</h1>
                 <div className="bg-orange-600 px-3 py-1 rounded-lg">
                   <span className="text-white font-mono text-sm font-semibold">{mockUserStats.skillLevel}</span>
                 </div>

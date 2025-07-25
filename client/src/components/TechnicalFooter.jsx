@@ -122,7 +122,7 @@ export default function TechnicalFooter() {
                 <HardHat className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-white font-mono">NDT Pro</h3>
+                <h3 className="text-xl font-bold text-white font-mono">SAR NDT EDU</h3>
                 <p className="text-orange-400 text-sm font-mono uppercase tracking-wider">
                   Technical Training
                 </p>
@@ -264,7 +264,7 @@ export default function TechnicalFooter() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-gray-400 text-sm font-mono">
-              © {currentYear} NDT Pro Technical Training. All rights reserved.
+              © {currentYear} SAR NDT EDU Technical Training. All rights reserved.
             </div>
             
             <div className="flex items-center space-x-6 text-sm">

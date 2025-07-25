@@ -35,7 +35,7 @@ const ModernFooter = () => {
           <div className="md:col-span-1">
             <Link to="/" className="flex items-center space-x-2 mb-4">
               <Target className="h-8 w-8 text-blue-500" />
-              <span className="text-xl font-bold">SNS NDT</span>
+              <span className="text-xl font-bold">SAR NDT EDU</span>
             </Link>
             <p className="text-gray-400 mb-4">
               Your trusted partner in Non-Destructive Testing training.
@@ -68,7 +68,7 @@ const ModernFooter = () => {
 
         <div className="mt-8 border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            &copy; {new Date().getFullYear()} SNS NDT. All rights reserved.
+            &copy; {new Date().getFullYear()} SAR NDT EDU. All rights reserved.
           </p>
           <div className="flex space-x-4 mt-4 md:mt-0">
             <Link to="#" className="text-gray-400 hover:text-white text-sm">Privacy Policy</Link>

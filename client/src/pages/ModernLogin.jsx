@@ -134,7 +134,7 @@ export default function ModernLogin() {
     {
       icon: Shield,
       title: "Industry Certified",
-      description: "Learn from certified NDT professionals"
+      description: "Learn from certified SAR NDT EDU professionals"
     },
     {
       icon: Award,
@@ -160,7 +160,7 @@ export default function ModernLogin() {
                 <Target className="h-8 w-8 text-white" />
               </div>
               <div className="text-left">
-                <div className="text-2xl font-bold text-gray-900">SNS NDT</div>
+                <div className="text-2xl font-bold text-gray-900">SAR NDT EDU</div>
                 <div className="text-sm text-gray-500">Professional Training</div>
               </div>
             </Link>
@@ -285,7 +285,7 @@ export default function ModernLogin() {
         <div className="max-w-md mx-auto">
           <div className="text-center mb-12">
             <h3 className="text-3xl font-bold mb-4">
-              Join the NDT Professional Community
+              Join the SAR NDT EDU Professional Community
             </h3>
             <p className="text-blue-100 text-lg">
               Access industry-leading courses and advance your career in Non-Destructive Testing

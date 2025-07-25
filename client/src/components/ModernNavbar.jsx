@@ -12,6 +12,7 @@ const ModernNavbar = () => {
     { name: 'Home', path: '/' },
     { name: 'Courses', path: '/courses' },
     { name: 'Categories', path: '/categories' },
+    { name: 'About', path: '/about' },
   ];
 
   return (
@@ -22,7 +23,7 @@ const ModernNavbar = () => {
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center space-x-2">
               <Target className="h-8 w-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-800">SNS NDT</span>
+              <span className="text-xl font-bold text-gray-800">SAR NDT EDU</span>
             </Link>
           </div>
 

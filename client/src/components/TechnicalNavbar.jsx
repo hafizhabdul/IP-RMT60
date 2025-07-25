@@ -50,6 +50,7 @@ export default function TechnicalNavbar() {
     { name: "Dashboard", href: "/", icon: Home },
     { name: "Training Modules", href: "/courses", icon: BookOpen },
     { name: "NDT Methods", href: "/categories", icon: Grid3X3 },
+    { name: "About", href: "/about", icon: Shield },
   ];
 
   return (
@@ -63,7 +64,7 @@ export default function TechnicalNavbar() {
                 <HardHat className="h-6 w-6 text-white" />
               </div>
               <div className="hidden sm:block">
-                <div className="text-white font-bold text-lg">NDT Pro</div>
+                <div className="text-white font-bold text-lg">SAR NDT EDU</div>
                 <div className="text-orange-400 text-xs font-mono uppercase tracking-wider">
                   Technical Training
                 </div>

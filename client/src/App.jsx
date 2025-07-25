@@ -20,6 +20,7 @@ import TechnicalCategories from "./pages/TechnicalCategories";
 import TechnicalProfile from "./pages/TechnicalProfile";
 import ModernLogin from "./pages/ModernLogin";
 import ModernRegister from "./pages/ModernRegister";
+import About from "./pages/About";
 
 // Legacy Pages (to be updated)
 import ModernCourseLearning from "./pages/ModernCourseLearning";
@@ -91,6 +92,7 @@ function AppRoutes() {
         <Route path="courses/:id/learn" element={<ModernCourseLearning />} />
         <Route path="categories" element={<TechnicalCategories />} />
         <Route path="categories/:id" element={<TechnicalCourses />} />
+        <Route path="about" element={<About />} />
         
         {/* Protected user routes */}
         <Route element={isAuthenticated ? <Outlet /> : <Navigate to="/login" />}>

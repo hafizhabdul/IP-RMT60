@@ -148,7 +148,7 @@ export default function ModernRegister() {
                 <Target className="h-8 w-8 text-white" />
               </div>
               <div className="text-left">
-                <div className="text-2xl font-bold text-gray-900">SNS NDT</div>
+                <div className="text-2xl font-bold text-gray-900">SAR NDT EDU</div>
                 <div className="text-sm text-gray-500">Professional Training</div>
               </div>
             </Link>
@@ -157,7 +157,7 @@ export default function ModernRegister() {
               Create Your Account
             </h2>
             <p className="text-gray-600">
-              Join thousands of NDT professionals advancing their careers
+              Join thousands of SAR NDT EDU professionals advancing their careers
             </p>
           </div>
 
@@ -331,7 +331,7 @@ export default function ModernRegister() {
               Start Your Professional Journey
             </h3>
             <p className="text-emerald-100 text-lg">
-              Join the leading platform for NDT professionals and unlock your career potential
+              Join the leading platform for SAR NDT EDU professionals and unlock your career potential
             </p>
           </div>
 
