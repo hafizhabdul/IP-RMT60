@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import ModernNavbar from "../components/ModernNavbar";
 import ModernFooter from "../components/ModernFooter";
-import Chatbot from "../components/Chatbot";
+// Chatbot removed; migrate to WhatsApp floating if needed
 
 export default function ModernMainLayout() {
   return (
@@ -11,7 +11,7 @@ export default function ModernMainLayout() {
         <Outlet />
       </main>
       <ModernFooter />
-      <Chatbot />
+      {/* No chatbot */}
     </>
   );
 }

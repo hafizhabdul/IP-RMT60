@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import ModernNavbar from "../components/ModernNavbar";
 import ModernFooter from "../components/ModernFooter";
-import Chatbot from "../components/Chatbot";
+// Chatbot removed; using WhatsApp floating button in MinimalLayout
 
 export default function TechnicalLayout() {
   return (
@@ -11,7 +11,7 @@ export default function TechnicalLayout() {
         <Outlet />
       </main>
       <ModernFooter />
-      <Chatbot />
+      {/* WhatsApp floating is handled in MinimalLayout */}
     </>
   );
 }

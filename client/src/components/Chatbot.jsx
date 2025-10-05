@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import api from '../utils/api';
+import { IMG_EVENT } from '@/config/images';
 import '../styles/chatbot.css';
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -90,7 +91,7 @@ const Chatbot = () => {
               <header className="chat-header">
                 <div className="flex items-center gap-3">
                   <div className="avatar-container">
-                    <img src="/technical-support.png" alt="SNS NDT" className="avatar-img" />
+                    <img src={IMG_EVENT} alt="SNS NDT" className="avatar-img" />
                     <span className="status-indicator" />
                   </div>
                   <div>

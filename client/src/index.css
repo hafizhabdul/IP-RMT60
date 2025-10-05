@@ -10,8 +10,9 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 24.6 95% 53.1%;
-    --primary-foreground: 355.7 100% 97.3%;
+    /* Industrial Pro palette derived from logo: orange accent + dark slate */
+    --primary: 24.6 95% 53.1%; /* orange-600 */
+    --primary-foreground: 0 0% 100%;
     --secondary: 210 40% 98%;
     --secondary-foreground: 222.2 84% 4.9%;
     --muted: 210 40% 98%;
@@ -27,14 +28,14 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 222.2 60% 7%; /* slate-900 */
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
     --primary: 24.6 95% 53.1%;
-    --primary-foreground: 355.7 100% 97.3%;
+    --primary-foreground: 0 0% 100%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
@@ -106,6 +107,12 @@ html, body {
 }
 
 /* Technical animations */
+/* Industrial reveal */
+@keyframes rise-fade {
+  0% { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.reveal { animation: rise-fade .5s ease-out both; }
 @keyframes pulse-technical {
   0%, 100% {
     opacity: 1;

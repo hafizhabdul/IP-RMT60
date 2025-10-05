@@ -15,6 +15,7 @@ import {
   Zap
 } from "lucide-react";
 import api from "../utils/api";
+import { IMG_PLACEHOLDER_16x9 } from "@/config/images";
 
 export default function Home() {
   const [homeData, setHomeData] = useState(null);
@@ -230,7 +231,7 @@ export default function Home() {
               <div key={lecture.id} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
                 <div className="relative">
                   <img
-                    src={lecture.image || "https://via.placeholder.com/400x240?text=NDT+Course"}
+                    src={lecture.image || IMG_PLACEHOLDER_16x9}
                     alt={lecture.name}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
@@ -357,7 +358,7 @@ export default function Home() {
               <div key={lecture.id} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
                 <div className="relative">
                   <img
-                    src={lecture.image || "https://via.placeholder.com/400x240?text=Latest+NDT+Course"}
+                    src={lecture.image || IMG_PLACEHOLDER_16x9}
                     alt={lecture.name}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                   />

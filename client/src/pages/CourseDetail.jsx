@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router";
 import api from "../utils/api";
+import { IMG_PLACEHOLDER_16x9 } from "@/config/images";
 import { useAuth } from "../hooks/useAuth";
 import { showToast } from '../utils/toast';
 
@@ -132,7 +133,7 @@ export default function CourseDetail() {
       <div className="row mb-5">
         <div className="col-lg-8">
           <img
-            src={course.image || "https://via.placeholder.com/800x450?text=Course+Cover"}
+            src={course.image || IMG_PLACEHOLDER_16x9}
             alt={course.name}
             className="img-fluid rounded w-100 mb-4"
             style={{ maxHeight: "450px", objectFit: "cover" }}

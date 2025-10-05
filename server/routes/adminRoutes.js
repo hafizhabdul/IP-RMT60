@@ -6,6 +6,7 @@ const UserController = require("../controllers/userController");
 const AdminController = require("../controllers/adminController");
 const authentication = require("../middlewares/authentication");
 const { adminAuthorization } = require("../middlewares/authorization");
+const EventController = require("../controllers/eventController");
 
 // Add authentication and admin authorization to all admin routes
 router.use(authentication);
@@ -52,6 +53,12 @@ router.patch("/payments/reject/:invoice_number", AdminController.rejectPayment);
 router.get("/payments/export", AdminController.exportPayments);
 router.get("/payments/:id", AdminController.getPaymentById);
 router.put("/payments/:id", AdminController.updatePayment);
+
+// Events (Schedule) management
+router.get("/events", EventController.list);
+router.post("/events", EventController.create);
+router.put("/events/:id", EventController.update);
+router.delete("/events/:id", EventController.remove);
 
 // Test route for creating sample data (development only)
 router.post("/test/create-sample-transaction", async (req, res) => {

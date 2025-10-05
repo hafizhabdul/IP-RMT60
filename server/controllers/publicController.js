@@ -1,4 +1,34 @@
 const { Category, Lecture, User, sequelize } = require("../models");
+const fs = require("fs");
+const path = require("path");
+
+const REQUESTS_FILE = path.join(__dirname, "..", "data", "requests.json");
+const EVENTS_FILE = path.join(__dirname, "..", "data", "events.json");
+
+async function readRequestsFile() {
+  try {
+    const raw = await fs.promises.readFile(REQUESTS_FILE, "utf8");
+    return JSON.parse(raw);
+  } catch (e) {
+    if (e.code === "ENOENT") return { contacts: [], enrollments: [], alumni: [] };
+    throw e;
+  }
+}
+
+async function writeRequestsFile(data) {
+  const content = JSON.stringify(data, null, 2);
+  await fs.promises.writeFile(REQUESTS_FILE, content, "utf8");
+}
+
+async function readEventsFile() {
+  try {
+    const raw = await fs.promises.readFile(EVENTS_FILE, "utf8");
+    return JSON.parse(raw);
+  } catch (e) {
+    if (e.code === "ENOENT") return [];
+    throw e;
+  }
+}
 const { Op } = require("sequelize");
 
 class PublicController {
@@ -197,6 +227,69 @@ class PublicController {
       });
     } catch (err) {
       console.error("Error in getHomepageBundle:", err);
+      next(err);
+    }
+  }
+
+  // Store contact request (no auth)
+  static async postContactRequest(req, res, next) {
+    try {
+      const { name, email, phone, message } = req.body;
+      if (!name || !email || !message) {
+        return res.status(400).json({ message: "Name, email, and message are required" });
+      }
+      const db = await readRequestsFile();
+      const item = { id: Date.now(), type: "contact", name, email, phone, message, createdAt: new Date().toISOString() };
+      db.contacts.push(item);
+      await writeRequestsFile(db);
+      res.status(201).json({ message: "Contact request submitted", data: item });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  // Store enrollment (no auth)
+  static async postEnrollmentRequest(req, res, next) {
+    try {
+      const { name, email, phone, method, note } = req.body;
+      if (!name || !email || !phone || !method) {
+        return res.status(400).json({ message: "Name, email, phone, and method are required" });
+      }
+      const db = await readRequestsFile();
+      const item = { id: Date.now(), type: "enrollment", name, email, phone, method, note, createdAt: new Date().toISOString() };
+      db.enrollments.push(item);
+      await writeRequestsFile(db);
+      res.status(201).json({ message: "Enrollment submitted", data: item });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  // Public alumni list
+  static async getAlumni(req, res, next) {
+    try {
+      const db = await readRequestsFile();
+      res.json(db.alumni || []);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  // Public events (schedule)
+  static async getEvents(req, res, next) {
+    try {
+      const { search = "", method = "", from = "", to = "", limit } = req.query;
+      const events = await readEventsFile();
+      const filtered = events.filter((ev) => {
+        const s = search ? (ev.title?.toLowerCase().includes(search.toLowerCase()) || ev.location?.toLowerCase().includes(search.toLowerCase())) : true;
+        const m = method ? ev.method?.toLowerCase() === method.toLowerCase() : true;
+        const f = from ? new Date(ev.startDate) >= new Date(from) : true;
+        const t = to ? new Date(ev.endDate || ev.startDate) <= new Date(to) : true;
+        return s && m && f && t;
+      }).sort((a,b)=> new Date(a.startDate) - new Date(b.startDate));
+      const result = limit ? filtered.slice(0, Number(limit)) : filtered;
+      res.json(result);
+    } catch (err) {
       next(err);
     }
   }

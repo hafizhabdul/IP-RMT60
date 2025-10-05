@@ -1,0 +1,92 @@
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import api from '@/utils/api';
+import { IMG_EVENT } from '@/config/images';
+
+const fetchEvent = async (id) => {
+  const { data } = await api.get(`/public/events/${id}`);
+  return data;
+};
+
+function formatDate(date) {
+  const d = new Date(date);
+  return d.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function toICSDate(date) {
+  const d = new Date(date);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}${m}${day}`;
+}
+
+export default function MinimalScheduleDetail() {
+  const { id } = useParams();
+  const { data: ev, isLoading, error } = useQuery({ queryKey: ['event', id], queryFn: () => fetchEvent(id) });
+
+  const addToGoogle = () => {
+    if (!ev) return;
+    const text = encodeURIComponent(ev.title);
+    const dates = `${toICSDate(ev.startDate)}/${toICSDate(ev.endDate || ev.startDate)}`;
+    const details = encodeURIComponent(`Metode: ${ev.method}\nLokasi: ${ev.location}\nWaktu: ${ev.time || ''}`);
+    const location = encodeURIComponent(ev.location || 'Online');
+    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dates}&details=${details}&location=${location}`;
+    window.open(url, '_blank');
+  };
+
+  const downloadICS = () => {
+    if (!ev) return;
+    const lines = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//SNS NDT//Schedule//ID',
+      'BEGIN:VEVENT',
+      `UID:${ev.id}@sns-ndt`,
+      `DTSTAMP:${toICSDate(new Date().toISOString())}T000000Z`,
+      `DTSTART;VALUE=DATE:${toICSDate(ev.startDate)}`,
+      `DTEND;VALUE=DATE:${toICSDate(ev.endDate || ev.startDate)}`,
+      `SUMMARY:${ev.title}`,
+      `DESCRIPTION:Metode: ${ev.method}\\nLokasi: ${ev.location}\\nWaktu: ${ev.time || ''}`,
+      `LOCATION:${ev.location || ''}`,
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ];
+    const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `sns-${ev.id}.ics`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+
+  if (isLoading) return (<div className="min-h-[50vh] flex items-center justify-center"><div className="h-8 w-8 rounded-full border-2 border-gray-900 border-t-transparent animate-spin" /></div>);
+  if (error || !ev) return (<div className="min-h-[50vh] flex items-center justify-center text-gray-600">Event tidak ditemukan.</div>);
+
+  return (
+    <div className="bg-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <img src={ev.image || IMG_EVENT} alt={ev.title} className="w-full rounded-lg border border-gray-200" />
+            <h1 className="mt-6 text-2xl font-semibold text-gray-900">{ev.title}</h1>
+            <div className="mt-2 text-gray-700">Metode: {ev.method}</div>
+            <div className="mt-1 text-gray-700">Tanggal: {formatDate(ev.startDate)} — {formatDate(ev.endDate || ev.startDate)}</div>
+            <div className="mt-1 text-gray-700">Waktu: {ev.time || '-'}</div>
+            <div className="mt-1 text-gray-700">Lokasi: {ev.location || '-'}</div>
+          </div>
+          <aside>
+            <div className="rounded-lg border border-gray-200 p-5">
+              <div className="text-sm text-gray-600">Tambahkan ke kalender Anda</div>
+              <div className="mt-3 grid grid-cols-1 gap-2">
+                <button onClick={addToGoogle} className="rounded-md bg-gray-900 text-white px-4 py-2 text-sm hover:bg-black">Google Calendar</button>
+                <button onClick={downloadICS} className="rounded-md border border-gray-300 px-4 py-2 text-sm hover:bg-gray-50">Download .ics</button>
+                <a href="/enroll" className="rounded-md bg-gray-900 text-white px-4 py-2 text-sm hover:bg-black text-center">Daftar Sekarang</a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  );
+}

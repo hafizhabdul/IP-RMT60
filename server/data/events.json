@@ -1,0 +1,53 @@
+[
+  {
+    "id": 2001,
+    "title": "Sertifikasi Penetrant Testing (PT) Level I",
+    "method": "PT",
+    "startDate": "2025-10-15",
+    "endDate": "2025-10-17",
+    "time": "08:00-16:00 WIB",
+    "location": "Jakarta",
+    "image": "/technical-support.png"
+  },
+  {
+    "id": 2002,
+    "title": "Magnetic Particle Testing (MT) Level II",
+    "method": "MT",
+    "startDate": "2025-10-22",
+    "endDate": "2025-10-24",
+    "time": "08:00-16:00 WIB",
+    "location": "Cilegon",
+    "image": "/technical-support.png"
+  },
+  {
+    "id": 2003,
+    "title": "Ultrasonic Testing (UT) Level I",
+    "method": "UT",
+    "startDate": "2025-11-05",
+    "endDate": "2025-11-08",
+    "time": "08:00-16:00 WIB",
+    "location": "Surabaya",
+    "image": "/technical-support.png"
+  },
+  {
+    "id": 2004,
+    "title": "Phased Array Ultrasonic Testing (PAUT)",
+    "method": "PAUT",
+    "startDate": "2025-11-20",
+    "endDate": "2025-11-23",
+    "time": "08:00-16:00 WIB",
+    "location": "Jakarta",
+    "image": "/technical-support.png"
+  },
+  {
+    "id": 2005,
+    "title": "Radiographic Testing (RT) Safety & Technique",
+    "method": "RT",
+    "startDate": "2025-12-02",
+    "endDate": "2025-12-05",
+    "time": "08:00-16:00 WIB",
+    "location": "Batam",
+    "image": "/technical-support.png"
+  }
+]
+

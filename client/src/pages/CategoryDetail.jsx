@@ -13,6 +13,7 @@ import {
   selectCourses,
   selectCoursesLoading
 } from "../store/slices/courseSlice";
+import { IMG_PLACEHOLDER_16x9 } from "@/config/images";
 
 const formatToIDR = (price) => {
   return new Intl.NumberFormat('id-ID', {
@@ -131,7 +132,7 @@ export default function CategoryDetail() {
             <div key={course.id} className="col-md-6 col-lg-4">
               <div className="card h-100 shadow-sm hover-shadow">
                 <img
-                  src={course.image || "https://via.placeholder.com/300x200?text=NDT+Course"}
+                  src={course.image || IMG_PLACEHOLDER_16x9}
                   className="card-img-top"
                   alt={course.name}
                   height="200"

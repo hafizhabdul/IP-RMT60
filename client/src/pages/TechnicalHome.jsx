@@ -24,6 +24,7 @@ import {
   ExternalLink
 } from "lucide-react";
 import api from "../utils/api";
+import { IMG_PLACEHOLDER_16x9 } from "@/config/images";
 import { Button } from "@/components/ui/Button";
 
 const formatToIDR = (price) => {
@@ -68,7 +69,7 @@ export default function TechnicalHome() {
         duration: "8 hours",
         level: "Beginner",
         price: 299,
-        image: "/api/placeholder/400/300"
+        image: IMG_PLACEHOLDER_16x9
       },
       {
         id: 2,
@@ -78,7 +79,7 @@ export default function TechnicalHome() {
         duration: "12 hours",
         level: "Advanced",
         price: 449,
-        image: "/api/placeholder/400/300"
+        image: IMG_PLACEHOLDER_16x9
       },
       {
         id: 3,
@@ -88,7 +89,7 @@ export default function TechnicalHome() {
         duration: "6 hours", 
         level: "Intermediate",
         price: 199,
-        image: "/api/placeholder/400/300"
+        image: IMG_PLACEHOLDER_16x9
       }
     ],
     statistics: {
@@ -457,7 +458,7 @@ export default function TechnicalHome() {
               <div key={lecture.id} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow overflow-hidden border border-slate-200 group">
                 <div className="relative">
                   <img
-                    src={lecture.image || "https://via.placeholder.com/400x240?text=NDT+Training"}
+                    src={lecture.image || IMG_PLACEHOLDER_16x9}
                     alt={lecture.name}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                   />

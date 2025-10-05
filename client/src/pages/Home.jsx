@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../utils/api";
+import { IMG_PLACEHOLDER_16x9 } from "@/config/images";
 import { Link } from "react-router"; 
 
 export default function Home() {
@@ -207,7 +208,7 @@ export default function Home() {
                        backdropFilter: 'blur(20px)'
                      }}>
                   <img 
-                    src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                    src={IMG_PLACEHOLDER_16x9} 
                     alt="Advanced NDT Technology" 
                     className="img-fluid rounded-3 shadow-lg"
                     style={{ 
@@ -429,7 +430,7 @@ export default function Home() {
                 <div className="card-course position-relative">
                   <div className="position-relative overflow-hidden">
                     <img
-                      src={lecture.image || "https://via.placeholder.com/320x180?text=NDT+Course&bg=2C3E50&color=ffffff"}
+                      src={lecture.image || IMG_PLACEHOLDER_16x9}
                       className="card-img-top"
                       alt={lecture.name}
                     />
@@ -518,7 +519,7 @@ export default function Home() {
                 <div className="card h-100 shadow-sm hover-shadow">
                   <div className="position-relative">
                     <img
-                      src={lecture.image || "https://via.placeholder.com/300x200?text=NDT+Course"}
+                      src={lecture.image || IMG_PLACEHOLDER_16x9}
                       className="card-img-top"
                       alt={lecture.name}
                       height="200"

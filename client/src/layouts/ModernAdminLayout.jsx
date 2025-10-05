@@ -5,7 +5,7 @@ import {
   CreditCard, 
   Home, 
   Menu, 
-  MessageSquare,
+  CalendarDays,
   Package2, 
   Search, 
   ShoppingCart, 
@@ -53,7 +53,7 @@ const ModernAdminLayout = () => {
     { to: "/admin/categories", icon: Package2, label: "Categories" },
     { to: "/admin/transactions", icon: ShoppingCart, label: "Transactions" },
     { to: "/admin/payments", icon: CreditCard, label: "Payments" },
-    { to: "/admin/chatbot", icon: MessageSquare, label: "Chatbot" },
+    { to: "/admin/events", icon: CalendarDays, label: "Events" },
   ];
 
   return (

@@ -9,13 +9,23 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Layouts
 import TechnicalLayout from "./layouts/TechnicalLayout";
+import MinimalLayout from "./layouts/MinimalLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import ModernAdminLayout from "./layouts/ModernAdminLayout";
 
 // Technical User Pages
 import TechnicalHome from "./pages/TechnicalHome";
+import MinimalHome from "./pages/MinimalHome";
+import MinimalAbout from "./pages/MinimalAbout";
+import MinimalContact from "./pages/MinimalContact";
+import MinimalEnroll from "./pages/MinimalEnroll";
+import MinimalAlumni from "./pages/MinimalAlumni";
+import MinimalSchedule from "./pages/MinimalSchedule";
+import MinimalScheduleDetail from "./pages/MinimalScheduleDetail";
 import TechnicalCourses from "./pages/TechnicalCourses";
+import MinimalCourses from "./pages/MinimalCourses";
 import TechnicalCourseDetail from "./pages/TechnicalCourseDetail";
+import MinimalCourseDetail from "./pages/MinimalCourseDetail";
 import TechnicalCategories from "./pages/TechnicalCategories";
 import TechnicalProfile from "./pages/TechnicalProfile";
 import ModernLogin from "./pages/ModernLogin";
@@ -39,7 +49,7 @@ import ModernAdminCategories from "./pages/Admin/ModernCategories";
 import ModernTransactions from "./pages/Admin/ModernTransactions";
 import ModernPayments from "./pages/Admin/ModernPayments";
 import AdminPayments from "./pages/Admin/AdminPayments";
-import ChatbotManagement from "./pages/Admin/ChatbotManagement";
+import AdminEvents from "./pages/Admin/AdminEvents";
 
 const queryClient = new QueryClient();
 
@@ -78,19 +88,24 @@ function AppRoutes() {
         <Route path="categories" element={<ModernAdminCategories />} />
         <Route path="transactions" element={<ModernTransactions />} />
         <Route path="payments" element={<AdminPayments />} />
-        <Route path="chatbot" element={<ChatbotManagement />} />
+        <Route path="events" element={<AdminEvents />} />
       </Route>
 
-      {/* User routes - redirect admin to admin dashboard */}
+      {/* User routes - minimal, redirect admin to admin dashboard */}
       <Route path="/*" element={
-        isAdmin ? <Navigate to="/admin/dashboard" /> : <TechnicalLayout />
+        isAdmin ? <Navigate to="/admin/dashboard" /> : <MinimalLayout />
       }>
-        <Route index element={<TechnicalHome />} />
-        <Route path="courses" element={<TechnicalCourses />} />
-        <Route path="courses/:id" element={<TechnicalCourseDetail />} />
+        <Route index element={<MinimalHome />} />
+        <Route path="about" element={<MinimalAbout />} />
+        <Route path="alumni" element={<MinimalAlumni />} />
+        <Route path="schedule" element={<MinimalSchedule />} />
+        <Route path="schedule/:id" element={<MinimalScheduleDetail />} />
+        <Route path="contact" element={<MinimalContact />} />
+        <Route path="enroll" element={<MinimalEnroll />} />
+        <Route path="courses" element={<MinimalCourses />} />
+        <Route path="courses/:id" element={<MinimalCourseDetail />} />
         <Route path="courses/:id/learn" element={<ModernCourseLearning />} />
-        <Route path="categories" element={<TechnicalCategories />} />
-        <Route path="categories/:id" element={<TechnicalCourses />} />
+        {/* categories removed from public site */}
         
         {/* Protected user routes */}
         <Route element={isAuthenticated ? <Outlet /> : <Navigate to="/login" />}>

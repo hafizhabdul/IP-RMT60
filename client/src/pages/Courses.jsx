@@ -19,6 +19,7 @@ import {
 import { addToCart } from "../store/slices/cartSlice";
 import { selectIsAuthenticated } from "../store/slices/authSlice";
 import { toast } from "react-toastify";
+import { IMG_PLACEHOLDER_16x9 } from "@/config/images";
 
 const formatToIDR = (price) => {
   return new Intl.NumberFormat('id-ID', {
@@ -265,10 +266,7 @@ export default function Courses() {
                 <div className="card-course position-relative">
                   <div className="position-relative overflow-hidden">
                     <img
-                      src={
-                        course.image ||
-                        "https://via.placeholder.com/320x180?text=NDT+Course&bg=2C3E50&color=ffffff"
-                      }
+                      src={course.image || IMG_PLACEHOLDER_16x9}
                       className="card-img-top"
                       alt={course.name}
                     />

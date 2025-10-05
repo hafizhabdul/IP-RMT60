@@ -12,6 +12,7 @@ import {
 } from "../store/slices/cartSlice";
 import { showCartToast } from "../utils/toast";
 import { formatToIDR } from "../utils/formatter";
+import { IMG_PLACEHOLDER_16x9 } from "@/config/images";
 
 export default function Cart() {
   const navigate = useNavigate();
@@ -127,10 +128,7 @@ export default function Cart() {
                   className="d-flex mb-4 pb-4 border-bottom"
                 >
                   <img
-                    src={
-                      item.Lecture?.image ||
-                      "https://via.placeholder.com/150x100?text=Course"
-                    }
+                    src={item.Lecture?.image || IMG_PLACEHOLDER_16x9}
                     alt={item.Lecture?.name || "Course"}
                     className="rounded me-3"
                     width="150"
