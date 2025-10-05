@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
+import OptimizedImage from '@/components/OptimizedImage';
 import { useEffect, useState } from 'react';
 import { ArrowRight, Shield, BookOpen, Users, Award } from 'lucide-react';
 import HeroVideo from '@/components/HeroVideo';
 import api from '@/utils/api';
-import { IMG_EVENT, IMG_PLACEHOLDER_16x9 } from '@/config/images';
-
+import { IMG_EVENT } from '@/config/images';
 const formatIDR = (price) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price || 0);
 
 export default function MinimalHome() {
@@ -140,7 +140,13 @@ export default function MinimalHome() {
             {(data?.featuredLectures || []).slice(0,3).map((c) => (
               <Link key={c.id} to={`/courses/${c.id}`} className="group border border-gray-200 rounded-lg overflow-hidden hover:border-gray-300">
                 <div className="aspect-[16/9] bg-gray-100 overflow-hidden">
-                  <img src={c.image || IMG_PLACEHOLDER_16x9} alt={c.name} className="h-full w-full object-cover group-hover:scale-105 transition-transform" />
+                  <OptimizedImage 
+                  src={c.image}
+                  alt={c.name}
+                  width={400}
+                  height={250}
+                  className="h-full w-full group-hover:scale-105 transition-transform"
+                />
                 </div>
                 <div className="p-4">
                   <div className="text-xs text-gray-600">{c.category?.name || 'NDT'}</div>

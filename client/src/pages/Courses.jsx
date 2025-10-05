@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import OptimizedImage from '@/components/OptimizedImage';
 import { Link } from "react-router"; 
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import {
@@ -19,8 +20,6 @@ import {
 import { addToCart } from "../store/slices/cartSlice";
 import { selectIsAuthenticated } from "../store/slices/authSlice";
 import { toast } from "react-toastify";
-import { IMG_PLACEHOLDER_16x9 } from "@/config/images";
-
 const formatToIDR = (price) => {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
@@ -266,7 +265,7 @@ export default function Courses() {
                 <div className="card-course position-relative">
                   <div className="position-relative overflow-hidden">
                     <img
-                      src={course.image || IMG_PLACEHOLDER_16x9}
+                      src={course.image}
                       className="card-img-top"
                       alt={course.name}
                     />

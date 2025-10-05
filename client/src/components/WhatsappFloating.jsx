@@ -1,5 +1,6 @@
 export default function WhatsappFloating() {
-  const number = import.meta.env.VITE_WA_NUMBER || '6281234567890';
+  const raw = import.meta.env.VITE_WA_NUMBER || '6281234567890';
+  const number = String(raw).replace(/[^0-9]/g, '').replace(/^0/, '62');
   const text = encodeURIComponent('Halo SNS — Saya ingin konsultasi/daftar pelatihan NDT.');
   const href = `https://wa.me/${number}?text=${text}`;
   return (
@@ -17,4 +18,3 @@ export default function WhatsappFloating() {
     </a>
   );
 }
-

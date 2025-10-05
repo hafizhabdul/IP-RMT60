@@ -127,7 +127,7 @@ beforeAll(async () => {
         description: "Learn AI basics",
         price: 100000,
         availability: "Available",
-        image: "https://example.com/ai.jpg",
+        image: "https://images.unsplash.com/photo-1565008447742-97f6f38c985a?w=400&h=300&fit=crop&auto=format",
         UserId: admin.id,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -516,7 +516,7 @@ describe("Lecture Routes (GET/POST/PUT/DELETE /api/lectures)", () => {
       description: "Advanced AI concepts",
       price: 200000,
       availability: "Available",
-      image: "https://example.com/advanced-ai.jpg",
+      image: "https://images.unsplash.com/photo-1565008447742-97f6f38c985a?w=400&h=300&fit=crop&auto=format",
     };
     const response = await request(app)
       .post("/api/lectures")
@@ -585,7 +585,7 @@ describe("Lecture Routes (GET/POST/PUT/DELETE /api/lectures)", () => {
       description: "Test description",
       price: 100000,
       availability: "Available",
-      image: "https://example.com/test.jpg",
+      image: "https://images.unsplash.com/photo-1565008447742-97f6f38c985a?w=400&h=300&fit=crop&auto=format",
     };
 
     const createRes = await request(app)

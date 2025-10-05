@@ -1,9 +1,9 @@
 import { useState } from 'react';
+import OptimizedImage from '@/components/OptimizedImage';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Check, AlertCircle } from 'lucide-react';
 import api from '@/utils/api';
-import { IMG_PLACEHOLDER_16x10 } from '@/config/images';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
 
@@ -91,7 +91,13 @@ export default function MinimalCourseDetail() {
           <aside className="lg:pl-6">
             <div className="rounded-lg border border-gray-200 overflow-hidden">
               <div className="aspect-[16/10] bg-gray-100">
-                <img src={course.image || IMG_PLACEHOLDER_16x10} alt={course.title || course.name} className="w-full h-full object-cover" />
+                <OptimizedImage 
+                src={course.image}
+                alt={course.title || course.name}
+                width={800}
+                height={500}
+                className="w-full h-full"
+              />
               </div>
               <div className="p-5">
                 <div className="text-2xl font-semibold text-gray-900">{formatIDR(course.price)}</div>

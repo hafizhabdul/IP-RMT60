@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import OptimizedImage from '@/components/OptimizedImage';
 import { useNavigate } from "react-router";
 import { 
   Search, 
@@ -322,10 +323,12 @@ export default function Courses() {
                   <div key={course.id} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
                     <div className="flex">
                       <div className="relative w-80 h-48 flex-shrink-0">
-                        <img
-                          src={course.imgUrl || '/api/placeholder/320/192'}
+                        <OptimizedImage 
+                          src={course.image || course.imgUrl}
                           alt={course.title}
-                          className="w-full h-full object-cover"
+                          width={320}
+                          height={192}
+                          className="w-full h-full"
                         />
                         <div className="absolute top-4 left-4">
                           <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
@@ -403,10 +406,12 @@ export default function Courses() {
               return (
                 <div key={course.id} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
                   <div className="relative">
-                    <img
-                      src={course.imgUrl || '/api/placeholder/400/240'}
+                    <OptimizedImage 
+                      src={course.image || course.imgUrl}
                       alt={course.title}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                      width={400}
+                      height={240}
+                      className="w-full h-48 group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-4 left-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
