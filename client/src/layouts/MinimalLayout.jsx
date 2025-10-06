@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router';
+import { Outlet } from 'react-router-dom';
 import MinimalNavbar from '@/components/MinimalNavbar';
 import MinimalFooter from '@/components/MinimalFooter';
 import WhatsappFloating from '@/components/WhatsappFloating';

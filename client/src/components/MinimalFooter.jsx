@@ -20,10 +20,10 @@ export default function MinimalFooter() {
   };
 
   const socialLinks = [
-    { icon: <Facebook className="h-5 w-5" />, url: '#' },
-    { icon: <Twitter className="h-5 w-5" />, url: '#' },
-    { icon: <Instagram className="h-5 w-5" />, url: '#' },
-    { icon: <Linkedin className="h-5 w-5" />, url: '#' },
+    { icon: Facebook, url: '#', label: 'Facebook' },
+    { icon: Twitter, url: '#', label: 'Twitter' },
+    { icon: Instagram, url: '#', label: 'Instagram' },
+    { icon: Linkedin, url: '#', label: 'LinkedIn' },
   ];
 
   return (
@@ -38,9 +38,8 @@ export default function MinimalFooter() {
             <p className="mt-4 text-sm text-gray-600">Pusat pelatihan dan sertifikasi Non-Destructive Testing terdepan di Indonesia.</p>
             <div className="mt-6 flex space-x-4">
               {socialLinks.map((social, i) => (
-                <a key={i} href={social.url} className="text-gray-400 hover:text-gray-500">
-                  <span className="sr-only">{social.url}</span>
-                  {social.icon}
+                <a key={i} href={social.url} className="text-gray-400 hover:text-gray-500" aria-label={social.label}>
+                  <social.icon className="h-5 w-5" />
                 </a>
               ))}
             </div>
@@ -66,9 +65,10 @@ export default function MinimalFooter() {
 
         <div className="mt-12 border-t border-gray-200 pt-8 flex flex-col sm:flex-row justify-between items-center">
           <p className="text-sm text-gray-500">&copy; {new Date().getFullYear()} SNS NDT. All rights reserved.</p>
-          <p className="mt-4 sm:mt-0 text-sm text-gray-500">Didesain dengan ❤️ oleh Tim SNS</p>
+          <p className="mt-4 sm:mt-0 text-sm text-gray-500">Didesain oleh Tim SNS</p>
         </div>
       </div>
     </footer>
   );
 }
+

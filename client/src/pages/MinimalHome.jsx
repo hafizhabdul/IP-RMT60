@@ -68,7 +68,7 @@ export default function MinimalHome() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
           <div className="rounded-xl overflow-hidden border border-gray-200">
             <div className="relative">
-              <img src={IMG_EVENT} alt="Highlight" className="w-full h-56 md:h-72 object-cover" />
+              <img src={IMG_EVENT} alt="Highlight" loading="lazy" decoding="async" className="w-full h-56 md:h-72 object-cover" />
               <div className="absolute inset-0 bg-black/30" />
               <div className="absolute inset-0 flex items-center justify-between px-6 md:px-10">
                 <div>
@@ -166,7 +166,7 @@ export default function MinimalHome() {
             <div className="text-sm text-gray-600">Dipercaya oleh profesional dari berbagai industri</div>
             <div className="mt-6 grid grid-cols-2 md:grid-cols-6 gap-6 items-center">
               {Array.from({length:6}).map((_,i)=>(
-                <img key={i} src="/vite.svg" alt="client" className="mx-auto h-8 w-auto opacity-70" />
+                <img key={i} src="/vite.svg" alt="Logo klien" loading="lazy" decoding="async" className="mx-auto h-8 w-auto opacity-70" />
               ))}
             </div>
           </div>
@@ -181,7 +181,7 @@ export default function MinimalHome() {
               <h3 className="text-lg font-semibold text-gray-900">Siap meningkatkan kompetensi?</h3>
               <p className="text-gray-600 mt-1">Daftar kursus NDT dan dapatkan sertifikasi resmi.</p>
             </div>
-            <Link to="/courses" className="inline-flex items-center justify-center rounded-md bg-gray-900 text-white px-5 py-3 text-sm font-medium hover:bg-black">
+            <Link to="/courses" className="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground px-5 py-3 text-sm font-medium hover:bg-primary/90">
               Mulai Sekarang
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>

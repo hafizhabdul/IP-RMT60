@@ -27,7 +27,7 @@ const Chatbot = () => {
         setMessages([
           {
             sender: 'bot',
-            text: 'Hello! I am SNS Assistant 🤖\n\nI am ready to help you with information about:\n• NDT courses and prices\n• Training schedules\n• ASNT certifications\n• Registration process\n\nHow can I help you today?',
+            text: 'Halo! Saya SNS Assistant.\n\nSaya siap membantu informasi tentang:\n• Kursus NDT dan harga\n• Jadwal pelatihan\n• Sertifikasi ASNT/ISO\n• Proses pendaftaran\n\nAda yang bisa saya bantu?',
             timestamp: new Date(),
           }
         ]);
@@ -190,3 +190,4 @@ const Chatbot = () => {
 };
 
 export default Chatbot;
+

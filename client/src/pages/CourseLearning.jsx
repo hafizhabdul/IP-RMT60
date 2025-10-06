@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, BookOpen, Users, Star, Clock } from 'lucide-react';
 import VideoPlayerModern from '../components/VideoPlayerModern';
 import CourseCurriculum from '../components/CourseCurriculum';

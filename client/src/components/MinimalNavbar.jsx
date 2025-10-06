@@ -22,7 +22,7 @@ export default function MinimalNavbar() {
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
           <img src="/logo.png" alt="SNS - Sar NDT Services" className="h-7 w-auto" />
-          <span className="text-lg font-semibold tracking-tight">SNS — Sar NDT Services</span>
+          <span className="text-lg font-semibold tracking-tight">SNS - Sar NDT Services</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
@@ -43,7 +43,7 @@ export default function MinimalNavbar() {
           <Link to="/enroll"><Button>Daftar</Button></Link>
           {isAuthenticated ? (
             <div className="relative">
-              <Button variant="ghost" onClick={() => setOpen((v) => !v)}>
+              <Button variant="ghost" onClick={() => setOpen((v) => !v)} aria-label="Toggle account menu">
                 <User className="h-4 w-4 mr-2" />
                 <span className="text-sm">{user?.username || user?.name || 'Akun'}</span>
               </Button>
@@ -80,7 +80,7 @@ export default function MinimalNavbar() {
           ) : null}
         </div>
 
-        <button className="md:hidden" onClick={() => setOpen((v) => !v)}>
+        <button className="md:hidden" aria-label="Toggle navigation" onClick={() => setOpen((v) => !v)}>
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </nav>
@@ -121,3 +121,4 @@ export default function MinimalNavbar() {
     </header>
   );
 }
+

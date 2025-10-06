@@ -14,9 +14,9 @@ export default function MinimalAbout() {
       <section className="border-b border-gray-200">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
           <div className="flex items-start gap-6">
-            <img src="/logo.png" alt="SNS - Sar NDT Services" className="h-12 w-auto" />
+            <img src="/logo.png" alt="SNS - SAR NDT Services" className="h-12 w-auto" />
             <div>
-              <h1 className="text-3xl font-semibold tracking-tight text-gray-900">Tentang SNS — Sar NDT Services</h1>
+              <h1 className="text-3xl font-semibold tracking-tight text-gray-900">Tentang SNS — SAR NDT Services</h1>
               <p className="mt-2 text-gray-600 max-w-2xl">
                 SNS menyediakan pelatihan dan sertifikasi Non-Destructive Testing (NDT) yang elegan, sederhana, dan sesuai standar internasional.
               </p>

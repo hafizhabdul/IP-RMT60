@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router";
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { useAuth } from "./hooks/useAuth";
 import { Provider } from 'react-redux';
@@ -22,6 +22,8 @@ import MinimalEnroll from "./pages/MinimalEnroll";
 import MinimalAlumni from "./pages/MinimalAlumni";
 import MinimalSchedule from "./pages/MinimalSchedule";
 import MinimalScheduleDetail from "./pages/MinimalScheduleDetail";
+import MinimalPrivacy from "./pages/MinimalPrivacy";
+import MinimalTerms from "./pages/MinimalTerms";
 import TechnicalCourses from "./pages/TechnicalCourses";
 import MinimalCourses from "./pages/MinimalCourses";
 import TechnicalCourseDetail from "./pages/TechnicalCourseDetail";
@@ -101,6 +103,8 @@ function AppRoutes() {
         <Route path="schedule" element={<MinimalSchedule />} />
         <Route path="schedule/:id" element={<MinimalScheduleDetail />} />
         <Route path="contact" element={<MinimalContact />} />
+        <Route path="privacy" element={<MinimalPrivacy />} />
+        <Route path="terms" element={<MinimalTerms />} />
         <Route path="enroll" element={<MinimalEnroll />} />
         <Route path="courses" element={<MinimalCourses />} />
         <Route path="courses/:id" element={<MinimalCourseDetail />} />

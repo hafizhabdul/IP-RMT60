@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import OptimizedImage from '@/components/OptimizedImage';
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { 
   ArrowRight, 
   Play, 

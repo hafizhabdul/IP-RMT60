@@ -15,13 +15,14 @@ export default function HeroVideo() {
           muted
           loop
           playsInline
+          preload="none"
           poster={poster}
         />
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-black/60" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-        <img src="/logo.png" alt="SNS — Sar NDT Services" className="h-10 w-auto opacity-90" />
+        <img src="/logo.png" alt="SNS - Sar NDT Services" className="h-10 w-auto opacity-90" />
         <h1 className="mt-6 text-4xl md:text-6xl font-semibold tracking-tight">
           Industrial NDT Training & Certification
         </h1>
