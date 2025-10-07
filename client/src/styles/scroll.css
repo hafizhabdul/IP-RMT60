@@ -1,0 +1,16 @@
+/* Smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ensure scroll-to-top works properly */
+body {
+  min-height: 100vh;
+}
+
+/* Override for browsers that don't support smooth scrolling */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

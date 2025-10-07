@@ -28,8 +28,8 @@ export const OPTIMIZED_IMAGES = {
 
 // Function to build optimized image URL
 export function buildOptimizedImageUrl(baseUrl, options = {}) {
-  if (!baseUrl || !baseUrl.includes('unsplash.com')) {
-    return baseUrl; // Return original if not Unsplash
+  if (!baseUrl) {
+    return baseUrl;
   }
   
   const {
@@ -55,7 +55,7 @@ export function buildOptimizedImageUrl(baseUrl, options = {}) {
 
 // Responsive image component helper
 export function getResponsiveImageSrcSet(baseUrl, sizes = ['300', '400', '800', '1200']) {
-  if (!baseUrl || !baseUrl.includes('unsplash.com')) {
+  if (!baseUrl) {
     return baseUrl;
   }
   

@@ -1,6 +1,7 @@
 const { Category, Lecture, User, sequelize } = require("../models");
 const fs = require("fs");
 const path = require("path");
+const { sendEnrollmentEmails } = require("../services/emailService");
 
 const REQUESTS_FILE = path.join(__dirname, "..", "data", "requests.json");
 const EVENTS_FILE = path.join(__dirname, "..", "data", "events.json");
@@ -255,11 +256,39 @@ class PublicController {
       if (!name || !email || !phone || !method) {
         return res.status(400).json({ message: "Name, email, phone, and method are required" });
       }
+
+      // Save to database/file
       const db = await readRequestsFile();
       const item = { id: Date.now(), type: "enrollment", name, email, phone, method, note, createdAt: new Date().toISOString() };
       db.enrollments.push(item);
       await writeRequestsFile(db);
-      res.status(201).json({ message: "Enrollment submitted", data: item });
+
+      // Send emails
+      try {
+        const emailResults = await sendEnrollmentEmails({ name, email, phone, method, note });
+
+        // Log email results for debugging
+        console.log('Email sending results:', emailResults);
+
+        // If both emails fail, we still return success but log the error
+        if (emailResults.adminEmail === 'failed' && emailResults.userEmail === 'failed') {
+          console.error('Both emails failed to send:', emailResults);
+        }
+
+        res.status(201).json({
+          message: "Enrollment submitted successfully",
+          data: item,
+          emailStatus: emailResults
+        });
+      } catch (emailError) {
+        console.error('Email service error:', emailError);
+        // Still return success for enrollment, but note email failed
+        res.status(201).json({
+          message: "Enrollment submitted (email notification failed)",
+          data: item,
+          emailError: emailError.message
+        });
+      }
     } catch (err) {
       next(err);
     }

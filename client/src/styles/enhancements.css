@@ -1,0 +1,270 @@
+/* Enhanced Animations and Micro-interactions */
+
+/* Simplified animations - more natural */
+@keyframes subtle-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(-20px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05) translateY(-5px);
+  }
+  70% { transform: scale(0.95) translateY(0px); }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0px);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient-rotate {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Enhanced hover states */
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Gradient text animations */
+.gradient-text-animated {
+  background-size: 200% 200%;
+  animation: gradient-rotate 3s ease-in-out infinite;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Shimmer effect for loading states */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Card entrance animations */
+.card-enter {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slide-up 0.6s ease-out forwards;
+}
+
+.card-enter:nth-child(1) { animation-delay: 0.1s; }
+.card-enter:nth-child(2) { animation-delay: 0.2s; }
+.card-enter:nth-child(3) { animation-delay: 0.3s; }
+.card-enter:nth-child(4) { animation-delay: 0.4s; }
+.card-enter:nth-child(5) { animation-delay: 0.5s; }
+.card-enter:nth-child(6) { animation-delay: 0.6s; }
+
+/* Interactive badges */
+.badge-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.badge-glow::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.badge-glow:hover::before {
+  opacity: 1;
+}
+
+/* Enhanced button interactions */
+.btn-enhanced {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-enhanced::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-enhanced:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Floating animation for decorative elements */
+.float-animation {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+/* Pulse glow for backgrounds */
+.bg-pulse {
+  animation: pulse-glow-slow 4s ease-in-out infinite;
+}
+
+/* Staggered list animations */
+.list-item-enter {
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: slide-up 0.5s ease-out forwards;
+}
+
+.list-item-enter:nth-child(1) { animation-delay: 0.1s; }
+.list-item-enter:nth-child(2) { animation-delay: 0.2s; }
+.list-item-enter:nth-child(3) { animation-delay: 0.3s; }
+.list-item-enter:nth-child(4) { animation-delay: 0.4s; }
+.list-item-enter:nth-child(5) { animation-delay: 0.5s; }
+
+/* Scroll-triggered animations */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.scroll-animate.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Enhanced stats counter */
+.stat-counter {
+  transition: all 0.3s ease;
+}
+
+.stat-counter:hover {
+  transform: scale(1.1);
+}
+
+/* Interactive hover cards */
+.service-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.service-card:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+.service-card:hover .card-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.card-icon {
+  transition: transform 0.3s ease;
+}
+
+/* Progress bar animations */
+.progress-fill {
+  transform-origin: left;
+  transform: scaleX(0);
+  animation: progressGrow 1s ease-out forwards;
+}
+
+@keyframes progressGrow {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Notification badge animation */
+.notification-pulse {
+  animation: bounce-in 0.6s ease-out;
+}
+
+/* Responsive text sizing */
+.text-responsive {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+}
+
+/* Enhanced loading skeleton */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e0e0e0 50%,
+    #f0f0f0 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      #2a2a2a 25%,
+      #3a3a3a 50%,
+      #2a2a2a 75%
+    );
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

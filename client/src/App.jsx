@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { useAuth } from "./hooks/useAuth";
+import { useScrollToTop } from "./hooks/useScrollToTop";
 import { Provider } from 'react-redux';
 import store from './store';
 import { ToastContainer } from 'react-toastify';
@@ -18,7 +19,7 @@ import TechnicalHome from "./pages/TechnicalHome";
 import MinimalHome from "./pages/MinimalHome";
 import MinimalAbout from "./pages/MinimalAbout";
 import MinimalContact from "./pages/MinimalContact";
-import MinimalEnroll from "./pages/MinimalEnroll";
+import MinimalEnroll from "./pages/MinimalEnrollSimple";
 import MinimalAlumni from "./pages/MinimalAlumni";
 import MinimalSchedule from "./pages/MinimalSchedule";
 import MinimalScheduleDetail from "./pages/MinimalScheduleDetail";
@@ -57,6 +58,9 @@ const queryClient = new QueryClient();
 
 function AppRoutes() {
   const { isAuthenticated, isAdmin, loading } = useAuth();
+
+  // Auto scroll to top when navigating to different routes
+  useScrollToTop();
 
   // Loading spinner with modern design
   if (loading) {

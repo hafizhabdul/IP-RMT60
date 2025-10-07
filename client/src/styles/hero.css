@@ -1,0 +1,128 @@
+/* Enhanced Hero Video Styles */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.hero-gradient-text {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease-in-out infinite;
+}
+
+.hero-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.hero-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+.hero-slide-in {
+  animation: slide-in-up 0.8s ease-out forwards;
+}
+
+/* Staggered animations for badges */
+.hero-badge-stagger-1 { animation-delay: 0ms; }
+.hero-badge-stagger-2 { animation-delay: 100ms; }
+.hero-badge-stagger-3 { animation-delay: 200ms; }
+.hero-badge-stagger-4 { animation-delay: 300ms; }
+
+/* Video overlay effects */
+.video-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 165, 0, 0.03) 50%,
+    transparent 70%
+  );
+  animation: gradient-shift 8s linear infinite;
+  pointer-events: none;
+}
+
+/* Enhanced button hover effects */
+.hero-button-primary {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-button-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.hero-button-primary:hover::before {
+  left: 100%;
+}
+
+/* Scroll indicator animation */
+@keyframes bounce-gentle {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+.scroll-indicator {
+  animation: bounce-gentle 2s ease-in-out infinite;
+}
+
+/* Loading state for video */
+.video-loading {
+  background: linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  background-size: 200% 100%;
+  animation: gradient-shift 1.5s ease-in-out infinite;
+}
+
+/* Responsive typography */
+@media (max-width: 768px) {
+  .hero-heading-gradient {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-heading-gradient {
+    font-size: 4.5rem;
+    line-height: 1.1;
+  }
+}
