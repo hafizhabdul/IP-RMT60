@@ -36,42 +36,42 @@ export function generateAdminEmail(enrollmentData) {
       <body>
         <div class="container">
           <div class="header">
-            <h1>🔥 PENDAFTARAN BARU</h1>
-            <p>Sertifikasi NDT - SNS Sar NDT Services</p>
+            <h1>PENDAFTARAN BARU</h1>
+            <p>Sertifikasi NDT - SNS SAR NDT Services</p>
           </div>
 
           <div class="content">
             <div class="alert">
-              <strong>📞 Action Required:</strong> Segera hubungi calon peserta untuk follow-up!
+              <strong>Action Required:</strong> Segera hubungi calon peserta untuk follow-up!
             </div>
 
             <div class="field">
-              <div class="field-label">👤 Nama Lengkap</div>
+              <div class="field-label">Nama Lengkap</div>
               <div class="field-value">${name}</div>
             </div>
 
             <div class="field">
-              <div class="field-label">📧 Email</div>
+              <div class="field-label">Email</div>
               <div class="field-value">${email}</div>
             </div>
 
             <div class="field">
-              <div class="field-label">📱 Nomor WhatsApp</div>
+              <div class="field-label">Nomor WhatsApp</div>
               <div class="field-value">${phone}</div>
             </div>
 
             <div class="field">
-              <div class="field-label">🔧 Metode Sertifikasi</div>
+              <div class="field-label">Metode Sertifikasi</div>
               <div class="field-value">${method}</div>
             </div>
 
             <div class="field">
-              <div class="field-label">📝 Catatan Tambahan</div>
+              <div class="field-label">Catatan Tambahan</div>
               <div class="field-value">${note || 'Tidak ada catatan'}</div>
             </div>
 
             <div class="field">
-              <div class="field-label">🕐 Waktu Pendaftaran</div>
+              <div class="field-label">Waktu Pendaftaran</div>
               <div class="field-value">${timestamp}</div>
             </div>
 
@@ -87,7 +87,7 @@ export function generateAdminEmail(enrollmentData) {
           </div>
 
           <div class="footer">
-            <p>© 2024 SNS - Sar NDT Services</p>
+            <p>© 2024 SNS - SAR NDT Services</p>
             <p>Email otomatis dari sistem pendaftaran</p>
           </div>
         </div>
@@ -124,7 +124,7 @@ export function generateUserEmail(enrollmentData) {
       <body>
         <div class="container">
           <div class="header">
-            <h1>✅ PENDAFTARAN BERHASIL!</h1>
+            <h1>PENDAFTARAN BERHASIL!</h1>
             <p>Terima kasih telah mendaftar di SNS NDT Services</p>
           </div>
 
@@ -133,7 +133,7 @@ export function generateUserEmail(enrollmentData) {
             <p>Pendaftaran Anda untuk sertifikasi <strong>${method}</strong> telah kami terima dengan baik.</p>
 
             <div class="info-box">
-              <h3>📋 Data Pendaftaran Anda:</h3>
+              <h3>Data Pendaftaran Anda:</h3>
               <ul style="list-style: none; padding: 0;">
                 <li><strong>Nama:</strong> ${name}</li>
                 <li><strong>Email:</strong> ${email}</li>
@@ -143,7 +143,7 @@ export function generateUserEmail(enrollmentData) {
             </div>
 
             <div class="highlight">
-              <h3>📞 Apa Selanjutnya?</h3>
+              <h3>Apa Selanjutnya?</h3>
               <p>Tim kami akan menghubungi Anda dalam <strong>1x24 jam</strong> melalui WhatsApp atau telepon untuk:</p>
               <ul>
                 <li>Konfirmasi ketersediaan kuota</li>
@@ -154,7 +154,7 @@ export function generateUserEmail(enrollmentData) {
             </div>
 
             <div class="contact-info">
-              <h3>📞 Kontak Kami:</h3>
+              <h3>Kontak Kami:</h3>
               <p><strong>WhatsApp:</strong> <a href="https://wa.me/62812969535570">+62 812-9695-35570</a></p>
               <p><strong>Email:</strong> info@sns-ndt.com</p>
               <p>Jika Anda tidak mendapat kabar dalam 24 jam, jangan ragu untuk menghubungi kami langsung.</p>
@@ -162,8 +162,8 @@ export function generateUserEmail(enrollmentData) {
           </div>
 
           <div class="footer">
-            <p>© 2024 SNS - Sar NDT Services</p>
-            <p>📍 Jl. Contoh No. 123, Jakarta, Indonesia</p>
+            <p>© 2024 SNS - SAR NDT Services</p>
+            <p>Jl. Contoh No. 123, Jakarta, Indonesia</p>
           </div>
         </div>
       </body>

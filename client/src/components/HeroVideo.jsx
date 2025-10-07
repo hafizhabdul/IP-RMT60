@@ -5,8 +5,9 @@ import '../styles/hero.css';
 
 export default function HeroVideo() {
   const videoUrl = import.meta.env.VITE_HERO_VIDEO_URL || VIDEO_PATHS.demo;
-  const poster = VIDEO_SETTINGS.poster || '/video-poster.jpg';
+  const poster = VIDEO_SETTINGS.poster || VIDEO_SETTINGS.posterAlt;
   const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoaded(true), 100);
@@ -14,26 +15,50 @@ export default function HeroVideo() {
   }, []);
 
   return (
-    <section className="relative text-white overflow-hidden min-h-screen video-overlay" style={{ backgroundColor: '#0f172a' }}>
+    <section className="relative text-white overflow-hidden min-h-screen video-overlay safe-area-top" style={{ backgroundColor: '#0f172a', minHeight: '-webkit-fill-available' }}>
       {/* Video Background with enhanced effects */}
-      <div className={`absolute inset-0 transition-opacity duration-1000 ${isLoaded ? 'opacity-70' : 'opacity-0'} ${!isLoaded ? 'video-loading' : ''}`}>
-        <video
-          className="h-full w-full object-cover transform scale-105"
-          src={videoUrl}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload={VIDEO_SETTINGS.preload}
-          poster={poster}
-          onLoadStart={() => setIsLoaded(false)}
-          onCanPlay={() => setIsLoaded(true)}
-          onError={(e) => {
-            console.warn('Video failed to load, using fallback');
-            // Fallback to placeholder if video fails
-            e.target.style.display = 'none';
-          }}
-        />
+      <div className={`absolute inset-0 transition-opacity duration-1000 ${isLoaded && !hasError ? 'opacity-70' : 'opacity-0'} ${!isLoaded && !hasError ? 'video-loading' : ''}`}>
+        {!hasError ? (
+          <div className="video-responsive">
+            <video
+              className="absolute inset-0 w-full h-full object-cover transform scale-105"
+              src={videoUrl}
+              autoPlay={VIDEO_SETTINGS.autoPlay}
+              muted={VIDEO_SETTINGS.muted}
+              loop={VIDEO_SETTINGS.loop}
+              playsInline={VIDEO_SETTINGS.playsInline}
+              preload={VIDEO_SETTINGS.preload}
+              poster={poster}
+              onLoadStart={() => {
+                setIsLoaded(false);
+                setHasError(false);
+              }}
+              onCanPlay={() => setIsLoaded(true)}
+              onError={(e) => {
+                console.warn('Video failed to load, using fallback poster');
+                setHasError(true);
+                setIsLoaded(false);
+              }}
+            />
+          </div>
+        ) : (
+          // Enhanced fallback with gradient background
+          <div
+            className="h-full w-full flex items-center justify-center"
+            style={{
+              background: 'linear-gradient(135deg, #f97316 0%, #0f172a 100%)'
+            }}
+          >
+            <div className="text-center text-white opacity-90">
+              <div className="mb-8">
+                <div className="w-16 h-16 mx-auto mb-4 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
+              </div>
+              <h1 className="text-4xl md:text-6xl font-bold mb-4">Industrial NDT</h1>
+              <p className="text-xl md:text-2xl opacity-90">Training & Certification</p>
+              <div className="mt-8 text-sm opacity-70">Professional Training Since 2020</div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Enhanced gradient overlay */}
@@ -46,14 +71,14 @@ export default function HeroVideo() {
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full filter blur-3xl" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 lg:py-32 min-h-screen flex flex-col justify-center">
-        <div className={`space-y-6 transition-all duration-1000 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-32 min-h-screen flex flex-col justify-center container-mobile">
+        <div className={`space-y-4 sm:space-y-6 transition-all duration-1000 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
 
           {/* Enhanced logo with animation */}
           <div className="flex items-center space-x-3">
             <img
               src="/logo.png"
-              alt="SNS - Sar NDT Services"
+              alt="SNS - SAR NDT Services"
               className="h-12 w-auto opacity-90 transform hover:scale-105 transition-transform duration-300"
             />
             <div className="h-8 w-px bg-white/30" />
@@ -61,12 +86,12 @@ export default function HeroVideo() {
           </div>
 
           {/* Enhanced heading with better typography */}
-          <div className="space-y-4">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
+          <div className="space-y-2 sm:space-y-4">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight heading-responsive">
               <span className="block bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                 Industrial NDT
               </span>
-              <span className="block bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent mt-2">
+              <span className="block bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent mt-1 sm:mt-2">
                 Training & Certification
               </span>
             </h1>
@@ -76,19 +101,19 @@ export default function HeroVideo() {
           </div>
 
           {/* Enhanced description */}
-          <p className="text-lg md:text-xl text-white/90 max-w-3xl leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-3xl leading-relaxed text-responsive">
             Pelatihan praktis dan sertifikasi NDT <span className="text-orange-400 font-semibold">(PT, MT, UT, ET, PAUT, RT)</span> yang dirancang untuk teknisi dan engineer industri dengan standar internasional.
           </p>
 
           {/* Enhanced CTA buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
             <Link
               to="/schedule"
-              className="group relative hero-button-primary inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 px-8 py-4 text-base font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-orange-500/25"
+              className="group btn-mobile hero-button-primary inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 px-6 sm:px-8 py-3 sm:py-4 text-base font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-orange-500/25 touch-target"
             >
-              <span className="flex items-center">
+              <span className="flex items-center text-responsive">
                 Lihat Jadwal Training
-                <svg className="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="ml-2 w-4 h-4 sm:w-5 sm:h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </span>
@@ -96,11 +121,11 @@ export default function HeroVideo() {
 
             <Link
               to="/enroll"
-              className="group inline-flex items-center justify-center rounded-lg border-2 border-white/40 hover:border-white/60 hover:bg-white/10 px-8 py-4 text-base font-semibold backdrop-blur-sm transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+              className="group btn-mobile inline-flex items-center justify-center rounded-lg border-2 border-white/40 hover:border-white/60 hover:bg-white/10 px-6 sm:px-8 py-3 sm:py-4 text-base font-semibold backdrop-blur-sm transition-all duration-300 transform hover:scale-105 hover:shadow-xl touch-target"
             >
-              <span className="flex items-center">
+              <span className="flex items-center text-responsive">
                 Daftar Sekarang
-                <svg className="ml-2 w-5 h-5 transform group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="ml-2 w-4 h-4 sm:w-5 sm:h-5 transform group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </span>

@@ -3,6 +3,11 @@ import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import "./styles/scroll.css";
+import "./styles/mobile-optimization.css";
+import { initializeMobileOptimizations } from "./utils/mobileOptimizations";
+
+// Initialize mobile optimizations
+initializeMobileOptimizations();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

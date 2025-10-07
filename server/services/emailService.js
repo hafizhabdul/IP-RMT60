@@ -8,7 +8,7 @@ const EMAIL_CONFIG = {
     pass: process.env.EMAIL_PASS  // app password dari Gmail
   },
   from: {
-    name: 'SNS - Sar NDT Services',
+    name: 'SNS - SAR NDT Services',
     address: 'noreply@sns-ndt.com'
   }
 };
@@ -77,12 +77,12 @@ function generateAdminEmail(enrollmentData) {
           </div>
 
           <div style="margin: 15px 0; padding: 15px; background: white; border-left: 4px solid #ff6b35; border-radius: 5px;">
-            <div style="font-weight: bold; color: #ff6b35; margin-bottom: 5px;">📱 Nomor WhatsApp</div>
+            <div style="font-weight: bold; color: #ff6b35; margin-bottom: 5px;">Nomor WhatsApp</div>
             <div>${phone}</div>
           </div>
 
           <div style="margin: 15px 0; padding: 15px; background: white; border-left: 4px solid #ff6b35; border-radius: 5px;">
-            <div style="font-weight: bold; color: #ff6b35; margin-bottom: 5px;">🔧 Metode Sertifikasi</div>
+            <div style="font-weight: bold; color: #ff6b35; margin-bottom: 5px;">Metode Sertifikasi</div>
             <div>${method}</div>
           </div>
 
@@ -108,7 +108,7 @@ function generateAdminEmail(enrollmentData) {
         </div>
 
         <div style="text-align: center; margin-top: 30px; color: #666; font-size: 14px;">
-          <p>© 2024 SNS - Sar NDT Services</p>
+          <p>© 2024 SNS - SAR NDT Services</p>
           <p>Email otomatis dari sistem pendaftaran</p>
         </div>
       </div>
@@ -141,7 +141,7 @@ function generateUserEmail(enrollmentData) {
           <p>Pendaftaran Anda untuk sertifikasi <strong>${method}</strong> telah kami terima dengan baik.</p>
 
           <div style="background: white; padding: 20px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #28a745;">
-            <h3>📋 Data Pendaftaran Anda:</h3>
+            <h3>Data Pendaftaran Anda:</h3>
             <ul style="list-style: none; padding: 0;">
               <li><strong>Nama:</strong> ${name}</li>
               <li><strong>Email:</strong> ${email}</li>
@@ -162,7 +162,7 @@ function generateUserEmail(enrollmentData) {
           </div>
 
           <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3>📞 Kontak Kami:</h3>
+            <h3>Kontak Kami:</h3>
             <p><strong>WhatsApp:</strong> <a href="https://wa.me/62812969535570" style="color: #25d366;">+62 812-9695-35570</a></p>
             <p><strong>Email:</strong> info@sns-ndt.com</p>
             <p>Jika Anda tidak mendapat kabar dalam 24 jam, jangan ragu untuk menghubungi kami langsung.</p>
@@ -170,8 +170,8 @@ function generateUserEmail(enrollmentData) {
         </div>
 
         <div style="text-align: center; margin-top: 30px; color: #666; font-size: 14px;">
-          <p>© 2024 SNS - Sar NDT Services</p>
-          <p>📍 Jl. Contoh No. 123, Jakarta, Indonesia</p>
+          <p>© 2024 SNS - SAR NDT Services</p>
+          <p>Jl. Contoh No. 123, Jakarta, Indonesia</p>
         </div>
       </div>
     </body>

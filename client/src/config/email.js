@@ -4,12 +4,12 @@ export const EMAIL_CONFIG = {
   adminEmail: 'abdulhafizhsaenal@gmail.com',
 
   // Email pengirim (noreply)
-  fromEmail: 'noreply@sns-ndt.com',
-  fromName: 'SNS - Sar NDT Services',
+  fromEmail: 'abdulhafizh@gmail.com',
+  fromName: 'SNS - SAR NDT Services',
 
   // Subject templates
   subjects: {
-    admin: '🔥 Pendaftaran Baru - Sertifikasi NDT',
-    user: '✅ Konfirmasi Pendaftaran - SNS NDT Services'
+    admin: 'Pendaftaran Baru - Sertifikasi NDT',
+    user: 'Konfirmasi Pendaftaran - SNS NDT Services'
   }
 };

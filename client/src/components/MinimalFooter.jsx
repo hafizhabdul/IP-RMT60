@@ -32,7 +32,7 @@ export default function MinimalFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1">
             <Link to="/" className="flex items-center gap-3">
-              <img src="/logo.png" alt="SNS - Sar NDT Services" className="h-8 w-auto" />
+              <img src="/logo.png" alt="SNS - SAR NDT Services" className="h-8 w-auto" />
               <span className="text-xl font-bold text-gray-900">SNS NDT</span>
             </Link>
             <p className="mt-4 text-sm text-gray-600">Pusat pelatihan dan sertifikasi Non-Destructive Testing terdepan di Indonesia.</p>

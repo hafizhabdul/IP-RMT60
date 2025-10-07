@@ -47,8 +47,8 @@ export default function MinimalHome() {
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width=%2760%27%20height=%2760%27%20viewBox=%270%200%2060%2060%27%20xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cg%20fill=%27none%27%20fill-rule=%27evenodd%27%3E%3Cg%20fill=%27%23ffffff%27%20fill-opacity=%270.03%27%3E%3Ccircle%20cx=%277%27%20cy=%277%27%20r=%277%27/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-50"></div>
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-white mb-2">Dipercaya oleh Industri Indonesia</h2>
-            <p className="text-gray-300">Membangun karir profesional NDT sejak 2020</p>
+            <h2 className="text-2xl font-bold text-white mb-2">Dipercaya oleh 500+ Profesional Industri</h2>
+            <p className="text-gray-300">Bergabung dengan alumni yang sukses karir NDT-nya</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center group stat-counter">
@@ -105,23 +105,23 @@ export default function MinimalHome() {
                       <span className="font-medium">BERLANGSUNG SEKARANG</span>
                     </div>
                     <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                      Program Sertifikasi NDT 2024
+                      Peluang Terbatas: Sertifikasi NDT 2024
                     </h2>
                     <p className="text-orange-100 text-base md:text-lg mb-6 max-w-lg">
-                      Daftar sekarang dan dapatkan potongan harga 20% untuk batch terbatas ini.
+                      Amankan kursi Anda sekarang dan hemat 20% untuk investasi karir Anda. Kuota terbatas!
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3">
                       <Link
                         to="/schedule"
                         className="inline-flex items-center justify-center bg-white text-orange-600 px-6 py-3 rounded-lg font-semibold hover:bg-orange-50 transition-all duration-300 transform hover:scale-105 shadow-lg"
                       >
-                        Lihat Jadwal Lengkap
+                        Cek Jadwal & Harga
                       </Link>
                       <Link
                         to="/enroll"
                         className="inline-flex items-center justify-center bg-orange-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-900 transition-all duration-300 transform hover:scale-105"
                       >
-                        Daftar Sekarang
+                        Amankan Kursi Saya
                       </Link>
                     </div>
                   </div>
@@ -335,14 +335,125 @@ export default function MinimalHome() {
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <section className="bg-gradient-to-b from-gray-50 to-white py-8 sm:py-12 lg:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 container-mobile">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 heading-responsive">Apa Kata Alumni Kami</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto text-base sm:text-lg text-responsive">
+              Lebih dari 500+ profesional telah mempercayai kami untuk karir NDT mereka
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {[
+              {
+                name: "Budi Santoso",
+                position: "Senior NDT Inspector",
+                company: "Pertamina Refinery Unit",
+                image: "https://api.dicebear.com/7.x/initials/svg?seed=Budi&backgroundColor=f59e0b&color=white",
+                rating: 5,
+                text: "Pelatihan yang sangat komprehensif! Materi mudah dipahami dan instruktur sangat berpengalaman. Saya langsung dapat kerja setelah sertifikasi.",
+                highlight: true
+              },
+              {
+                name: "Sarah Wijaya",
+                position: "NDT Engineer",
+                company: "Schlumberger Indonesia",
+                image: "https://api.dicebear.com/7.x/initials/svg?seed=Sarah&backgroundColor=3b82f6&color=white",
+                rating: 5,
+                text: "Standar pelatihan internasional dan sertifikat diakui globally. Career saya naik drastis setelah dapat sertifikasi di sini."
+              },
+              {
+                name: "Ahmad Fauzi",
+                position: "QC Manager",
+                company: "Badak LNG",
+                image: "https://api.dicebear.com/7.x/initials/svg?seed=Ahmad&backgroundColor=10b981&color=white",
+                rating: 5,
+                text: "Investasi terbaik untuk karir NDT. Instruktur sangat hands-on dan kasus studi relevan dengan industri."
+              }
+            ].map((testimonial, index) => (
+              <div
+                key={testimonial.name}
+                className={`card-mobile relative bg-white rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-4 sm:p-6 border border-gray-100 gpu-accelerated ${
+                  testimonial.highlight ? 'ring-2 ring-orange-500 ring-offset-2 sm:ring-offset-4' : ''
+                }`}
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                {testimonial.highlight && (
+                  <div className="absolute -top-2 sm:-top-3 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-gradient-to-r from-orange-500 to-orange-600 text-white text-xs px-3 sm:px-4 py-1 rounded-full font-semibold shadow-lg">
+                      Testimoni Unggulan
+                    </span>
+                  </div>
+                )}
+
+                <div className="flex items-start space-x-3 sm:space-x-4 mb-3 sm:mb-4">
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover ring-2 ring-gray-100 flex-shrink-0"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-gray-900 text-sm sm:text-base truncate">{testimonial.name}</div>
+                    <div className="text-xs sm:text-sm text-gray-600 truncate">{testimonial.position}</div>
+                    <div className="text-xs text-gray-500 mt-0.5 sm:mt-1 truncate">{testimonial.company}</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center mb-3">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <svg key={i} className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                      <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                    </svg>
+                  ))}
+                </div>
+
+                <p className="text-gray-700 leading-relaxed text-xs sm:text-sm italic text-responsive">
+                  "{testimonial.text}"
+                </p>
+
+                <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-100">
+                  <div className="flex items-center text-xs text-gray-500">
+                    <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                    </svg>
+                    {index === 0 ? 'Lulus 2024' : index === 1 ? 'Lulus 2023' : 'Lulus 2023'}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 sm:mt-12 text-center">
+            <div className="inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-orange-50 to-blue-50 px-4 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl border border-orange-200">
+              <div className="flex -space-x-2">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-2 border-white flex items-center justify-center text-white text-xs font-bold">
+                    {i === 1 ? 'B' : i === 2 ? 'S' : i === 3 ? 'A' : 'R'}
+                  </div>
+                ))}
+              </div>
+              <div className="text-xs sm:text-sm text-gray-700">
+                <span className="font-semibold text-orange-600">500+</span> alumni berhasil di berbagai industri
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Trusted By */}
       <section className="bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
           <div className="text-center">
-            <div className="text-sm text-gray-600">Dipercaya oleh profesional dari berbagai industri</div>
+            <div className="text-sm text-gray-600">Dipercaya oleh profesional dari perusahaan ternama</div>
             <div className="mt-6 grid grid-cols-2 md:grid-cols-6 gap-6 items-center">
               {Array.from({length:6}).map((_,i)=>(
-                <img key={i} src="/vite.svg" alt="Logo klien" loading="lazy" decoding="async" className="mx-auto h-8 w-auto opacity-70" />
+                <div key={i} className="bg-gray-100 rounded-lg p-4 flex items-center justify-center">
+                  <div className="text-xs font-medium text-gray-400">
+                    {['PERTAMINA', 'SCHLUM', 'BADAK LNG', 'EXXON', 'CHEVRON', 'TOTAL'][i]}
+                  </div>
+                </div>
               ))}
             </div>
           </div>

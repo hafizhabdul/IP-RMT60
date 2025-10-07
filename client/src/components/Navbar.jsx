@@ -36,11 +36,11 @@ export default function Navbar() {
           <div className="d-flex justify-content-between align-items-center">
             <div className="d-flex align-items-center">
               <FaBell className="me-2" />
-              <span className="small">🎉 New courses available! Start your NDT journey today.</span>
+              <span className="small">New courses available! Start your NDT journey today.</span>
             </div>
             <div className="d-flex align-items-center gap-3">
-              <span className="small d-none d-md-inline">📞 Support: +62 21 1234 5678</span>
-              <span className="small">✨ Free trial available</span>
+              <span className="small d-none d-md-inline">Support: +62 21 1234 5678</span>
+              <span className="small">Free trial available</span>
             </div>
           </div>
         </div>

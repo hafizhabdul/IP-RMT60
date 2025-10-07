@@ -6,7 +6,7 @@ export const WHATSAPP_CONFIG = {
   phone: '62812969535570',
 
   // Nama bisnis Anda
-  businessName: 'SNS - Sar NDT Services',
+  businessName: 'SNS - SAR NDT Services',
 
   // Pesan konfirmasi
   confirmationMessage: 'Terima kasih! Pendaftaran Anda telah diterima. Tim kami akan segera menghubungi Anda.'

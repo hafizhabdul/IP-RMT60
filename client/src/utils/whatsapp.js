@@ -9,17 +9,17 @@ export const WHATSAPP_CONFIG = {
 export function formatWhatsAppMessage(enrollmentData) {
   const { name, email, phone, method, note } = enrollmentData;
 
-  const message = `🔥 *PENDAFTARAN SERTIFIKASI NDT - ${WHATSAPP_CONFIG.businessName}*
+  const message = `*PENDAFTARAN SERTIFIKASI NDT - ${WHATSAPP_CONFIG.businessName}*
 
-📋 *Data Pendaftar:*
+*Data Pendaftar:*
 ━━━━━━━━━━━━━━━━━━
-👤 *Nama Lengkap:* ${name}
-📧 *Email:* ${email}
-📱 *Nomor WhatsApp:* ${phone}
-🔧 *Metode Sertifikasi:* ${method}
-📝 *Catatan Tambahan:* ${note || 'Tidak ada'}
+*Nama Lengkap:* ${name}
+*Email:* ${email}
+*Nomor WhatsApp:* ${phone}
+*Metode Sertifikasi:* ${method}
+*Catatan Tambahan:* ${note || 'Tidak ada'}
 
-🕐 *Waktu Pendaftaran:* ${new Date().toLocaleString('id-ID', {
+*Waktu Pendaftaran:* ${new Date().toLocaleString('id-ID', {
   weekday: 'long',
   year: 'numeric',
   month: 'long',
@@ -29,12 +29,12 @@ export function formatWhatsAppMessage(enrollmentData) {
 })}
 
 ━━━━━━━━━━━━━━━━━━
-📌 *Informasi Penting:*
+*Informasi Penting:*
 • Calon peserta menunggu follow-up
 • Segera hubungi untuk konfirmasi jadwal
 • Informasikan persyaratan dokumen
 
-📞 *Hubungi segera untuk:*
+*Hubungi segera untuk:*
 ✓ Konfirmasi kuota tersedia
 ✓ Informasi jadwal training
 ✓ Persyaratan pendaftaran

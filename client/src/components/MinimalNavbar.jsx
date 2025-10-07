@@ -21,8 +21,8 @@ export default function MinimalNavbar() {
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
-          <img src="/logo.png" alt="SNS - Sar NDT Services" className="h-7 w-auto" />
-          <span className="text-lg font-semibold tracking-tight">SNS - Sar NDT Services</span>
+          <img src="/logo.png" alt="SNS - SAR NDT Services" className="h-7 w-auto" />
+          <span className="text-lg font-semibold tracking-tight">SNS - SAR NDT Services</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-8">

@@ -1,16 +1,97 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import api from '@/utils/api';
 import { showToast } from '@/utils/toast';
 import { sendEnrollmentToWhatsApp } from '@/utils/whatsapp';
 
 const METHODS = ['PT', 'MT', 'UT', 'ET', 'PAUT', 'RT'];
 
+const validationRules = {
+  name: {
+    required: true,
+    minLength: 3,
+    pattern: /^[a-zA-Z\s]+$/,
+    message: 'Nama minimal 3 karakter dan hanya boleh huruf'
+  },
+  email: {
+    required: true,
+    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    message: 'Format email tidak valid'
+  },
+  phone: {
+    required: true,
+    pattern: /^(?:\+62|62|0)8[1-9][0-9]{7,11}$/,
+    message: 'Format WhatsApp tidak valid (contoh: 0812-3456-7890)'
+  }
+};
+
 export default function MinimalEnroll() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', method: 'PT', note: '' });
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+  const [isValid, setIsValid] = useState(false);
+
+  // Validation function
+  const validateField = (name, value) => {
+    const rule = validationRules[name];
+    if (!rule) return '';
+
+    if (rule.required && !value.trim()) {
+      return `${name.charAt(0).toUpperCase() + name.slice(1)} wajib diisi`;
+    }
+
+    if (value && rule.minLength && value.length < rule.minLength) {
+      return rule.message;
+    }
+
+    if (value && rule.pattern && !rule.pattern.test(value)) {
+      return rule.message;
+    }
+
+    return '';
+  };
+
+  // Real-time validation
+  const handleInputChange = (name, value) => {
+    setForm(prev => ({ ...prev, [name]: value }));
+
+    if (touched[name]) {
+      const error = validateField(name, value);
+      setErrors(prev => ({ ...prev, [name]: error }));
+    }
+  };
+
+  const handleBlur = (name) => {
+    setTouched(prev => ({ ...prev, [name]: true }));
+    const error = validateField(name, form[name]);
+    setErrors(prev => ({ ...prev, [name]: error }));
+  };
+
+  // Check form validity
+  useEffect(() => {
+    const requiredFields = ['name', 'email', 'phone'];
+    const hasErrors = requiredFields.some(field => errors[field]);
+    const allFilled = requiredFields.every(field => form[field].trim());
+    setIsValid(allFilled && !hasErrors);
+  }, [form, errors]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate all fields before submission
+    const validationErrors = {};
+    Object.keys(validationRules).forEach(field => {
+      const error = validateField(field, form[field]);
+      if (error) validationErrors[field] = error;
+    });
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      setTouched(Object.keys(validationRules));
+      showToast.error('Mohon lengkapi form dengan benar');
+      return;
+    }
+
     setLoading(true);
     try {
       // Simpan ke database
@@ -21,6 +102,8 @@ export default function MinimalEnroll() {
 
       showToast.success('Pendaftaran berhasil dikirim! WhatsApp akan terbuka untuk konfirmasi.');
       setForm({ name: '', email: '', phone: '', method: 'PT', note: '' });
+      setErrors({});
+      setTouched({});
     } catch (e) {
       showToast.error(e.response?.data?.message || 'Gagal mengirim pendaftaran');
     } finally {
@@ -44,17 +127,113 @@ export default function MinimalEnroll() {
 
         <form onSubmit={onSubmit} className="mt-8 rounded-lg border border-gray-200 p-6 space-y-4 max-w-2xl">
           <div>
-            <label className="block text-sm text-gray-700">Nama Lengkap</label>
-            <input className="mt-1 w-full h-10 rounded-md border border-gray-300 px-3 text-sm" required value={form.name} onChange={(e)=>setForm(f=>({...f,name:e.target.value}))} />
+            <label className="block text-sm text-gray-700 font-medium">Nama Lengkap *</label>
+            <input
+              className={`form-input-mobile touch-target ${
+                errors.name && touched.name
+                  ? 'border-red-500 bg-red-50 focus:ring-2 focus:ring-red-500 focus:border-red-500'
+                  : touched.name && !errors.name
+                  ? 'border-green-500 bg-green-50 focus:ring-2 focus:ring-green-500 focus:border-green-500'
+                  : 'border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+              }`}
+              required
+              value={form.name}
+              onChange={(e) => handleInputChange('name', e.target.value)}
+              onBlur={() => handleBlur('name')}
+              placeholder="Masukkan nama lengkap Anda"
+              inputMode="text"
+              autoComplete="name"
+            />
+            {errors.name && touched.name && (
+              <div className="mt-1 text-xs text-red-600 flex items-center gap-1">
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+                {errors.name}
+              </div>
+            )}
+            {touched.name && !errors.name && (
+              <div className="mt-1 text-xs text-green-600 flex items-center gap-1">
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                Nama valid
+              </div>
+            )}
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm text-gray-700">Email</label>
-              <input type="email" className="mt-1 w-full h-10 rounded-md border border-gray-300 px-3 text-sm" required value={form.email} onChange={(e)=>setForm(f=>({...f,email:e.target.value}))} />
+              <label className="block text-sm text-gray-700 font-medium">Email *</label>
+              <input
+                type="email"
+                className={`form-input-mobile touch-target ${
+                  errors.email && touched.email
+                    ? 'border-red-500 bg-red-50 focus:ring-2 focus:ring-red-500 focus:border-red-500'
+                    : touched.email && !errors.email
+                    ? 'border-green-500 bg-green-50 focus:ring-2 focus:ring-green-500 focus:border-green-500'
+                    : 'border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                }`}
+                required
+                value={form.email}
+                onChange={(e) => handleInputChange('email', e.target.value)}
+                onBlur={() => handleBlur('email')}
+                placeholder="email@example.com"
+                inputMode="email"
+                autoComplete="email"
+              />
+              {errors.email && touched.email && (
+                <div className="mt-1 text-xs text-red-600 flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                  {errors.email}
+                </div>
+              )}
+              {touched.email && !errors.email && (
+                <div className="mt-1 text-xs text-green-600 flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Email valid
+                </div>
+              )}
             </div>
             <div>
-              <label className="block text-sm text-gray-700">No. Telepon</label>
-              <input className="mt-1 w-full h-10 rounded-md border border-gray-300 px-3 text-sm" required value={form.phone} onChange={(e)=>setForm(f=>({...f,phone:e.target.value}))} />
+              <label className="block text-sm text-gray-700 font-medium">No. Telepon/WhatsApp *</label>
+              <input
+                type="tel"
+                className={`form-input-mobile touch-target ${
+                  errors.phone && touched.phone
+                    ? 'border-red-500 bg-red-50 focus:ring-2 focus:ring-red-500 focus:border-red-500'
+                    : touched.phone && !errors.phone
+                    ? 'border-green-500 bg-green-50 focus:ring-2 focus:ring-green-500 focus:border-green-500'
+                    : 'border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                }`}
+                required
+                value={form.phone}
+                onChange={(e) => handleInputChange('phone', e.target.value)}
+                onBlur={() => handleBlur('phone')}
+                placeholder="0812-3456-7890"
+                inputMode="tel"
+                autoComplete="tel"
+              />
+              {errors.phone && touched.phone && (
+                <div className="mt-1 text-xs text-red-600 flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                  {errors.phone}
+                </div>
+              )}
+              {touched.phone && !errors.phone && (
+                <div className="mt-1 text-xs text-green-600 flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Nomor valid
+                </div>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -67,12 +246,26 @@ export default function MinimalEnroll() {
           </div>
           <div>
             <label className="block text-sm text-gray-700">Catatan (opsional)</label>
-            <textarea className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm" rows={4} value={form.note} onChange={(e)=>setForm(f=>({...f,note:e.target.value}))} />
+            <textarea
+              className="form-input-mobile touch-target"
+              rows={4}
+              value={form.note}
+              onChange={(e)=>setForm(f=>({...f,note:e.target.value}))}
+              placeholder="Pertanyaan atau permintaan khusus..."
+              inputMode="text"
+            />
           </div>
           <div className="flex flex-col gap-3">
             <button
-              disabled={loading}
-              className="w-full rounded-md bg-green-600 text-white px-5 py-3 text-sm hover:bg-green-700 disabled:opacity-50 flex items-center justify-center gap-2"
+              type="submit"
+              disabled={loading || !isValid}
+              className={`btn-mobile w-full rounded-md px-5 py-3 text-sm flex items-center justify-center gap-2 transition-all duration-200 touch-target ${
+                !isValid
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : loading
+                  ? 'bg-green-600 text-white cursor-wait'
+                  : 'bg-green-600 text-white hover:bg-green-700 hover:shadow-lg transform hover:scale-105'
+              }`}
             >
               {loading ? (
                 <>
@@ -92,9 +285,16 @@ export default function MinimalEnroll() {
               )}
             </button>
 
-            <p className="text-xs text-gray-500 text-center">
-              Form akan tersimpan di sistem dan WhatsApp akan terbuka otomatis
-            </p>
+            <div className="text-center">
+              <p className="text-xs text-gray-500">
+                Form akan tersimpan di sistem dan WhatsApp akan terbuka otomatis
+              </p>
+              {!isValid && Object.keys(touched).length > 0 && (
+                <p className="text-xs text-orange-600 mt-2">
+                  Mohon lengkapi semua field dengan benar untuk melanjutkan
+                </p>
+              )}
+            </div>
           </div>
         </form>
       </div>
