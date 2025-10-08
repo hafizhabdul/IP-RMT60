@@ -7,7 +7,7 @@
     "endDate": "2025-10-17",
     "time": "08:00-16:00 WIB",
     "location": "Jakarta",
-    "image": "/technical-support.png"
+    "image": "https://3.imimg.com/data3/BK/MH/MY-9211796/liquid-penetrant-testing-500x500.jpg"
   },
   {
     "id": 2002,
@@ -17,7 +17,7 @@
     "endDate": "2025-10-24",
     "time": "08:00-16:00 WIB",
     "location": "Cilegon",
-    "image": "/technical-support.png"
+    "image": "https://hsseworld.com/wp-content/uploads/2021/08/magnetic-particle-testing.jpg"
   },
   {
     "id": 2003,
@@ -27,7 +27,7 @@
     "endDate": "2025-11-08",
     "time": "08:00-16:00 WIB",
     "location": "Surabaya",
-    "image": "/technical-support.png"
+    "image": "https://gammabuana.com/wp-content/uploads/2024/10/ultrasonic-testing-non-destructive-test.jpg"
   },
   {
     "id": 2004,
@@ -37,7 +37,7 @@
     "endDate": "2025-11-23",
     "time": "08:00-16:00 WIB",
     "location": "Jakarta",
-    "image": "/technical-support.png"
+    "image": "https://www.lavender-ndt.com/wp-content/uploads/2015/01/Lavender-Alex-Wilkinson-Media-22-of-175.jpg"
   },
   {
     "id": 2005,
@@ -47,7 +47,7 @@
     "endDate": "2025-12-05",
     "time": "08:00-16:00 WIB",
     "location": "Batam",
-    "image": "/technical-support.png"
+    "image": "https://www.mme-group.com/fileadmin/_processed_/8/4/csm_MME_RT_Heerenveen-4_533d4bb7aa.jpg"
   }
 ]
 
