@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import api from '@/utils/api';
-import { IMG_PLACEHOLDER_16x9 } from '@/config/images';
+import { IMG_PLACEHOLDER_16x9, IMG_PLACEHOLDER_16x10 } from '@/config/images';
 import { Input } from '@/components/ui/Input';
 
 const formatIDR = (price) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price || 0);
@@ -65,8 +65,8 @@ export default function MinimalCourses() {
               <div key={c.id} className="border border-gray-200 rounded-lg overflow-hidden group">
                 <div className="h-1 bg-gradient-to-r from-orange-600 to-amber-500" />
                 <Link to={`/courses/${c.id}`} className="block">
-                  <div className="aspect-[16/9] bg-gray-100">
-                    <img src={c.image || IMG_PLACEHOLDER_16x9} alt={c.title || c.name} className="w-full h-full object-cover" />
+                  <div className="aspect-[16/10] bg-gray-100">
+                    <img src={c.image || IMG_PLACEHOLDER_16x10} alt={c.title || c.name} className="w-full h-full object-cover" />
                   </div>
                 </Link>
                 <div className="p-4">

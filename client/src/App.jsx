@@ -15,7 +15,6 @@ import AuthLayout from "./layouts/AuthLayout";
 import ModernAdminLayout from "./layouts/ModernAdminLayout";
 
 // Technical User Pages
-import TechnicalHome from "./pages/TechnicalHome";
 import MinimalHome from "./pages/MinimalHome";
 import MinimalAbout from "./pages/MinimalAbout";
 import MinimalContact from "./pages/MinimalContact";
@@ -25,11 +24,8 @@ import MinimalSchedule from "./pages/MinimalSchedule";
 import MinimalScheduleDetail from "./pages/MinimalScheduleDetail";
 import MinimalPrivacy from "./pages/MinimalPrivacy";
 import MinimalTerms from "./pages/MinimalTerms";
-import TechnicalCourses from "./pages/TechnicalCourses";
 import MinimalCourses from "./pages/MinimalCourses";
-import TechnicalCourseDetail from "./pages/TechnicalCourseDetail";
 import MinimalCourseDetail from "./pages/MinimalCourseDetail";
-import TechnicalCategories from "./pages/TechnicalCategories";
 import TechnicalProfile from "./pages/TechnicalProfile";
 import ModernLogin from "./pages/ModernLogin";
 import ModernRegister from "./pages/ModernRegister";
@@ -47,7 +43,7 @@ import MyCourses from "./pages/MyCourses";
 // Modern Admin Pages
 import ModernDashboard from "./pages/Admin/ModernDashboard";
 import ModernAdminUsers from "./pages/Admin/ModernUsers";
-import ModernAdminCourses from "./pages/Admin/ModernCourses";
+import ModernAdminCourses from "./pages/Admin/ModernAdminCourses";
 import ModernAdminCategories from "./pages/Admin/ModernCategories";
 import ModernTransactions from "./pages/Admin/ModernTransactions";
 import ModernPayments from "./pages/Admin/ModernPayments";

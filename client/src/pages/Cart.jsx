@@ -171,7 +171,7 @@ export default function Cart() {
                       </button>
 
                       <Link
-                        to={`/lectures/${item.LectureId}`}
+                        to={`/courses/${item.LectureId}`}
                         className="btn btn-sm btn-link text-decoration-none ms-2"
                       >
                         View Details
@@ -226,7 +226,7 @@ export default function Cart() {
               </p>
               <div className="mt-3">
                 <Link
-                  to="/chatbot"
+                  to="/contact"
                   className="btn btn-sm btn-link text-decoration-none p-0"
                 >
                   <i className="bi bi-chat-left-text me-1"></i>

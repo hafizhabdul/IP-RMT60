@@ -132,13 +132,7 @@ export default function CourseDetail() {
 
       <div className="row mb-5">
         <div className="col-lg-8">
-          <img
-            src={course.image || IMG_PLACEHOLDER_16x9}
-            alt={course.name}
-            className="img-fluid rounded w-100 mb-4"
-            style={{ maxHeight: "450px", objectFit: "cover" }}
-          />
-          
+          {/* Image moved to sidebar to match design */}
           <h1 className="mb-3">{course.name}</h1>
           
           <div className="mb-4">
@@ -211,6 +205,24 @@ export default function CourseDetail() {
         
         <div className="col-lg-4">
           <div className="card shadow-sm sticky-lg-top" style={{ top: "2rem" }}>
+            {/* Course image (top of sidebar card) */}
+            <div
+              className="w-100"
+              style={{
+                aspectRatio: "16 / 10",
+                width: "100%",
+                overflow: "hidden",
+                backgroundColor: "#f8f9fa",
+              }}
+            >
+              <img
+                src={course.image || IMG_PLACEHOLDER_16x9}
+                alt={course.name}
+                className="img-fluid w-100 h-100"
+                style={{ objectFit: "cover" }}
+                loading="lazy"
+              />
+            </div>
             <div className="card-body">
               <h3 className="text-primary fw-bold mb-3">{formatToIDR(course.price)}</h3>
               
