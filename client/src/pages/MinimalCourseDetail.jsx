@@ -62,7 +62,7 @@ export default function MinimalCourseDetail() {
         {/* Header */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <div className="text-xs text-gray-600">{course.Category?.name || 'NDT'}</div>
+            <div className="text-xs text-gray-600">{course.category?.name || 'NDT'}</div>
             <h1 className="mt-1 text-2xl font-semibold text-gray-900">{course.title || course.name}</h1>
             <p className="mt-3 text-gray-700">{course.description || course.technique || 'Pelatihan komprehensif sesuai standar industri.'}</p>
 

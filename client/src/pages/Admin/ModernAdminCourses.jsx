@@ -103,7 +103,7 @@ const ModernAdminCourses = () => {
               {courses.map((course) => (
                 <TableRow key={course.id}>
                   <TableCell className="font-medium">{course.title}</TableCell>
-                  <TableCell>{course.Category.name}</TableCell>
+                  <TableCell>{course.category?.name || 'Uncategorized'}</TableCell>
                   <TableCell>Rp{course.price}</TableCell>
                   <TableCell>
                     <span className={`px-2 py-1 rounded-full text-xs ${
