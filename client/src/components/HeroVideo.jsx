@@ -119,8 +119,8 @@ export default function HeroVideo() {
               </span>
             </Link>
 
-            <Link
-              to="/enroll"
+            <button
+              onClick={() => window.open('https://wa.me/6281296953557?text=Halo%20Admin,%20saya%20ingin%20mendaftar%20kursus.', '_blank')}
               className="group btn-mobile inline-flex items-center justify-center rounded-lg border-2 border-white/40 hover:border-white/60 hover:bg-white/10 px-6 sm:px-8 py-3 sm:py-4 text-base font-semibold backdrop-blur-sm transition-all duration-300 transform hover:scale-105 hover:shadow-xl touch-target"
             >
               <span className="flex items-center text-responsive">
@@ -129,7 +129,7 @@ export default function HeroVideo() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </span>
-            </Link>
+            </button>
           </div>
 
           {/* Certifications */}

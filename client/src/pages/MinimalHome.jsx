@@ -31,6 +31,14 @@ export default function MinimalHome() {
     run();
   }, []);
 
+  const handleWhatsApp = (eventName = "") => {
+    const phoneNumber = "6281296953557";
+    const message = eventName 
+      ? `Halo Admin, saya tertarik mendaftar training: ${eventName}. Mohon infonya.`
+      : "Halo Admin, saya ingin mendaftar kursus.";
+    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
   if (loading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center"><div className="h-8 w-8 rounded-full border-2 border-gray-900 border-t-transparent animate-spin" /></div>
@@ -117,12 +125,12 @@ export default function MinimalHome() {
                       >
                         Cek Jadwal & Harga
                       </Link>
-                      <Link
-                        to="/enroll"
+                      <button
+                        onClick={() => handleWhatsApp()}
                         className="inline-flex items-center justify-center bg-orange-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-900 transition-all duration-300 transform hover:scale-105"
                       >
                         Amankan Kursi Saya
-                      </Link>
+                      </button>
                     </div>
                   </div>
 
@@ -245,10 +253,10 @@ export default function MinimalHome() {
             ) : (
               <div className="divide-y divide-gray-100">
                 {events.map((ev, index) => (
-                  <Link
+                  <button
                     key={ev.id}
-                    to="/enroll"
-                    className={`group block p-4 hover:bg-orange-50 transition-all duration-200 ${
+                    onClick={() => handleWhatsApp(ev.title)}
+                    className={`group block w-full text-left p-4 hover:bg-orange-50 transition-all duration-200 ${
                       index === 0 ? 'bg-gradient-to-r from-orange-50 to-transparent border-l-4 border-orange-500' : ''
                     }`}
                   >
@@ -285,7 +293,7 @@ export default function MinimalHome() {
                         </span>
                       </div>
                     </div>
-                  </Link>
+                  </button>
                 ))}
               </div>
             )}

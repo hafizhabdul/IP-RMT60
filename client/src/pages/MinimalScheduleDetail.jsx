@@ -81,7 +81,7 @@ export default function MinimalScheduleDetail() {
               <div className="mt-3 grid grid-cols-1 gap-2">
                 <button onClick={addToGoogle} className="rounded-md bg-gray-900 text-white px-4 py-2 text-sm hover:bg-black">Google Calendar</button>
                 <button onClick={downloadICS} className="rounded-md border border-gray-300 px-4 py-2 text-sm hover:bg-gray-50">Download .ics</button>
-                <a href="/enroll" className="rounded-md bg-gray-900 text-white px-4 py-2 text-sm hover:bg-black text-center">Daftar Sekarang</a>
+                <button onClick={() => window.open(`https://wa.me/6281296953557?text=${encodeURIComponent(`Halo Admin, saya tertarik mendaftar training: ${ev.title}.`)}`, '_blank')} className="rounded-md bg-gray-900 text-white px-4 py-2 text-sm hover:bg-black text-center">Daftar Sekarang</button>
               </div>
             </div>
           </aside>

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import OptimizedImage from '@/components/OptimizedImage';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { Check, AlertCircle } from 'lucide-react';
+// import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import { Check, AlertCircle, MessageCircle } from 'lucide-react';
 import api from '@/utils/api';
-import { useAuth } from '@/hooks/useAuth';
+// import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
 
 const formatIDR = (price) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price || 0);
@@ -14,18 +15,18 @@ const fetchCourse = async (id) => {
   return data;
 };
 
-const addToCart = async (lectureId) => {
-  const { data } = await api.post('/carts/add', { lectureId });
-  return data;
-};
+// const addToCart = async (lectureId) => {
+//   const { data } = await api.post('/carts/add', { lectureId });
+//   return data;
+// };
 
 export default function MinimalCourseDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  // const navigate = useNavigate();
+  // const { isAuthenticated } = useAuth();
 
   const { data: course, isLoading, error } = useQuery({ queryKey: ['min-course', id], queryFn: () => fetchCourse(id) });
-  const mutation = useMutation({ mutationFn: addToCart, onSuccess: () => navigate('/cart') });
+  // const mutation = useMutation({ mutationFn: addToCart, onSuccess: () => navigate('/cart') });
 
   const prerequisites = [
     'Terbuka untuk umum (minimal SMA/sederajat)',
@@ -34,11 +35,20 @@ export default function MinimalCourseDetail() {
   ];
 
   const onRegister = () => {
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
-    }
-    mutation.mutate(course.id);
+    // Direct to WhatsApp
+    const phoneNumber = "6281296953557"; // Ganti dengan nomor WhatsApp Admin Anda
+    const message = `Halo Admin, saya tertarik mendaftar kursus: ${course.title || course.name}. Mohon infonya.`;
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    
+    window.open(whatsappUrl, '_blank');
+
+    // Old Logic (Commented out)
+    // if (!isAuthenticated) {
+    //   navigate('/login');
+    //   return;
+    // }
+    // mutation.mutate(course.id);
   };
 
   if (isLoading) {
@@ -70,7 +80,12 @@ export default function MinimalCourseDetail() {
               <div className="rounded-lg border border-gray-200 p-5">
                 <div className="text-sm font-medium text-gray-900">Apa yang Anda Dapatkan</div>
                 <ul className="mt-3 space-y-2 text-sm text-gray-700">
-                  {['Materi teori terstruktur','Akses video pembelajaran','Sertifikat penyelesaian','Dukungan instruktur'].map((i) => (
+                  {[
+                    'Materi teori terstruktur',
+                    // 'Akses video pembelajaran', // Commented out for now
+                    'Sertifikat penyelesaian',
+                    'Dukungan instruktur'
+                  ].map((i) => (
                     <li key={i} className="flex items-start gap-2"><Check className="h-4 w-4 mt-0.5 text-gray-900" /> <span>{i}</span></li>
                   ))}
                 </ul>
@@ -102,9 +117,13 @@ export default function MinimalCourseDetail() {
               <div className="p-5">
                 <div className="text-2xl font-semibold text-gray-900">{formatIDR(course.price)}</div>
                 <div className="mt-4">
-                  <Button className="w-full" onClick={onRegister} disabled={mutation.isLoading}>
-                    {mutation.isLoading ? 'Memproses...' : 'Daftar Sekarang'}
+                  <Button className="w-full bg-green-600 hover:bg-green-700" onClick={onRegister}>
+                    <MessageCircle className="mr-2 h-4 w-4" />
+                    Daftar via WhatsApp
                   </Button>
+                  {/* <Button className="w-full" onClick={onRegister} disabled={mutation.isLoading}>
+                    {mutation.isLoading ? 'Memproses...' : 'Daftar Sekarang'}
+                  </Button> */}
                 </div>
                 <div className="mt-2 text-xs text-gray-500">Pendaftaran terbuka untuk umum.</div>
               </div>

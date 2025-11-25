@@ -18,7 +18,7 @@ import ModernAdminLayout from "./layouts/ModernAdminLayout";
 import MinimalHome from "./pages/MinimalHome";
 import MinimalAbout from "./pages/MinimalAbout";
 import MinimalContact from "./pages/MinimalContact";
-import MinimalEnroll from "./pages/MinimalEnrollSimple";
+// import MinimalEnroll from "./pages/MinimalEnrollSimple";
 import MinimalAlumni from "./pages/MinimalAlumni";
 import MinimalSchedule from "./pages/MinimalSchedule";
 import MinimalScheduleDetail from "./pages/MinimalScheduleDetail";
@@ -105,7 +105,7 @@ function AppRoutes() {
         <Route path="contact" element={<MinimalContact />} />
         <Route path="privacy" element={<MinimalPrivacy />} />
         <Route path="terms" element={<MinimalTerms />} />
-        <Route path="enroll" element={<MinimalEnroll />} />
+        {/* <Route path="enroll" element={<MinimalEnroll />} /> */}
         <Route path="courses" element={<MinimalCourses />} />
         <Route path="courses/:id" element={<MinimalCourseDetail />} />
         <Route path="courses/:id/learn" element={<ModernCourseLearning />} />

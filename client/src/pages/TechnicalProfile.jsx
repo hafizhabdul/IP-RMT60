@@ -165,9 +165,9 @@ export default function TechnicalProfile() {
 
   const tabs = [
     { id: "profile", label: "Profile", icon: User },
-    { id: "courses", label: "My Courses", icon: BookOpen },
-    { id: "certifications", label: "Certifications", icon: Award },
-    { id: "settings", label: "Settings", icon: Settings }
+    // { id: "courses", label: "My Courses", icon: BookOpen },
+    // { id: "certifications", label: "Certifications", icon: Award },
+    // { id: "settings", label: "Settings", icon: Settings }
   ];
 
   return (
@@ -181,28 +181,28 @@ export default function TechnicalProfile() {
               <div className="w-32 h-32 bg-slate-700 rounded-2xl flex items-center justify-center">
                 <User className="h-16 w-16 text-slate-300" />
               </div>
-              <button className="absolute -bottom-2 -right-2 bg-orange-600 text-white p-2 rounded-xl hover:bg-orange-700 transition-colors">
+              {/* <button className="absolute -bottom-2 -right-2 bg-orange-600 text-white p-2 rounded-xl hover:bg-orange-700 transition-colors">
                 <Camera className="h-4 w-4" />
-              </button>
+              </button> */}
             </div>
 
             {/* User Info */}
             <div className="flex-1">
               <div className="flex items-center space-x-4 mb-4">
-                <h1 className="text-3xl font-bold font-mono">{user?.name || "NDT Professional"}</h1>
-                <div className="bg-orange-600 px-3 py-1 rounded-lg">
+                <h1 className="text-3xl font-bold font-mono">{user?.name || "Pengguna Baru"}</h1>
+                {/* <div className="bg-orange-600 px-3 py-1 rounded-lg">
                   <span className="text-white font-mono text-sm font-semibold">{mockUserStats.skillLevel}</span>
-                </div>
+                </div> */}
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div className="flex items-center space-x-2 text-slate-300">
                   <Briefcase className="h-4 w-4" />
-                  <span className="font-mono">{formData.position || "NDT Technician"} at {formData.company || "Industrial Corp"}</span>
+                  <span className="font-mono">{formData.position || "Posisi belum diatur"} {formData.company ? `at ${formData.company}` : ""}</span>
                 </div>
                 <div className="flex items-center space-x-2 text-slate-300">
                   <LocationIcon className="h-4 w-4" />
-                  <span className="font-mono">{formData.location || "Location not set"}</span>
+                  <span className="font-mono">{formData.location || "Lokasi belum diatur"}</span>
                 </div>
                 <div className="flex items-center space-x-2 text-slate-300">
                   <EmailIcon className="h-4 w-4" />
@@ -210,12 +210,12 @@ export default function TechnicalProfile() {
                 </div>
                 <div className="flex items-center space-x-2 text-slate-300">
                   <PhoneIcon className="h-4 w-4" />
-                  <span className="font-mono">{formData.phone || "Phone not set"}</span>
+                  <span className="font-mono">{formData.phone || "No. Telepon belum diatur"}</span>
                 </div>
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="bg-slate-800 rounded-xl p-4 text-center">
                   <div className="text-2xl font-bold text-orange-400 font-mono">{mockUserStats.coursesCompleted}</div>
                   <div className="text-slate-300 text-sm font-mono">Courses</div>
@@ -232,7 +232,7 @@ export default function TechnicalProfile() {
                   <div className="text-2xl font-bold text-orange-400 font-mono">{mockUserStats.currentStreak}</div>
                   <div className="text-slate-300 text-sm font-mono">Day Streak</div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -267,7 +267,7 @@ export default function TechnicalProfile() {
         {activeTab === "profile" && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Profile Form */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-3">
               <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
                 <div className="p-6 border-b border-slate-200">
                   <div className="flex items-center justify-between">
@@ -388,7 +388,7 @@ export default function TechnicalProfile() {
             {/* Progress Overview */}
             <div className="space-y-6">
               {/* Overall Progress */}
-              <div className="bg-white rounded-2xl border border-slate-200 p-6">
+              {/* <div className="bg-white rounded-2xl border border-slate-200 p-6">
                 <h4 className="font-bold text-slate-900 mb-4 font-mono">Learning Progress</h4>
                 <div className="space-y-4">
                   <div>
@@ -415,10 +415,10 @@ export default function TechnicalProfile() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               {/* NDT Method Progress */}
-              <div className="bg-white rounded-2xl border border-slate-200 p-6">
+              {/* <div className="bg-white rounded-2xl border border-slate-200 p-6">
                 <h4 className="font-bold text-slate-900 mb-4 font-mono">NDT Method Expertise</h4>
                 <div className="space-y-4">
                   {Object.entries(ndtMethods).slice(0, 4).map(([code, method]) => {
@@ -445,10 +445,10 @@ export default function TechnicalProfile() {
                     );
                   })}
                 </div>
-              </div>
+              </div> */}
 
               {/* Quick Actions */}
-              <div className="bg-white rounded-2xl border border-slate-200 p-6">
+              {/* <div className="bg-white rounded-2xl border border-slate-200 p-6">
                 <h4 className="font-bold text-slate-900 mb-4 font-mono">Quick Actions</h4>
                 <div className="space-y-3">
                   <button className="w-full flex items-center space-x-3 p-3 rounded-lg border border-slate-200 hover:border-orange-500 hover:bg-orange-50 transition-colors text-left">
@@ -464,7 +464,7 @@ export default function TechnicalProfile() {
                     <span className="font-mono text-slate-700">Public Profile</span>
                   </button>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         )}

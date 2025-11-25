@@ -11,7 +11,7 @@ export default function MinimalFooter() {
     'Kursus': [
       { name: 'Semua Kursus', path: '/courses' },
       { name: 'Alumni', path: '/alumni' },
-      { name: 'Cara Mendaftar', path: '/enroll' },
+      // { name: 'Cara Mendaftar', path: '/enroll' },
     ],
     'Legal': [
       { name: 'Kebijakan Privasi', path: '/privacy' },
