@@ -7,6 +7,7 @@ import store from './store';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { lazy, Suspense } from 'react';
 
 // Layouts
 import TechnicalLayout from "./layouts/TechnicalLayout";
@@ -14,44 +15,53 @@ import MinimalLayout from "./layouts/MinimalLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import ModernAdminLayout from "./layouts/ModernAdminLayout";
 
-// Technical User Pages
-import MinimalHome from "./pages/MinimalHome";
-import MinimalAbout from "./pages/MinimalAbout";
-import MinimalRecertification from "./pages/MinimalRecertification";
-import MinimalContact from "./pages/MinimalContact";
-// import MinimalEnroll from "./pages/MinimalEnrollSimple";
-import MinimalAlumni from "./pages/MinimalAlumni";
-import MinimalSchedule from "./pages/MinimalSchedule";
-import MinimalScheduleDetail from "./pages/MinimalScheduleDetail";
-import MinimalPrivacy from "./pages/MinimalPrivacy";
-import MinimalTerms from "./pages/MinimalTerms";
-import MinimalCourses from "./pages/MinimalCourses";
-import MinimalCourseDetail from "./pages/MinimalCourseDetail";
-import TechnicalProfile from "./pages/TechnicalProfile";
-import ModernLogin from "./pages/ModernLogin";
-import ModernRegister from "./pages/ModernRegister";
+// Lazy Load Pages
+const MinimalHome = lazy(() => import("./pages/MinimalHome"));
+const MinimalAbout = lazy(() => import("./pages/MinimalAbout"));
+const MinimalRecertification = lazy(() => import("./pages/MinimalRecertification"));
+const MinimalContact = lazy(() => import("./pages/MinimalContact"));
+const MinimalAlumni = lazy(() => import("./pages/MinimalAlumni"));
+const MinimalSchedule = lazy(() => import("./pages/MinimalSchedule"));
+const MinimalScheduleDetail = lazy(() => import("./pages/MinimalScheduleDetail"));
+const MinimalPrivacy = lazy(() => import("./pages/MinimalPrivacy"));
+const MinimalTerms = lazy(() => import("./pages/MinimalTerms"));
+const MinimalCourses = lazy(() => import("./pages/MinimalCourses"));
+const MinimalCourseDetail = lazy(() => import("./pages/MinimalCourseDetail"));
+const TechnicalProfile = lazy(() => import("./pages/TechnicalProfile"));
+const ModernLogin = lazy(() => import("./pages/ModernLogin"));
+const ModernRegister = lazy(() => import("./pages/ModernRegister"));
 
-// Legacy Pages (to be updated)
-import ModernCourseLearning from "./pages/ModernCourseLearning";
-import NotFound from "./pages/NotFound";
-import Cart from "./pages/Cart";
-import Checkout from "./pages/Checkout";
-import CheckoutHybrid from "./pages/CheckoutHybrid";
-import UserOrders from "./pages/UserOrders";
-import PaymentResult from "./pages/PaymentResult";
-import MyCourses from "./pages/MyCourses";
+// Legacy Pages (Lazy Loaded)
+const ModernCourseLearning = lazy(() => import("./pages/ModernCourseLearning"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Cart = lazy(() => import("./pages/Cart"));
+const Checkout = lazy(() => import("./pages/Checkout"));
+const CheckoutHybrid = lazy(() => import("./pages/CheckoutHybrid"));
+const UserOrders = lazy(() => import("./pages/UserOrders"));
+const PaymentResult = lazy(() => import("./pages/PaymentResult"));
+const MyCourses = lazy(() => import("./pages/MyCourses"));
 
-// Modern Admin Pages
-import ModernDashboard from "./pages/Admin/ModernDashboard";
-import ModernAdminUsers from "./pages/Admin/ModernUsers";
-import ModernAdminCourses from "./pages/Admin/ModernAdminCourses";
-import ModernAdminCategories from "./pages/Admin/ModernCategories";
-import ModernTransactions from "./pages/Admin/ModernTransactions";
-import ModernPayments from "./pages/Admin/ModernPayments";
-import AdminPayments from "./pages/Admin/AdminPayments";
-import AdminEvents from "./pages/Admin/AdminEvents";
+// Modern Admin Pages (Lazy Loaded)
+const ModernDashboard = lazy(() => import("./pages/Admin/ModernDashboard"));
+const ModernAdminUsers = lazy(() => import("./pages/Admin/ModernUsers"));
+const ModernAdminCourses = lazy(() => import("./pages/Admin/ModernAdminCourses"));
+const ModernAdminCategories = lazy(() => import("./pages/Admin/ModernCategories"));
+const ModernTransactions = lazy(() => import("./pages/Admin/ModernTransactions"));
+const ModernPayments = lazy(() => import("./pages/Admin/ModernPayments"));
+const AdminPayments = lazy(() => import("./pages/Admin/AdminPayments"));
+const AdminEvents = lazy(() => import("./pages/Admin/AdminEvents"));
 
 const queryClient = new QueryClient();
+
+// Loading Component
+const PageLoader = () => (
+  <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
+      <p className="text-gray-600">Loading...</p>
+    </div>
+  </div>
+);
 
 function AppRoutes() {
   const { isAuthenticated, isAdmin, loading } = useAuth();
@@ -61,19 +71,13 @@ function AppRoutes() {
 
   // Loading spinner with modern design
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    );
+    return <PageLoader />;
   }
 
   return (
-    <Routes>
-      {/* Authentication routes */}
+    <Suspense fallback={<PageLoader />}>
+      <Routes>
+        {/* Authentication routes */}
       <Route path="/login" element={
         isAuthenticated ? (isAdmin ? <Navigate to="/admin/dashboard" /> : <Navigate to="/" />) : <ModernLogin />
       } />
@@ -132,6 +136,7 @@ function AppRoutes() {
       <Route path="/payment/failed" element={<PaymentResult />} />
       <Route path="/payment/pending" element={<PaymentResult />} />
     </Routes>
+    </Suspense>
   );
 }
 
