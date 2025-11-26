@@ -12,6 +12,7 @@ export default function MinimalNavbar() {
     { name: 'Beranda', path: '/' },
     { name: 'Kursus', path: '/courses' },
     { name: 'Jadwal', path: '/schedule' },
+    { name: 'Resertifikasi', path: '/recertification' },
     { name: 'Alumni', path: '/alumni' },
     { name: 'Tentang', path: '/about' },
     { name: 'Kontak', path: '/contact' },

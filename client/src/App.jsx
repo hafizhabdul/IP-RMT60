@@ -17,6 +17,7 @@ import ModernAdminLayout from "./layouts/ModernAdminLayout";
 // Technical User Pages
 import MinimalHome from "./pages/MinimalHome";
 import MinimalAbout from "./pages/MinimalAbout";
+import MinimalRecertification from "./pages/MinimalRecertification";
 import MinimalContact from "./pages/MinimalContact";
 // import MinimalEnroll from "./pages/MinimalEnrollSimple";
 import MinimalAlumni from "./pages/MinimalAlumni";
@@ -99,6 +100,7 @@ function AppRoutes() {
       }>
         <Route index element={<MinimalHome />} />
         <Route path="about" element={<MinimalAbout />} />
+        <Route path="recertification" element={<MinimalRecertification />} />
         <Route path="alumni" element={<MinimalAlumni />} />
         <Route path="schedule" element={<MinimalSchedule />} />
         <Route path="schedule/:id" element={<MinimalScheduleDetail />} />
