@@ -2,8 +2,7 @@ import { Award, Building2, Target } from 'lucide-react';
 
 export default function MinimalAbout() {
   const certifications = [
-    { id: 1, name: 'ISO 9712 Compliance', issuer: 'International Standard', image: null },
-    { id: 2, name: 'ASNT SNT-TC-1A', issuer: 'ASNT', image: null },
+    { id: 1, name: 'ASNT SNT TC 1A dan EN 4179/NAS 410', issuer: 'International Standard', image: null },
     { id: 3, name: 'K3 Industrial Safety', issuer: 'National Board', image: null },
   ];
 

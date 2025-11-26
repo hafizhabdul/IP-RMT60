@@ -134,7 +134,7 @@ export default function HeroVideo() {
 
           {/* Certifications */}
           <div className="flex flex-wrap items-center gap-3 pt-6">
-            {["ISO 9712", "ASNT SNT-TC-1A", "K3 Industrial", "Internasional Certified"].map((badge) => (
+            {["ASNT SNT TC 1A dan EN 4179/NAS 410", "K3 Industrial", "Internasional Certified"].map((badge) => (
               <span
                 key={badge}
                 className="text-sm rounded-full border border-white/30 px-4 py-2 backdrop-blur-sm bg-white/5 hover:bg-white/10 transition-all duration-300"

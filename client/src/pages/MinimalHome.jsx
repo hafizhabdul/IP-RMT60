@@ -197,7 +197,7 @@ export default function MinimalHome() {
 
                   <div className="flex items-center justify-between">
                     <div className="text-xs text-gray-500">
-                      Sertifikasi ISO 9712
+                      Sertifikasi ASNT SNT TC 1A dan EN 4179/NAS 410
                     </div>
                     <div className="text-orange-600 group-hover:text-orange-700 transition-colors">
                       <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">

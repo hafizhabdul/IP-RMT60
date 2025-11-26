@@ -57,7 +57,7 @@ export default function TechnicalFooter() {
     {
       icon: Shield,
       title: "Industry Certified",
-      description: "ASNT, ISO 9712 compliant training programs"
+      description: "ASNT SNT TC 1A dan EN 4179/NAS 410 compliant training programs"
     },
     {
       icon: Award,
@@ -242,11 +242,7 @@ export default function TechnicalFooter() {
               </h5>
               <div className="space-y-2 text-xs">
                 <div className="flex justify-between">
-                  <span className="text-gray-400">ASNT SNT-TC-1A</span>
-                  <span className="text-green-400 font-mono">✓</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">ISO 9712</span>
+                  <span className="text-gray-400">ASNT SNT TC 1A dan EN 4179/NAS 410</span>
                   <span className="text-green-400 font-mono">✓</span>
                 </div>
                 <div className="flex justify-between">
