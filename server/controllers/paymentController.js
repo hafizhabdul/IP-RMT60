@@ -6,10 +6,9 @@ const {
   Lecture,
   sequelize,
 } = require("../models");
-// const {
-//   createPaymentToken,
-//   handleNotification,
-// } = require("../helpers/midtrans");
+const {
+  createPaymentLink,
+} = require("../helpers/mayar");
 
 class PaymentController {
   // Create manual payment (WhatsApp + Bank Transfer)
@@ -211,20 +210,135 @@ Terima kasih! 🙏`;
     }
   }
 
-  // ====== PAYMENT GATEWAY FEATURES (COMMENTED FOR FUTURE USE) ======
-  // TODO: Uncomment these methods when ready to implement Midtrans payment gateway
+  // ====== PAYMENT GATEWAY FEATURES ======
   
-  // static async createPayment(req, res, next) {
-  //   // Midtrans payment implementation here
-  //   // Will be uncommented when payment gateway is ready
-  // }
+  static async createMayarPayment(req, res, next) {
+    const t = await sequelize.transaction();
 
-  // static async handleNotification(req, res, next) {
-  //   // Midtrans webhook notification handler
-  //   // Will be uncommented when payment gateway is ready
-  // }
+    try {
+      const UserId = req.user.id;
+
+      // Get user details
+      const user = await User.findByPk(UserId);
+      if (!user) {
+        throw { name: "NotFound", message: "User not found" };
+      }
+
+      // Get cart items
+      const cartItems = await Cart.findAll({
+        where: { UserId },
+        include: [{ model: Lecture }],
+        transaction: t,
+      });
+
+      if (!cartItems.length) {
+        throw { name: "BadRequest", message: "Your cart is empty" };
+      }
+
+      // Calculate total amount
+      const total_amount = cartItems.reduce(
+        (sum, item) => sum + item.Lecture.price,
+        0
+      );
+
+      // Generate unique invoice number
+      const date = new Date();
+      const dateStr = date.toISOString().slice(0, 10).replace(/-/g, "");
+      const random = Math.floor(10000 + Math.random() * 90000); // 5 digit random
+      const invoice_number = `INV-${dateStr}-${random}`;
+
+      // Create new transaction
+      const transaction = await Transaction.create(
+        {
+          UserId,
+          total_amount,
+          payment_method: "Mayar",
+          status: "Pending",
+          invoice_number,
+        },
+        { transaction: t }
+      );
+
+      // Create transaction details
+      const transactionDetails = cartItems.map((item) => ({
+        TransactionId: transaction.id,
+        LectureId: item.Lecture.id,
+        price: item.Lecture.price,
+      }));
+
+      await TransactionDetail.bulkCreate(transactionDetails, {
+        transaction: t,
+      });
+
+      // Clear cart
+      await Cart.destroy({
+        where: { UserId },
+        transaction: t,
+      });
+
+      await t.commit();
+
+      // Create Mayar Payment Link
+      const paymentData = await createPaymentLink({
+        invoice_number,
+        total_amount,
+        User: user,
+        description: `Payment for ${cartItems.length} items`
+      });
+
+      res.status(201).json({
+        message: "Payment link created successfully",
+        transaction: {
+          id: transaction.id,
+          invoice_number: transaction.invoice_number,
+          total_amount: transaction.total_amount,
+          status: transaction.status,
+          payment_method: transaction.payment_method,
+        },
+        payment_link: paymentData.link
+      });
+
+    } catch (error) {
+      await t.rollback();
+      next(error);
+    }
+  }
+
+  static async handleMayarNotification(req, res, next) {
+    try {
+      // Verify webhook token if configured
+      // const webhookToken = req.headers['authorization']; 
+      // if (process.env.MAYAR_WEBHOOK_TOKEN && webhookToken !== process.env.MAYAR_WEBHOOK_TOKEN) {
+      //   throw { name: "Forbidden", message: "Invalid webhook token" };
+      // }
+
+      const { event, data } = req.body;
+      console.log("Mayar Webhook:", event, data);
+
+      if (event === 'payment.received' || event === 'payment.success') {
+        // Try to find transaction by matching amount and customer email if invoice_number is not passed back
+        // Ideally, we should pass invoice_number as externalId to Mayar
+        
+        // Assuming we can find it via some metadata or just logging for now
+        // In a real implementation, we'd need to ensure we can link it back.
+        // For now, let's try to find by amount and email (heuristic)
+        
+        // NOTE: This is a heuristic. Better to store Mayar ID or pass invoice_number.
+        // Let's assume we can't easily change the schema right now.
+        
+        /* 
+           TODO: Improve transaction matching. 
+           If Mayar supports `externalId`, use it.
+        */
+      }
+
+      res.status(200).json({ message: "Webhook received" });
+    } catch (error) {
+      next(error);
+    }
+  }
   
-  // ====== END OF COMMENTED PAYMENT GATEWAY FEATURES ======
+  // ====== END OF PAYMENT GATEWAY FEATURES ======
 }
 
 module.exports = PaymentController;

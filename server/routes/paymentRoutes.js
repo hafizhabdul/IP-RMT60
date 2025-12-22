@@ -13,14 +13,14 @@ router.patch('/manual/confirm/:invoice_number', authentication, adminAuthorizati
 // Check payment status (requires authentication)
 router.get('/status/:invoice', authentication, PaymentController.getPaymentStatus);
 
-// ====== PAYMENT GATEWAY ROUTES (COMMENTED FOR NOW) ======
-/*
-// Create payment (requires authentication)
-router.post('/create', authentication, PaymentController.createPayment);
+// ====== PAYMENT GATEWAY ROUTES ======
 
-// Handle notifications from Midtrans
-router.post('/notification', PaymentController.handleNotification);
-*/
-// ====== END OF COMMENTED PAYMENT GATEWAY ROUTES ======
+// Create payment (requires authentication)
+router.post('/create', authentication, PaymentController.createMayarPayment);
+
+// Handle notifications from Mayar
+router.post('/notification', PaymentController.handleMayarNotification);
+
+// ====== END OF PAYMENT GATEWAY ROUTES ======
 
 module.exports = router;

@@ -9,7 +9,7 @@ import {
   selectCartTotal,
 } from '../store/slices/cartSlice';
 import {
-  // createPayment, // Commented for future use
+  createPayment,
   createManualPayment,
   selectTransactionLoading,
   selectTransactionError,
@@ -81,32 +81,22 @@ export default function CheckoutHybrid() {
   };
 
   const handleGatewayPayment = async () => {
-    // This will be enabled later
-    alert('Payment Gateway is under development. Please use Manual Transfer for now.');
-    return;
-    
-    /* COMMENTED FOR FUTURE USE
     try {
-      const response = await dispatch(createPayment()).unwrap();
-      if (response.payment.token) {
-        await initializeMidtransPayment(response.payment.token, {
-          onSuccess: () =>
-            navigate(`/payment/success?order_id=${response.transaction.invoice_number}`),
-          onPending: () =>
-            navigate(`/payment/pending?order_id=${response.transaction.invoice_number}`),
-          onError: (error) => {
-            console.error('Payment error:', error);
-            navigate(`/payment/failed?order_id=${response.transaction.invoice_number}`);
-          },
-          onClose: () => {
-            alert('You closed the payment window. Please complete your payment to access the courses.');
-          },
-        });
+      const response = await dispatch(createPayment({
+        payment_method: 'Mayar'
+      })).unwrap();
+      
+      if (response.payment_link) {
+        // Redirect to Mayar payment page
+        window.location.href = response.payment_link;
+      } else {
+        console.error('No payment link received');
+        alert('Failed to generate payment link. Please try again.');
       }
     } catch (error) {
       console.error('Payment error:', error);
+      alert('Payment processing failed. Please try again.');
     }
-    */
   };
 
   const handlePayment = () => {
