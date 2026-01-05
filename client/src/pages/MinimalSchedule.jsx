@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 import api from '@/utils/api';
 import { IMG_EVENT } from '@/config/images';
 
@@ -10,9 +11,17 @@ const fetchEvents = async (filters) => {
   return data;
 };
 
+function formatDate(date) {
+  if (!date) return '-';
+  const d = new Date(date);
+  return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
 export default function MinimalSchedule() {
   const [filters, setFilters] = useState({ search: '', method: '', from: '', to: '' });
   const { data, isLoading } = useQuery({ queryKey: ['events', filters], queryFn: () => fetchEvents(filters) });
+
+  const events = data || [];
 
   return (
     <div className="bg-white">
@@ -49,21 +58,35 @@ export default function MinimalSchedule() {
 
         {isLoading ? (
           <div className="min-h-[30vh] flex items-center justify-center mt-8"><div className="h-8 w-8 rounded-full border-2 border-gray-900 border-t-transparent animate-spin" /></div>
+        ) : events.length === 0 ? (
+          <div className="min-h-[30vh] flex flex-col items-center justify-center mt-8 text-gray-600 gap-4">
+            <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <p className="text-lg">Belum ada jadwal tersedia</p>
+            <p className="text-sm text-gray-500">Jadwal training akan segera diumumkan. Hubungi kami untuk informasi lebih lanjut.</p>
+            <button 
+              onClick={() => window.open('https://wa.me/628129258446?text=Halo%20Admin,%20saya%20ingin%20menanyakan%20jadwal%20training.', '_blank')} 
+              className="mt-2 inline-flex items-center gap-2 rounded-md bg-gray-900 text-white px-5 py-2 text-sm hover:bg-black"
+            >
+              Hubungi Admin
+            </button>
+          </div>
         ) : (
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(data || []).map((ev) => (
-              <a key={ev.id} href={`/schedule/${ev.id}`} className="border border-gray-200 rounded-lg overflow-hidden hover:border-gray-300 group">
+            {events.map((ev) => (
+              <Link key={ev.id} to={`/schedule/${ev.id}`} className="border border-gray-200 rounded-lg overflow-hidden hover:border-gray-300 group">
                 <div className="h-1 bg-gradient-to-r from-orange-600 to-amber-500" />
                 <div className="aspect-[16/9] bg-gray-100">
                   <img src={ev.image || IMG_EVENT} alt={ev.title} className="w-full h-full object-cover" />
                 </div>
                 <div className="p-4">
-                  <div className="text-xs text-gray-600">{ev.method} • {ev.location}</div>
+                  <div className="text-xs text-gray-600">{ev.method} • {ev.location || 'TBA'}</div>
                   <div className="mt-1 text-base font-medium text-gray-900">{ev.title}</div>
-                  <div className="mt-2 text-sm text-gray-700">{ev.startDate} — {ev.endDate} • {ev.time}</div>
-                  <div className="mt-3 text-gray-900 text-sm">Lihat detail →</div>
+                  <div className="mt-2 text-sm text-gray-700">{formatDate(ev.startDate)} — {formatDate(ev.endDate)} • {ev.time || '-'}</div>
+                  <div className="mt-3 text-gray-900 text-sm group-hover:text-orange-600 transition-colors">Lihat detail →</div>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         )}

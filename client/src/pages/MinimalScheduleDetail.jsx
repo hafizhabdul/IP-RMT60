@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/utils/api';
 import { IMG_EVENT } from '@/config/images';
@@ -9,11 +9,13 @@ const fetchEvent = async (id) => {
 };
 
 function formatDate(date) {
+  if (!date) return '-';
   const d = new Date(date);
   return d.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
 function toICSDate(date) {
+  if (!date) return '';
   const d = new Date(date);
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');
@@ -23,7 +25,11 @@ function toICSDate(date) {
 
 export default function MinimalScheduleDetail() {
   const { id } = useParams();
-  const { data: ev, isLoading, error } = useQuery({ queryKey: ['event', id], queryFn: () => fetchEvent(id) });
+  const { data: ev, isLoading, error } = useQuery({ 
+    queryKey: ['event', id], 
+    queryFn: () => fetchEvent(id),
+    retry: false 
+  });
 
   const addToGoogle = () => {
     if (!ev) return;
@@ -61,7 +67,19 @@ export default function MinimalScheduleDetail() {
   };
 
   if (isLoading) return (<div className="min-h-[50vh] flex items-center justify-center"><div className="h-8 w-8 rounded-full border-2 border-gray-900 border-t-transparent animate-spin" /></div>);
-  if (error || !ev) return (<div className="min-h-[50vh] flex items-center justify-center text-gray-600">Event tidak ditemukan.</div>);
+  
+  if (error || !ev) return (
+    <div className="min-h-[50vh] flex flex-col items-center justify-center text-gray-600 gap-4">
+      <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+      <p className="text-lg">Jadwal tidak ditemukan</p>
+      <p className="text-sm text-gray-500">Jadwal yang Anda cari mungkin sudah tidak tersedia atau belum dijadwalkan.</p>
+      <Link to="/schedule" className="mt-2 inline-flex items-center gap-2 rounded-md bg-gray-900 text-white px-5 py-2 text-sm hover:bg-black">
+        ← Lihat Semua Jadwal
+      </Link>
+    </div>
+  );
 
   return (
     <div className="bg-white">

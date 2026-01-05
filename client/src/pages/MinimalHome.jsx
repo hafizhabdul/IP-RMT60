@@ -9,6 +9,12 @@ import { createWhatsAppLink, formatWhatsAppMessage } from '@/utils/whatsapp';
 import '../styles/enhancements.css';
 const formatIDR = (price) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price || 0);
 
+function formatDate(date) {
+  if (!date) return '-';
+  const d = new Date(date);
+  return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
 export default function MinimalHome() {
   const [data, setData] = useState(null);
   const [events, setEvents] = useState([]);
@@ -278,7 +284,7 @@ export default function MinimalHome() {
                         </h3>
                         <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
                           <span>
-                            {ev.startDate} — {ev.endDate}
+                            {formatDate(ev.startDate)} — {formatDate(ev.endDate)}
                           </span>
                           {ev.price && (
                             <span className="font-medium text-green-600">

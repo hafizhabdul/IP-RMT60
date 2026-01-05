@@ -319,6 +319,23 @@ class PublicController {
       next(err);
     }
   }
+
+  // Get single event by ID
+  static async getEventById(req, res, next) {
+    try {
+      const { id } = req.params;
+      
+      const schedule = await Schedule.findByPk(id);
+      
+      if (!schedule) {
+        return res.status(404).json({ message: 'Event tidak ditemukan' });
+      }
+      
+      res.json(schedule);
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = PublicController;
