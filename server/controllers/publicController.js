@@ -1,35 +1,5 @@
-const { Category, Lecture, User, sequelize } = require("../models");
-const fs = require("fs");
-const path = require("path");
+const { Category, Lecture, User, Alumni, Schedule, Enrollment, sequelize } = require("../models");
 const { sendEnrollmentEmails } = require("../services/emailService");
-
-const REQUESTS_FILE = path.join(__dirname, "..", "data", "requests.json");
-const EVENTS_FILE = path.join(__dirname, "..", "data", "events.json");
-
-async function readRequestsFile() {
-  try {
-    const raw = await fs.promises.readFile(REQUESTS_FILE, "utf8");
-    return JSON.parse(raw);
-  } catch (e) {
-    if (e.code === "ENOENT") return { contacts: [], enrollments: [], alumni: [] };
-    throw e;
-  }
-}
-
-async function writeRequestsFile(data) {
-  const content = JSON.stringify(data, null, 2);
-  await fs.promises.writeFile(REQUESTS_FILE, content, "utf8");
-}
-
-async function readEventsFile() {
-  try {
-    const raw = await fs.promises.readFile(EVENTS_FILE, "utf8");
-    return JSON.parse(raw);
-  } catch (e) {
-    if (e.code === "ENOENT") return [];
-    throw e;
-  }
-}
 const { Op } = require("sequelize");
 
 class PublicController {
@@ -257,11 +227,15 @@ class PublicController {
         return res.status(400).json({ message: "Name, email, phone, and method are required" });
       }
 
-      // Save to database/file
-      const db = await readRequestsFile();
-      const item = { id: Date.now(), type: "enrollment", name, email, phone, method, note, createdAt: new Date().toISOString() };
-      db.enrollments.push(item);
-      await writeRequestsFile(db);
+      // Save to database (Supabase)
+      const enrollment = await Enrollment.create({
+        name,
+        email,
+        phone,
+        method,
+        note: note || "",
+        status: "pending"
+      });
 
       // Send emails
       try {
@@ -277,7 +251,7 @@ class PublicController {
 
         res.status(201).json({
           message: "Enrollment submitted successfully",
-          data: item,
+          data: enrollment,
           emailStatus: emailResults
         });
       } catch (emailError) {
@@ -285,7 +259,7 @@ class PublicController {
         // Still return success for enrollment, but note email failed
         res.status(201).json({
           message: "Enrollment submitted (email notification failed)",
-          data: item,
+          data: enrollment,
           emailError: emailError.message
         });
       }
@@ -297,8 +271,10 @@ class PublicController {
   // Public alumni list
   static async getAlumni(req, res, next) {
     try {
-      const db = await readRequestsFile();
-      res.json(db.alumni || []);
+      const alumni = await Alumni.findAll({
+        order: [['year', 'DESC'], ['name', 'ASC']]
+      });
+      res.json(alumni);
     } catch (err) {
       next(err);
     }
@@ -308,16 +284,37 @@ class PublicController {
   static async getEvents(req, res, next) {
     try {
       const { search = "", method = "", from = "", to = "", limit } = req.query;
-      const events = await readEventsFile();
-      const filtered = events.filter((ev) => {
-        const s = search ? (ev.title?.toLowerCase().includes(search.toLowerCase()) || ev.location?.toLowerCase().includes(search.toLowerCase())) : true;
-        const m = method ? ev.method?.toLowerCase() === method.toLowerCase() : true;
-        const f = from ? new Date(ev.startDate) >= new Date(from) : true;
-        const t = to ? new Date(ev.endDate || ev.startDate) <= new Date(to) : true;
-        return s && m && f && t;
-      }).sort((a,b)=> new Date(a.startDate) - new Date(b.startDate));
-      const result = limit ? filtered.slice(0, Number(limit)) : filtered;
-      res.json(result);
+      
+      const whereClause = {};
+      
+      // Search filter
+      if (search) {
+        whereClause[Op.or] = [
+          { title: { [Op.iLike]: `%${search}%` } },
+          { location: { [Op.iLike]: `%${search}%` } }
+        ];
+      }
+      
+      // Method filter
+      if (method) {
+        whereClause.method = { [Op.iLike]: method };
+      }
+      
+      // Date range filter
+      if (from) {
+        whereClause.startDate = { ...(whereClause.startDate || {}), [Op.gte]: from };
+      }
+      if (to) {
+        whereClause.endDate = { [Op.lte]: to };
+      }
+      
+      const schedules = await Schedule.findAll({
+        where: whereClause,
+        order: [['startDate', 'ASC']],
+        limit: limit ? parseInt(limit) : undefined
+      });
+      
+      res.json(schedules);
     } catch (err) {
       next(err);
     }
