@@ -1,0 +1,21 @@
+# Robots.txt for SAR NDT Services
+# https://sarndtservices.com
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://sarndtservices.com/sitemap.xml
+
+# Crawl-delay (optional, for politeness)
+Crawl-delay: 1
+
+# Disallow admin routes
+Disallow: /admin/
+Disallow: /dashboard/
+
+# Allow search engines to crawl important pages
+Allow: /courses
+Allow: /about
+Allow: /schedule
+Allow: /contact
