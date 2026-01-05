@@ -119,7 +119,7 @@ export default function MinimalHome() {
                       <span className="font-medium">BERLANGSUNG SEKARANG</span>
                     </div>
                     <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                      Peluang Terbatas: Sertifikasi NDT 2024
+                      Peluang Terbatas: Sertifikasi NDT 2026
                     </h2>
                     <p className="text-orange-100 text-base md:text-lg mb-6 max-w-lg">
                       Amankan kursi Anda sekarang dan hemat 20% untuk investasi karir Anda. Kuota terbatas!
