@@ -55,8 +55,8 @@ export default function MinimalContact() {
             <h2 className="text-base font-semibold text-gray-900">Informasi Perusahaan</h2>
             <div className="mt-4 space-y-2 text-sm text-gray-700">
               <div>Email: info@sns-ndt.com</div>
-              <div>Telepon: +62 812-3456-7890</div>
-              <div>Alamat: Jakarta, Indonesia</div>
+              <div>Telepon: +62 812-9258-8446</div>
+              <div>Alamat: Tangerang - Banten</div>
             </div>
           </div>
         </div>

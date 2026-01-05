@@ -22,7 +22,7 @@ export default function MinimalSchedule() {
             <h1 className="text-2xl font-semibold text-gray-900">Jadwal Training & Sertifikasi</h1>
             <p className="text-gray-600 mt-1">Cari jadwal yang sesuai dan daftar langsung.</p>
           </div>
-          <button onClick={() => window.open('https://wa.me/6281296953557?text=Halo%20Admin,%20saya%20ingin%20mendaftar%20training.', '_blank')} className="rounded-md bg-gray-900 text-white px-5 py-2 text-sm hover:bg-black">Daftar Sekarang</button>
+          <button onClick={() => window.open('https://wa.me/628129258446?text=Halo%20Admin,%20saya%20ingin%20mendaftar%20training.', '_blank')} className="rounded-md bg-gray-900 text-white px-5 py-2 text-sm hover:bg-black">Daftar Sekarang</button>
         </div>
 
         <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">

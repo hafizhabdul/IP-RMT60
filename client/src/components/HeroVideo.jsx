@@ -102,7 +102,8 @@ export default function HeroVideo() {
 
           {/* Enhanced description */}
           <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-3xl leading-relaxed text-responsive">
-            Pelatihan praktis dan sertifikasi NDT <span className="text-orange-400 font-semibold">(PT, MT, UT, ET, PAUT, RT)</span> yang dirancang untuk teknisi dan engineer industri dengan standar internasional.
+            Pelatihan praktis dan sertifikasi NDT <span className="text-orange-400 font-semibold">(PT, MT, UT, ET, PAUT, TOFD, RI,
+VT, RT, RFET, PEC, MFL, IRT, Etc.)</span> yang dirancang untuk teknisi dan engineer industri dengan standar internasional.
           </p>
 
           {/* Enhanced CTA buttons */}
@@ -120,7 +121,7 @@ export default function HeroVideo() {
             </Link>
 
             <button
-              onClick={() => window.open('https://wa.me/6281296953557?text=Halo%20Admin,%20saya%20ingin%20mendaftar%20kursus.', '_blank')}
+              onClick={() => window.open('https://wa.me/628129258446?text=Halo%20Admin,%20saya%20ingin%20mendaftar%20kursus.', '_blank')}
               className="group btn-mobile inline-flex items-center justify-center rounded-lg border-2 border-white/40 hover:border-white/60 hover:bg-white/10 px-6 sm:px-8 py-3 sm:py-4 text-base font-semibold backdrop-blur-sm transition-all duration-300 transform hover:scale-105 hover:shadow-xl touch-target"
             >
               <span className="flex items-center text-responsive">

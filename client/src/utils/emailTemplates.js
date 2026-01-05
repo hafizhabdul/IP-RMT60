@@ -155,7 +155,7 @@ export function generateUserEmail(enrollmentData) {
 
             <div class="contact-info">
               <h3>Kontak Kami:</h3>
-              <p><strong>WhatsApp:</strong> <a href="https://wa.me/62812969535570">+62 812-9695-35570</a></p>
+              <p><strong>WhatsApp:</strong> <a href="https://wa.me/6281292584460">+62 812-9695-35570</a></p>
               <p><strong>Email:</strong> info@sns-ndt.com</p>
               <p>Jika Anda tidak mendapat kabar dalam 24 jam, jangan ragu untuk menghubungi kami langsung.</p>
             </div>

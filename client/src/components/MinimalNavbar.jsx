@@ -19,7 +19,7 @@ export default function MinimalNavbar() {
   ];
 
   const handleWhatsApp = () => {
-    const phoneNumber = "6281296953557";
+    const phoneNumber = "628129258446";
     const message = "Halo Admin, saya ingin mendaftar kursus.";
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };

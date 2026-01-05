@@ -3,7 +3,7 @@ import { Button } from '../components/ui/Button';
 
 export default function MinimalRecertification() {
   const handleWhatsApp = () => {
-    const phoneNumber = "6281296953557";
+    const phoneNumber = "628129258446";
     const message = "Halo Admin, saya ingin menanyakan tentang proses resertifikasi sertifikat NDT saya.";
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };

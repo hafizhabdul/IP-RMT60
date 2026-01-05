@@ -311,7 +311,7 @@ export default function AdminPayments() {
                               </button>
                               <button 
                                 className="btn btn-outline-primary btn-sm"
-                                onClick={() => openWhatsApp('6281296953557', payment.invoice_number)}
+                                onClick={() => openWhatsApp('628129258446', payment.invoice_number)}
                               >
                                 <i className="bi bi-whatsapp me-1"></i>
                                 WA User

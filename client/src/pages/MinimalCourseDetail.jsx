@@ -36,7 +36,7 @@ export default function MinimalCourseDetail() {
 
   const onRegister = () => {
     // Direct to WhatsApp
-    const phoneNumber = "6281296953557"; // Ganti dengan nomor WhatsApp Admin Anda
+    const phoneNumber = "628129258446"; // Ganti dengan nomor WhatsApp Admin Anda
     const message = `Halo Admin, saya tertarik mendaftar kursus: ${course.title || course.name}. Mohon infonya.`;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;

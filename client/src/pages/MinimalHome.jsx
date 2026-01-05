@@ -32,7 +32,7 @@ export default function MinimalHome() {
   }, []);
 
   const handleWhatsApp = (eventName = "") => {
-    const phoneNumber = "6281296953557";
+    const phoneNumber = "628129258446";
     const message = eventName 
       ? `Halo Admin, saya tertarik mendaftar training: ${eventName}. Mohon infonya.`
       : "Halo Admin, saya ingin mendaftar kursus.";
@@ -482,7 +482,7 @@ export default function MinimalHome() {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
               <a
-                href={createWhatsAppLink('62812969535570', formatWhatsAppMessage({
+                href={createWhatsAppLink('6281292584460', formatWhatsAppMessage({
                   name: 'Calon Peserta',
                   email: 'email@example.com',
                   phone: 'Nomor WhatsApp',

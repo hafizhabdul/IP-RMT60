@@ -1,12 +1,14 @@
-import { Award, Building2, Target } from 'lucide-react';
+import { useState } from 'react';
+import { Award, Building2, Target, X, ZoomIn } from 'lucide-react';
 
 export default function MinimalAbout() {
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const certifications = [
-    { id: 1, name: 'ASNT SNT TC 1A dan EN 4179/NAS 410', issuer: 'International Standard', image: null },
-    { id: 3, name: 'K3 Industrial Safety', issuer: 'National Board', image: null },
+    { id: 1, name: 'ASNT SNT TC 1A dan EN 4179/NAS 410', issuer: 'International Standard', image: '/ASNT.jpeg' },
   ];
 
-  const methods = ['PT', 'MT', 'UT', 'ET', 'PAUT', 'RT'];
+  const methods = ['PT', 'MT', 'UT', 'ET', 'PAUT', 'TOFD', 'RI', 'VT', 'RT', 'RFET', 'PEC', 'MFL', 'IRT', 'Etc.'];
 
   return (
     <div className="bg-white">
@@ -84,10 +86,18 @@ export default function MinimalAbout() {
           </div>
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {certifications.map((c) => (
-              <div key={c.id} className="rounded-lg border border-gray-200 overflow-hidden bg-white">
-                <div className="aspect-[16/9] bg-gray-100 flex items-center justify-center">
+              <div key={c.id} className="rounded-lg border border-gray-200 overflow-hidden bg-white group">
+                <div 
+                  className="aspect-[16/9] bg-gray-100 flex items-center justify-center relative cursor-pointer"
+                  onClick={() => c.image && setSelectedImage(c)}
+                >
                   {c.image ? (
-                    <img src={c.image} alt={c.name} className="h-full w-full object-cover" />
+                    <>
+                      <img src={c.image} alt={c.name} className="h-full w-full object-cover transition-transform group-hover:scale-105" />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                        <ZoomIn className="h-8 w-8 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg" />
+                      </div>
+                    </>
                   ) : (
                     <Award className="h-8 w-8 text-gray-400" />
                   )}
@@ -102,6 +112,42 @@ export default function MinimalAbout() {
           <p className="mt-4 text-xs text-gray-500">Untuk menampilkan gambar sertifikat, unggah berkas ke folder public dan sesuaikan datanya.</p>
         </div>
       </section>
+
+      {/* Image Modal/Lightbox */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div 
+            className="relative max-w-4xl w-full max-h-[90vh] bg-white rounded-xl overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-3 right-3 z-10 p-2 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            
+            {/* Image container */}
+            <div className="flex items-center justify-center bg-gray-100 p-4">
+              <img 
+                src={selectedImage.image} 
+                alt={selectedImage.name}
+                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+              />
+            </div>
+            
+            {/* Certificate info */}
+            <div className="p-4 border-t border-gray-200 bg-white">
+              <h3 className="text-lg font-semibold text-gray-900">{selectedImage.name}</h3>
+              <p className="text-sm text-gray-600 mt-1">{selectedImage.issuer}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
