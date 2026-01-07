@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { BookOpen, Calculator, FileText, Award, ChevronRight, Sparkles, Trophy, Star, Zap } from 'lucide-react';
+import { BookOpen, Calculator, FileText, Award, ChevronRight, Zap, Trophy } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { GamificationService } from '../services/GamificationService';
 
@@ -20,13 +20,13 @@ function UserStats() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
             <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 flex flex-col md:flex-row items-center gap-6">
 
-                {/* ID Card */}
+                {/* Level Badge */}
                 <div className="flex items-center gap-4 min-w-[250px] border-b md:border-b-0 md:border-r border-gray-100 pb-4 md:pb-0 md:pr-6">
-                    <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-md">
+                    <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-md">
                         {stats.level}
                     </div>
                     <div>
-                        <h3 className="font-bold text-gray-900 text-lg">Inspector Trainee</h3>
+                        <h3 className="font-bold text-gray-900 text-lg">Level {stats.level}</h3>
                         <p className="text-sm text-orange-600 font-medium">{title}</p>
                     </div>
                 </div>
@@ -39,7 +39,7 @@ function UserStats() {
                     </div>
                     <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
                         <div
-                            className="h-full bg-gradient-to-r from-orange-400 to-red-500 transition-all duration-1000 ease-out"
+                            className="h-full bg-orange-500 transition-all duration-1000 ease-out"
                             style={{ width: `${Math.min(100, progress)}%` }}
                         ></div>
                     </div>
@@ -52,15 +52,15 @@ function UserStats() {
 
                 {/* Badges / Streak */}
                 <div className="flex gap-4 min-w-[200px] justify-end">
-                    <div className="text-center p-2 bg-yellow-50 rounded-lg border border-yellow-100">
+                    <div className="text-center p-3 bg-yellow-50 rounded-lg border border-yellow-100">
                         <div className="text-xl font-bold text-yellow-600 flex justify-center items-center gap-1">
-                            {stats.streak} <Zap className="h-4 w-4 fill-yellow-500" />
+                            {stats.streak} <Zap className="h-4 w-4" />
                         </div>
                         <div className="text-[10px] uppercase font-bold text-yellow-700 tracking-wider">Day Streak</div>
                     </div>
-                    <div className="text-center p-2 bg-blue-50 rounded-lg border border-blue-100">
+                    <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
                         <div className="text-xl font-bold text-blue-600 flex justify-center items-center gap-1">
-                            {stats.badges.length} <Award className="h-4 w-4 fill-blue-500" />
+                            {stats.badges.length} <Award className="h-4 w-4" />
                         </div>
                         <div className="text-[10px] uppercase font-bold text-blue-700 tracking-wider">Badges</div>
                     </div>
@@ -102,19 +102,16 @@ export default function ELearningHub() {
             description: 'Structured certification paths for Level I, II, and III',
             link: '/e-learning/paths',
             badge: 'Planned',
-            color: 'orange'
+            color: 'gray'
         },
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+        <div className="min-h-screen bg-gray-50">
             {/* Hero Section */}
             <div className="bg-orange-500 text-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                     <div className="flex items-center gap-3 mb-4">
-                        <div className="p-3 bg-white/10 rounded-lg backdrop-blur-sm">
-                            <Sparkles className="h-8 w-8" />
-                        </div>
                         <span className="px-3 py-1 bg-white/20 rounded-full text-sm font-semibold flex items-center gap-2">
                             E-LEARNING PLATFORM
                             <span className="text-xs bg-white text-orange-600 px-1.5 py-0.5 rounded font-bold">BETA</span>
@@ -140,15 +137,7 @@ export default function ELearningHub() {
                         const Icon = feature.icon;
                         const isActive = feature.badge === 'Live';
 
-                        // Define color classes statically
                         const colorClasses = {
-                            blue: {
-                                border: 'border-blue-200 hover:border-blue-400',
-                                bg: 'bg-blue-50',
-                                text: 'text-blue-600',
-                                badgeBg: 'bg-blue-100',
-                                badgeText: 'text-blue-700'
-                            },
                             green: {
                                 border: 'border-green-200 hover:border-green-400',
                                 bg: 'bg-green-50',
@@ -169,6 +158,13 @@ export default function ELearningHub() {
                                 text: 'text-orange-600',
                                 badgeBg: 'bg-orange-100',
                                 badgeText: 'text-orange-700'
+                            },
+                            gray: {
+                                border: 'border-gray-200',
+                                bg: 'bg-gray-50',
+                                text: 'text-gray-400',
+                                badgeBg: 'bg-gray-100',
+                                badgeText: 'text-gray-600'
                             }
                         };
 
@@ -184,18 +180,13 @@ export default function ELearningHub() {
                                     }`}
                             >
                                 {/* Badge */}
-                                <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold ${feature.badge === 'Live'
-                                    ? `${colors.badgeBg} ${colors.badgeText}`
-                                    : 'bg-gray-100 text-gray-600'
-                                    }`}>
+                                <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold ${colors.badgeBg} ${colors.badgeText}`}>
                                     {feature.badge}
                                 </div>
 
                                 {/* Icon */}
-                                <div className={`inline-flex p-4 rounded-lg mb-4 ${isActive ? colors.bg : 'bg-gray-50'
-                                    }`}>
-                                    <Icon className={`h-8 w-8 ${isActive ? colors.text : 'text-gray-400'
-                                        }`} />
+                                <div className={`inline-flex p-4 rounded-lg mb-4 ${colors.bg}`}>
+                                    <Icon className={`h-8 w-8 ${colors.text}`} />
                                 </div>
 
                                 {/* Content */}
@@ -229,39 +220,42 @@ export default function ELearningHub() {
                 {/* What's Available */}
                 <div className="mt-12">
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Currently Available</h2>
-                    <div className="bg-white rounded-lg border border-gray-200 p-6">
-                        <div className="space-y-4">
-                            <div className="flex items-start gap-4">
-                                <div className="flex-shrink-0 w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                                    <Calculator className="h-4 w-4 text-orange-600" />
-                                </div>
-                                <div>
-                                    <h4 className="font-semibold text-gray-900">UT Beam Angle Calculator</h4>
-                                    <p className="text-sm text-gray-600">
-                                        Calculate refraction angles, near field length, beam spread, and wavelength
-                                        for ultrasonic testing with material presets.
-                                    </p>
-                                </div>
+                    <div className="bg-white rounded-lg border border-gray-200 divide-y divide-gray-100">
+                        <div className="p-4 flex items-start gap-4">
+                            <div className="flex-shrink-0 w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                                <Calculator className="h-4 w-4 text-orange-600" />
+                            </div>
+                            <div>
+                                <h4 className="font-semibold text-gray-900">UT Beam Angle Calculator</h4>
+                                <p className="text-sm text-gray-600">Calculate refraction angles, near field length, and wavelength</p>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                {/* Coming Soon */}
-                <div className="mt-8">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Coming Soon</h2>
-                    <div className="grid md:grid-cols-3 gap-4">
-                        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                            <h4 className="font-medium text-gray-900 mb-1">A-Scan Simulator</h4>
-                            <p className="text-sm text-gray-600">Interactive waveform visualization</p>
+                        <div className="p-4 flex items-start gap-4">
+                            <div className="flex-shrink-0 w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                                <Calculator className="h-4 w-4 text-red-600" />
+                            </div>
+                            <div>
+                                <h4 className="font-semibold text-gray-900">MT Magnetic Particle Lab</h4>
+                                <p className="text-sm text-gray-600">Interactive yoke simulation for crack detection</p>
+                            </div>
                         </div>
-                        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                            <h4 className="font-medium text-gray-900 mb-1">RT Exposure Calculator</h4>
-                            <p className="text-sm text-gray-600">Radiography exposure parameters</p>
+                        <div className="p-4 flex items-start gap-4">
+                            <div className="flex-shrink-0 w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center">
+                                <Calculator className="h-4 w-4 text-pink-600" />
+                            </div>
+                            <div>
+                                <h4 className="font-semibold text-gray-900">PT Process Flow Simulation</h4>
+                                <p className="text-sm text-gray-600">6-step penetrant testing process trainer</p>
+                            </div>
                         </div>
-                        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                            <h4 className="font-medium text-gray-900 mb-1">Practice Exam System</h4>
-                            <p className="text-sm text-gray-600">ASNT-style practice questions</p>
+                        <div className="p-4 flex items-start gap-4">
+                            <div className="flex-shrink-0 w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                                <Calculator className="h-4 w-4 text-purple-600" />
+                            </div>
+                            <div>
+                                <h4 className="font-semibold text-gray-900">RT Geometric Unsharpness Calculator</h4>
+                                <p className="text-sm text-gray-600">Calculate Ug based on source size and distances</p>
+                            </div>
                         </div>
                     </div>
                 </div>
