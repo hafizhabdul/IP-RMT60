@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import UTFlawScanner from '../../components/ndt-sims/UT/UTFlawScanner';
 import UTBeamAngleCalculator from '../../components/ndt-sims/UT/BeamAngleCalc';
 
 export default function UTSimulationPage() {
@@ -14,7 +15,13 @@ export default function UTSimulationPage() {
                     Kembali ke Simulations Hub
                 </Link>
 
-                <UTBeamAngleCalculator />
+                <div className="space-y-8">
+                    {/* Flaw Scanner - Main interactive simulation */}
+                    <UTFlawScanner />
+
+                    {/* Beam Calculator - Technical tool */}
+                    <UTBeamAngleCalculator />
+                </div>
             </div>
         </div>
     );

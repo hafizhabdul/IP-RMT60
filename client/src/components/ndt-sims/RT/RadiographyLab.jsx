@@ -1,213 +1,317 @@
 import { useState, useEffect } from 'react';
-import { Radiation, Layers, Maximize, AlertTriangle, FileOutput, Info } from 'lucide-react';
-import { GamificationService } from '../../../services/GamificationService';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Radiation, Layers, Maximize, AlertTriangle, FileOutput, Info, CheckCircle, RefreshCw } from 'lucide-react';
 
 export default function RadiographyLab() {
-    // Parameters
-    const [focalSpot, setFocalSpot] = useState(3); // mm
-    const [sod, setSod] = useState(500); // mm (Source to Object)
-    const [ofd, setOfd] = useState(20); // mm (Object to Film)
-
-    // Results
+    const [focalSpot, setFocalSpot] = useState(3);
+    const [sod, setSod] = useState(500);
+    const [ofd, setOfd] = useState(20);
     const [ug, setUg] = useState(0);
     const [isCompliant, setIsCompliant] = useState(false);
-    const [rewardMessage, setRewardMessage] = useState(null);
-    const [hasAwarded, setHasAwarded] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
 
-    // Calculate Ug = F * OFD / SOD
     useEffect(() => {
         const calculatedUg = (focalSpot * ofd) / sod;
         setUg(calculatedUg);
+        const compliant = calculatedUg <= 0.2;
 
-        // Check compliance (e.g., ASME Code often requires Ug <= 0.2mm for certain thickness)
-        // Let's use 0.2mm as the "Goal"
-        if (calculatedUg <= 0.2) {
-            setIsCompliant(true);
-
-            // Award XP for first success compliant setup
-            if (!hasAwarded) {
-                // Delay slightly to let user see "Compliant"
-                setTimeout(() => {
-                    const { newXP, levelUp } = GamificationService.addXP(40);
-                    const badge = GamificationService.unlockBadge('rt_rookie');
-
-                    setRewardMessage({
-                        xp: 40,
-                        levelUp,
-                        badge
-                    });
-                    setHasAwarded(true);
-                    setTimeout(() => setRewardMessage(null), 4000);
-                }, 500);
-            }
-
-        } else {
-            setIsCompliant(false);
+        if (compliant && !isCompliant) {
+            setShowSuccess(true);
+            setTimeout(() => setShowSuccess(false), 2000);
         }
-    }, [focalSpot, sod, ofd, hasAwarded]);
+        setIsCompliant(compliant);
+    }, [focalSpot, sod, ofd]);
 
-    // Calculate blur Amount (px) for visualization
-    // Map Ug 0-1.0mm to 0-10px blur
-    const blurAmount = Math.min(ug * 10, 20);
+    const blurAmount = Math.min(ug * 12, 20);
+
+    const reset = () => {
+        setFocalSpot(3);
+        setSod(500);
+        setOfd(20);
+        setShowSuccess(false);
+    };
 
     return (
-        <div className="max-w-4xl mx-auto p-4 bg-white rounded-xl shadow-lg border border-gray-200 relative mt-8">
-            {/* Reward Toast */}
-            {rewardMessage && (
-                <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 animate-bounce">
-                    <div className="bg-yellow-500 text-white px-6 py-3 rounded-full shadow-xl flex items-center gap-3 border-2 border-yellow-300">
+        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            {/* Header */}
+            <div className="bg-purple-600 text-white p-4 sm:p-6">
+                <div className="flex justify-between items-start">
+                    <div className="flex items-center gap-3">
+                        <motion.div
+                            className="p-2 bg-white/20 rounded-lg"
+                            animate={{ rotate: [0, 5, -5, 0] }}
+                            transition={{ repeat: Infinity, duration: 3 }}
+                        >
+                            <Radiation className="h-5 w-5 sm:h-6 sm:w-6" />
+                        </motion.div>
                         <div>
-                            <p className="font-bold text-lg leading-none">+{rewardMessage.xp} XP</p>
-                            {rewardMessage.levelUp && <p className="text-xs uppercase font-bold tracking-wider text-yellow-100">Level Up!</p>}
+                            <h2 className="text-lg sm:text-xl font-bold">Radiography Lab</h2>
+                            <p className="text-purple-100 text-xs sm:text-sm">Geometric Unsharpness Simulator</p>
                         </div>
                     </div>
-                </div>
-            )}
-
-            <div className="flex justify-between items-start mb-6">
-                <div>
-                    <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                        <Radiation className="h-6 w-6 text-purple-600" />
-                        Radiography Lab (RT)
-                    </h2>
-                    <p className="text-gray-600">Geometric Unsharpness (Ug) Simulator. Goal: Achieve Ug ≤ 0.20 mm.</p>
+                    <button onClick={reset} className="p-2 hover:bg-white/20 rounded-lg transition-colors">
+                        <RefreshCw className="h-5 w-5" />
+                    </button>
                 </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
-                {/* Visualizer */}
-                <div className="flex flex-col gap-4">
-                    {/* Diagram (Simplified CSS representation) */}
-                    <div className="bg-slate-900 rounded-xl p-8 h-[300px] relative flex flex-col items-center justify-between border border-slate-700 overflow-hidden">
+            <div className="p-4 sm:p-6">
+                {/* Goal Banner */}
+                <motion.div
+                    className={`mb-6 p-3 rounded-xl flex items-center justify-between ${isCompliant ? 'bg-green-50 border-2 border-green-300' : 'bg-amber-50 border-2 border-amber-300'}`}
+                    animate={{ scale: showSuccess ? [1, 1.02, 1] : 1 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    <div className="flex items-center gap-2">
+                        <motion.div
+                            animate={isCompliant ? { rotate: [0, 360] } : {}}
+                            transition={{ duration: 0.5 }}
+                        >
+                            {isCompliant ? (
+                                <CheckCircle className="h-5 w-5 text-green-600" />
+                            ) : (
+                                <AlertTriangle className="h-5 w-5 text-amber-600" />
+                            )}
+                        </motion.div>
+                        <span className={`font-semibold text-sm ${isCompliant ? 'text-green-700' : 'text-amber-700'}`}>
+                            🎯 Goal: Ug ≤ 0.20 mm
+                        </span>
+                    </div>
+                    <motion.span
+                        className={`font-mono font-bold text-lg ${isCompliant ? 'text-green-600' : 'text-amber-600'}`}
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ duration: 0.2 }}
+                        key={ug.toFixed(3)}
+                    >
+                        {ug.toFixed(3)} mm
+                    </motion.span>
+                </motion.div>
 
-                        {/* Source */}
-                        <div className="relative z-10">
-                            <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[40px] border-t-yellow-400 opacity-80 neon-glow"></div>
-                            <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-yellow-400 text-xs font-bold text-nowrap">Source (F)</span>
+                <div className="grid lg:grid-cols-2 gap-6">
+                    {/* Visualization */}
+                    <div className="space-y-4">
+                        {/* Setup Diagram */}
+                        <div className="bg-slate-900 rounded-xl p-4 sm:p-6 relative overflow-hidden">
+                            <p className="text-slate-400 text-xs mb-4 text-center uppercase tracking-widest">RT Setup</p>
+
+                            <div className="relative h-52 sm:h-60 flex flex-col items-center justify-between py-4">
+                                {/* Animated rays */}
+                                <motion.div
+                                    className="absolute top-12 left-1/2 -translate-x-1/2 w-0 h-0 pointer-events-none"
+                                    style={{
+                                        borderLeft: '100px solid transparent',
+                                        borderRight: '100px solid transparent',
+                                        borderTop: '200px solid rgba(250,204,21,0.1)',
+                                    }}
+                                    animate={{ opacity: [0.1, 0.2, 0.1] }}
+                                    transition={{ repeat: Infinity, duration: 2 }}
+                                />
+
+                                {/* Source */}
+                                <div className="relative z-10 text-center">
+                                    <motion.div
+                                        className="w-0 h-0 border-l-[15px] sm:border-l-[20px] border-l-transparent border-r-[15px] sm:border-r-[20px] border-r-transparent border-t-[30px] sm:border-t-[40px] border-t-yellow-400 mx-auto"
+                                        animate={{
+                                            filter: ['drop-shadow(0 0 8px rgba(250,204,21,0.6))', 'drop-shadow(0 0 15px rgba(250,204,21,0.9))', 'drop-shadow(0 0 8px rgba(250,204,21,0.6))']
+                                        }}
+                                        transition={{ repeat: Infinity, duration: 1.5 }}
+                                    />
+                                    <span className="text-yellow-400 text-[10px] sm:text-xs font-bold mt-1 block">
+                                        SOURCE (F={focalSpot.toFixed(1)}mm)
+                                    </span>
+                                </div>
+
+                                {/* Object */}
+                                <motion.div
+                                    className="relative z-10 w-3/4 h-10 sm:h-12 bg-gradient-to-b from-gray-400 to-gray-600 border-2 border-gray-500 rounded flex items-center justify-center"
+                                    style={{ marginTop: 'auto', marginBottom: `${Math.min(ofd / 2, 50)}px` }}
+                                >
+                                    <span className="text-white text-[10px] sm:text-xs font-bold bg-black/40 px-2 rounded">WELD</span>
+                                    {/* Defect in object */}
+                                    <div className="absolute w-1 h-4 bg-black/60 left-1/3 top-1/2 -translate-y-1/2" />
+                                </motion.div>
+
+                                {/* Film/Detector */}
+                                <motion.div
+                                    className="relative z-10 w-4/5 h-3 bg-blue-500 rounded"
+                                    animate={{
+                                        boxShadow: ['0 0 10px rgba(59,130,246,0.4)', '0 0 20px rgba(59,130,246,0.7)', '0 0 10px rgba(59,130,246,0.4)']
+                                    }}
+                                    transition={{ repeat: Infinity, duration: 2 }}
+                                >
+                                    <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-blue-400 text-[10px] sm:text-xs font-bold">DETECTOR</span>
+                                </motion.div>
+
+                                {/* Distance indicators */}
+                                <div className="absolute right-2 top-1/4 bottom-1/4 flex flex-col justify-between items-end">
+                                    <div className="text-right">
+                                        <div className="text-slate-500 text-[8px] uppercase">SOD</div>
+                                        <div className="text-slate-300 text-xs font-mono">{sod}mm</div>
+                                    </div>
+                                    <div className="text-right">
+                                        <div className="text-slate-500 text-[8px] uppercase">OFD</div>
+                                        <div className="text-slate-300 text-xs font-mono">{ofd}mm</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        {/* Rays (CSS Gradients) */}
-                        <div className="absolute inset-0 bg-gradient-to-b from-yellow-400/20 via-transparent to-transparent pointer-events-none mix-blend-screen"
-                            style={{ clipPath: 'polygon(50% 10%, 0% 100%, 100% 100%)' }}></div>
+                        {/* Simulated Radiograph */}
+                        <div className="bg-black rounded-xl p-4 border-2 border-gray-800">
+                            <h4 className="text-gray-400 text-xs mb-3 text-center uppercase tracking-widest">Radiograph Preview</h4>
+                            <div className="w-full h-28 sm:h-32 bg-gradient-to-b from-slate-800 to-slate-900 rounded-lg relative overflow-hidden flex items-center justify-center">
+                                {/* Film grain */}
+                                <div className="absolute inset-0 opacity-20"
+                                    style={{
+                                        backgroundImage: 'radial-gradient(circle, #ffffff 0.5px, transparent 0.5px)',
+                                        backgroundSize: '3px 3px'
+                                    }}
+                                />
 
-                        {/* Object */}
-                        <div className="w-48 h-12 bg-gray-500 border border-gray-400 rounded flex items-center justify-center relative z-10"
-                            style={{ marginTop: 'auto', marginBottom: `${(ofd / 100) * 100}px` }}> {/* Simple visual scaling */}
-                            <span className="text-white text-xs font-bold bg-black/50 px-2 rounded">Object (Weld)</span>
-                        </div>
+                                {/* Defect indications with blur based on Ug */}
+                                <motion.div
+                                    className="relative flex items-center justify-center gap-6"
+                                    animate={{ opacity: [0.9, 1, 0.9] }}
+                                    transition={{ repeat: Infinity, duration: 2 }}
+                                >
+                                    <div className="w-40 h-0.5 bg-white" style={{ filter: `blur(${blurAmount}px)` }} />
+                                    <div className="w-1 h-10 bg-white rotate-12" style={{ filter: `blur(${blurAmount}px)` }} />
+                                    <div className="w-6 h-6 rounded-full border-2 border-white" style={{ filter: `blur(${blurAmount}px)` }} />
+                                </motion.div>
 
-                        {/* Film */}
-                        <div className="w-64 h-2 bg-blue-500 shadow-lg shadow-blue-500/50 mt-auto relative z-10">
-                            <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-blue-400 text-xs font-bold">Film</span>
-                        </div>
-
-                        {/* Distance Labels */}
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs flex flex-col gap-12 text-right">
-                            <span>SOD: {sod}mm</span>
-                            <span>OFD: {ofd}mm</span>
+                                {/* Quality indicator */}
+                                <div className="absolute bottom-2 left-2 right-2 flex justify-between items-center">
+                                    <span className={`text-[10px] font-mono ${isCompliant ? 'text-green-400' : 'text-red-400'}`}>
+                                        {isCompliant ? '✓ SHARP' : '✗ BLURRY'}
+                                    </span>
+                                    <span className="text-[10px] text-gray-500 font-mono">
+                                        Blur: {blurAmount.toFixed(1)}px
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Simulated Film View */}
-                    <div className="bg-black rounded-xl p-4 border border-gray-800 text-center">
-                        <h4 className="text-gray-400 text-sm mb-2 uppercase tracking-widest">Simulated Radiograph</h4>
-                        <div className="w-full h-32 bg-slate-800 rounded relative overflow-hidden flex items-center justify-center">
-                            {/* Noise Grain */}
-                            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
+                    {/* Controls */}
+                    <div className="bg-gray-50 rounded-xl p-4 sm:p-6 border border-gray-200">
+                        <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                            <span>⚙️</span> Adjust Parameters
+                        </h3>
 
-                            {/* The "Image" (A crack) */}
-                            <div className="w-64 h-1 bg-white" style={{ filter: `blur(${blurAmount}px)` }}></div>
-                            <div className="absolute w-2 h-16 bg-white rotate-45" style={{ filter: `blur(${blurAmount}px)` }}></div>
+                        <div className="space-y-6">
+                            {/* Focal Spot */}
+                            <div>
+                                <div className="flex justify-between mb-2">
+                                    <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                                        <Maximize className="h-4 w-4 text-purple-600" />
+                                        Source Size (F)
+                                    </label>
+                                    <span className="text-sm font-mono bg-white px-2 py-1 rounded border font-bold">{focalSpot.toFixed(1)} mm</span>
+                                </div>
+                                <input
+                                    type="range" min="0.5" max="5.0" step="0.1"
+                                    value={focalSpot}
+                                    onChange={(e) => setFocalSpot(parseFloat(e.target.value))}
+                                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                                />
+                                <p className="text-xs text-gray-400 mt-1">↑ Larger = More blur</p>
+                            </div>
+
+                            {/* SOD */}
+                            <div>
+                                <div className="flex justify-between mb-2">
+                                    <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                                        <FileOutput className="h-4 w-4 text-purple-600" />
+                                        Source-to-Object (SOD)
+                                    </label>
+                                    <span className="text-sm font-mono bg-white px-2 py-1 rounded border font-bold">{sod} mm</span>
+                                </div>
+                                <input
+                                    type="range" min="100" max="1000" step="10"
+                                    value={sod}
+                                    onChange={(e) => setSod(parseFloat(e.target.value))}
+                                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                                />
+                                <p className="text-xs text-gray-400 mt-1">↑ Larger = Less blur</p>
+                            </div>
+
+                            {/* OFD */}
+                            <div>
+                                <div className="flex justify-between mb-2">
+                                    <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                                        <Layers className="h-4 w-4 text-purple-600" />
+                                        Object-to-Film (OFD)
+                                    </label>
+                                    <span className="text-sm font-mono bg-white px-2 py-1 rounded border font-bold">{ofd} mm</span>
+                                </div>
+                                <input
+                                    type="range" min="5" max="100" step="1"
+                                    value={ofd}
+                                    onChange={(e) => setOfd(parseFloat(e.target.value))}
+                                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                                />
+                                <p className="text-xs text-gray-400 mt-1">↓ Smaller = Less blur</p>
+                            </div>
                         </div>
-                        <p className={`mt-2 text-sm font-mono ${isCompliant ? 'text-green-400' : 'text-red-400'}`}>
-                            Image Quality: {isCompliant ? 'SHARP (Compliant)' : 'BLURRY (Non-Compliant)'}
-                        </p>
+
+                        {/* Formula & Result */}
+                        <motion.div
+                            className={`mt-6 p-4 rounded-xl border-2 ${isCompliant ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`}
+                            animate={{ scale: showSuccess ? [1, 1.03, 1] : 1 }}
+                        >
+                            <div className="flex items-center justify-between mb-2">
+                                <div className="text-xs text-gray-500 uppercase tracking-wide font-semibold">
+                                    Geometric Unsharpness
+                                </div>
+                                <div className="text-xs font-mono bg-white/50 px-2 py-1 rounded">
+                                    Ug = (F × OFD) ÷ SOD
+                                </div>
+                            </div>
+                            <div className="flex items-baseline gap-2">
+                                <motion.span
+                                    className={`text-4xl sm:text-5xl font-bold font-mono ${isCompliant ? 'text-green-600' : 'text-red-600'}`}
+                                    key={ug.toFixed(3)}
+                                    initial={{ scale: 1.2 }}
+                                    animate={{ scale: 1 }}
+                                >
+                                    {ug.toFixed(3)}
+                                </motion.span>
+                                <span className="text-gray-500 font-bold text-xl">mm</span>
+                            </div>
+
+                            <AnimatePresence>
+                                {isCompliant ? (
+                                    <motion.p
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        className="mt-2 text-sm text-green-700 flex items-center gap-1"
+                                    >
+                                        <CheckCircle className="h-4 w-4" />
+                                        Within acceptable limits!
+                                    </motion.p>
+                                ) : (
+                                    <motion.p
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        className="mt-2 text-sm text-red-700"
+                                    >
+                                        ⚠️ Exceeds 0.20mm limit. Adjust parameters.
+                                    </motion.p>
+                                )}
+                            </AnimatePresence>
+                        </motion.div>
                     </div>
                 </div>
 
-                {/* Controls */}
-                <div className="space-y-6 bg-gray-50 p-6 rounded-xl border border-gray-200">
-
-                    {/* Focal Spot */}
-                    <div>
-                        <div className="flex justify-between mb-2">
-                            <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                <Maximize className="h-4 w-4" /> Source Size (F)
-                            </label>
-                            <span className="text-sm font-mono bg-white px-2 py-1 rounded border">{focalSpot.toFixed(1)} mm</span>
-                        </div>
-                        <input
-                            type="range" min="0.5" max="5.0" step="0.1"
-                            value={focalSpot}
-                            onChange={(e) => setFocalSpot(parseFloat(e.target.value))}
-                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">Larger sources create more penumbra (unsharpness).</p>
-                    </div>
-
-                    {/* SOD */}
-                    <div>
-                        <div className="flex justify-between mb-2">
-                            <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                <FileOutput className="h-4 w-4" /> Source-to-Object (SOD)
-                            </label>
-                            <span className="text-sm font-mono bg-white px-2 py-1 rounded border">{sod} mm</span>
-                        </div>
-                        <input
-                            type="range" min="100" max="1000" step="10"
-                            value={sod}
-                            onChange={(e) => setSod(parseFloat(e.target.value))}
-                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">Distance from source to the weld.</p>
-                    </div>
-
-                    {/* OFD */}
-                    <div>
-                        <div className="flex justify-between mb-2">
-                            <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                <Layers className="h-4 w-4" /> Object-to-Film (OFD)
-                            </label>
-                            <span className="text-sm font-mono bg-white px-2 py-1 rounded border">{ofd} mm</span>
-                        </div>
-                        <input
-                            type="range" min="5" max="100" step="1"
-                            value={ofd}
-                            onChange={(e) => setOfd(parseFloat(e.target.value))}
-                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">Distance from weld to the film/detector.</p>
-                    </div>
-
-                    {/* Calculation Display */}
-                    <div className={`p-4 rounded-lg border-2 ${isCompliant ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'} transition-colors`}>
-                        <h3 className="text-sm font-bold text-gray-600 uppercase tracking-wide mb-2">Calculated Unsharpness (Ug)</h3>
-                        <div className="flex items-end gap-2">
-                            <span className={`text-4xl font-bold font-mono ${isCompliant ? 'text-green-600' : 'text-red-600'}`}>
-                                {ug.toFixed(3)}
-                            </span>
-                            <span className="text-gray-500 font-bold mb-1">mm</span>
-                        </div>
-
-                        <div className="mt-2 text-xs text-gray-600 font-mono">
-                            Ug = (F × OFD) / SOD
-                        </div>
-
-                        {!isCompliant && (
-                            <div className="mt-3 flex items-start gap-2 text-red-600 text-sm">
-                                <AlertTriangle className="h-4 w-4 flex-shrink-0 mt-0.5" />
-                                <span>Code Requirement: Ug must be ≤ 0.20 mm. Reduce F, OFD, or increase SOD.</span>
-                            </div>
-                        )}
-                        {isCompliant && (
-                            <div className="mt-3 flex items-start gap-2 text-green-600 text-sm">
-                                <Info className="h-4 w-4 flex-shrink-0 mt-0.5" />
-                                <span>Geometric Unsharpness is within acceptable limits.</span>
-                            </div>
-                        )}
-                    </div>
-
-                </div>
+                {/* Info */}
+                <motion.div
+                    className="mt-6 flex items-start gap-2 text-xs sm:text-sm text-gray-600 bg-purple-50 border border-purple-200 p-3 rounded-lg"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                >
+                    <Info className="h-4 w-4 flex-shrink-0 mt-0.5 text-purple-600" />
+                    <span><strong>RT Principle:</strong> Geometric unsharpness (Ug) causes image blur. Minimize it by using smaller source, larger SOD, or smaller OFD.</span>
+                </motion.div>
             </div>
         </div>
     );

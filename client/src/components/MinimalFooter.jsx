@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 
 export default function MinimalFooter() {
   const links = {
@@ -11,20 +10,12 @@ export default function MinimalFooter() {
     'Kursus': [
       { name: 'Semua Kursus', path: '/courses' },
       { name: 'Alumni', path: '/alumni' },
-      // { name: 'Cara Mendaftar', path: '/enroll' },
     ],
     'Legal': [
       { name: 'Kebijakan Privasi', path: '/privacy' },
       { name: 'Syarat & Ketentuan', path: '/terms' },
     ],
   };
-
-  const socialLinks = [
-    { icon: Facebook, url: '#', label: 'Facebook' },
-    { icon: Twitter, url: '#', label: 'Twitter' },
-    { icon: Instagram, url: '#', label: 'Instagram' },
-    { icon: Linkedin, url: '#', label: 'LinkedIn' },
-  ];
 
   return (
     <footer className="bg-white border-t border-gray-200">
@@ -36,13 +27,6 @@ export default function MinimalFooter() {
               <span className="text-xl font-bold text-gray-900">SNS NDT</span>
             </Link>
             <p className="mt-4 text-sm text-gray-600">Pusat pelatihan dan sertifikasi Non-Destructive Testing terdepan di Indonesia.</p>
-            <div className="mt-6 flex space-x-4">
-              {socialLinks.map((social, i) => (
-                <a key={i} href={social.url} className="text-gray-400 hover:text-gray-500" aria-label={social.label}>
-                  <social.icon className="h-5 w-5" />
-                </a>
-              ))}
-            </div>
           </div>
 
           <div className="md:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-8">

@@ -1,74 +1,5 @@
 import { Link } from 'react-router-dom';
-import { BookOpen, Calculator, FileText, Award, ChevronRight, Zap, Trophy } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { GamificationService } from '../services/GamificationService';
-
-function UserStats() {
-    const [stats, setStats] = useState(null);
-
-    useEffect(() => {
-        setStats(GamificationService.getState());
-    }, []);
-
-    if (!stats) return null;
-
-    const nextLevelXP = GamificationService.getNextLevelXP(stats.level);
-    const progress = (stats.xp / nextLevelXP) * 100;
-    const title = GamificationService.getLevelTitle(stats.level);
-
-    return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 flex flex-col md:flex-row items-center gap-6">
-
-                {/* Level Badge */}
-                <div className="flex items-center gap-4 min-w-[250px] border-b md:border-b-0 md:border-r border-gray-100 pb-4 md:pb-0 md:pr-6">
-                    <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-md">
-                        {stats.level}
-                    </div>
-                    <div>
-                        <h3 className="font-bold text-gray-900 text-lg">Level {stats.level}</h3>
-                        <p className="text-sm text-orange-600 font-medium">{title}</p>
-                    </div>
-                </div>
-
-                {/* Progress Stats */}
-                <div className="flex-1 w-full space-y-2">
-                    <div className="flex justify-between text-sm">
-                        <span className="font-semibold text-gray-700">Level Progress</span>
-                        <span className="text-gray-500">{stats.xp} / {nextLevelXP} XP</span>
-                    </div>
-                    <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
-                        <div
-                            className="h-full bg-orange-500 transition-all duration-1000 ease-out"
-                            style={{ width: `${Math.min(100, progress)}%` }}
-                        ></div>
-                    </div>
-                    <div className="flex gap-4 text-xs text-gray-500 mt-2">
-                        <span className="flex items-center gap-1">
-                            <Trophy className="h-3 w-3 text-yellow-500" /> Need {nextLevelXP - stats.xp} XP for Level {stats.level + 1}
-                        </span>
-                    </div>
-                </div>
-
-                {/* Badges / Streak */}
-                <div className="flex gap-4 min-w-[200px] justify-end">
-                    <div className="text-center p-3 bg-yellow-50 rounded-lg border border-yellow-100">
-                        <div className="text-xl font-bold text-yellow-600 flex justify-center items-center gap-1">
-                            {stats.streak} <Zap className="h-4 w-4" />
-                        </div>
-                        <div className="text-[10px] uppercase font-bold text-yellow-700 tracking-wider">Day Streak</div>
-                    </div>
-                    <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
-                        <div className="text-xl font-bold text-blue-600 flex justify-center items-center gap-1">
-                            {stats.badges.length} <Award className="h-4 w-4" />
-                        </div>
-                        <div className="text-[10px] uppercase font-bold text-blue-700 tracking-wider">Badges</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-}
+import { BookOpen, Calculator, FileText, Award, ChevronRight } from 'lucide-react';
 
 export default function ELearningHub() {
     const features = [
@@ -126,9 +57,6 @@ export default function ELearningHub() {
                     </p>
                 </div>
             </div>
-
-            {/* User Stats & Gamification */}
-            <UserStats />
 
             {/* Features Grid */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -213,7 +141,7 @@ export default function ELearningHub() {
                     <p className="text-orange-800 text-sm">
                         Our E-Learning platform is designed to complement your hands-on NDT training with
                         interactive theory, physics simulations, and practice assessments. Content is based
-                        on ASNT, ISO 9712, and industry best practices from leading NDT education platforms.
+                        on ASNT, and industry best practices from leading NDT education platforms.
                     </p>
                 </div>
 
@@ -222,39 +150,57 @@ export default function ELearningHub() {
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Currently Available</h2>
                     <div className="bg-white rounded-lg border border-gray-200 divide-y divide-gray-100">
                         <div className="p-4 flex items-start gap-4">
-                            <div className="flex-shrink-0 w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                                <Calculator className="h-4 w-4 text-orange-600" />
+                            <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-lg">
+                                🔊
                             </div>
                             <div>
-                                <h4 className="font-semibold text-gray-900">UT Beam Angle Calculator</h4>
-                                <p className="text-sm text-gray-600">Calculate refraction angles, near field length, and wavelength</p>
+                                <h4 className="font-semibold text-gray-900">Ultrasonic Testing (UT)</h4>
+                                <p className="text-sm text-gray-600">25 quiz questions • Beam angle calculator • Comprehensive articles</p>
                             </div>
                         </div>
                         <div className="p-4 flex items-start gap-4">
-                            <div className="flex-shrink-0 w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-                                <Calculator className="h-4 w-4 text-red-600" />
+                            <div className="flex-shrink-0 w-8 h-8 bg-red-100 rounded-full flex items-center justify-center text-lg">
+                                🧲
                             </div>
                             <div>
-                                <h4 className="font-semibold text-gray-900">MT Magnetic Particle Lab</h4>
-                                <p className="text-sm text-gray-600">Interactive yoke simulation for crack detection</p>
+                                <h4 className="font-semibold text-gray-900">Magnetic Particle Testing (MT)</h4>
+                                <p className="text-sm text-gray-600">20 quiz questions • Interactive yoke simulation • Educational articles</p>
                             </div>
                         </div>
                         <div className="p-4 flex items-start gap-4">
-                            <div className="flex-shrink-0 w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center">
-                                <Calculator className="h-4 w-4 text-pink-600" />
+                            <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-lg">
+                                💧
                             </div>
                             <div>
-                                <h4 className="font-semibold text-gray-900">PT Process Flow Simulation</h4>
-                                <p className="text-sm text-gray-600">6-step penetrant testing process trainer</p>
+                                <h4 className="font-semibold text-gray-900">Liquid Penetrant Testing (PT)</h4>
+                                <p className="text-sm text-gray-600">20 quiz questions • Process flow simulation • Step-by-step guides</p>
                             </div>
                         </div>
                         <div className="p-4 flex items-start gap-4">
-                            <div className="flex-shrink-0 w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                                <Calculator className="h-4 w-4 text-purple-600" />
+                            <div className="flex-shrink-0 w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center text-lg">
+                                ☢️
                             </div>
                             <div>
-                                <h4 className="font-semibold text-gray-900">RT Geometric Unsharpness Calculator</h4>
-                                <p className="text-sm text-gray-600">Calculate Ug based on source size and distances</p>
+                                <h4 className="font-semibold text-gray-900">Radiographic Testing (RT)</h4>
+                                <p className="text-sm text-gray-600">20 quiz questions • Ug calculator simulation • Technical articles</p>
+                            </div>
+                        </div>
+                        <div className="p-4 flex items-start gap-4">
+                            <div className="flex-shrink-0 w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-lg">
+                                👁️
+                            </div>
+                            <div>
+                                <h4 className="font-semibold text-gray-900">Visual Testing (VT)</h4>
+                                <p className="text-sm text-gray-600">20 quiz questions • Weld inspection guides • Equipment articles</p>
+                            </div>
+                        </div>
+                        <div className="p-4 flex items-start gap-4">
+                            <div className="flex-shrink-0 w-8 h-8 bg-cyan-100 rounded-full flex items-center justify-center text-lg">
+                                ⚡
+                            </div>
+                            <div>
+                                <h4 className="font-semibold text-gray-900">Eddy Current Testing (ET)</h4>
+                                <p className="text-sm text-gray-600">20 quiz questions • Probe types guide • Depth penetration theory</p>
                             </div>
                         </div>
                     </div>

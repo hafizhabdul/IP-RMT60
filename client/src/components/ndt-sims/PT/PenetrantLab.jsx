@@ -1,16 +1,26 @@
-import { useState, useEffect } from 'react';
-import { Droplets, Clock, Eraser, Search, RotateCcw, CheckCircle, Info } from 'lucide-react';
-import { GamificationService } from '../../../services/GamificationService';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Droplets, Clock, Eraser, Search, RotateCcw, CheckCircle, Info, X, Sparkles } from 'lucide-react';
 
 export default function PenetrantLab() {
-    // Steps: 0: Pre-Clean, 1: Apply Penetrant, 2: Dwell, 3: Remove Excess, 4: Apply Developer, 5: Inspect
     const [step, setStep] = useState(0);
     const [dwellTimer, setDwellTimer] = useState(0);
     const [isDwelling, setIsDwelling] = useState(false);
     const [crackFound, setCrackFound] = useState(false);
-    const [rewardMessage, setRewardMessage] = useState(null);
+    const [showHint, setShowHint] = useState(true);
 
-    const DWELL_TIME = 5; // seconds for demo
+    // Progress for each step (0-100)
+    const [cleanProgress, setCleanProgress] = useState(0);
+    const [sprayProgress, setSprayProgress] = useState(0);
+    const [wipeProgress, setWipeProgress] = useState(0);
+    const [developerProgress, setDeveloperProgress] = useState(0);
+
+    // Visual effects
+    const [clickEffects, setClickEffects] = useState([]);
+    const plateRef = useRef(null);
+
+    const DWELL_TIME = 5;
+    const TAPS_REQUIRED = 5; // Taps needed per step
 
     useEffect(() => {
         let interval;
@@ -20,49 +30,69 @@ export default function PenetrantLab() {
             }, 1000);
         } else if (dwellTimer === 0 && isDwelling) {
             setIsDwelling(false);
-            setStep(3); // Move to Remove Excess
+            setStep(3);
         }
         return () => clearInterval(interval);
     }, [isDwelling, dwellTimer]);
 
-    const handleAction = (action) => {
-        switch (action) {
-            case 'clean':
-                if (step === 0) setStep(1);
-                break;
-            case 'penetrant':
-                if (step === 1) {
+    const addClickEffect = (x, y, color) => {
+        const id = Date.now();
+        setClickEffects(prev => [...prev, { id, x, y, color }]);
+        setTimeout(() => {
+            setClickEffects(prev => prev.filter(e => e.id !== id));
+        }, 600);
+    };
+
+    const handlePlateInteraction = (e) => {
+        if (!plateRef.current || isDwelling) return;
+
+        const rect = plateRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        if (step === 0) {
+            // Cleaning
+            addClickEffect(x, y, 'blue');
+            const newProgress = cleanProgress + (100 / TAPS_REQUIRED);
+            setCleanProgress(Math.min(100, newProgress));
+            if (newProgress >= 100) {
+                setTimeout(() => setStep(1), 300);
+            }
+        } else if (step === 1) {
+            // Spraying penetrant
+            addClickEffect(x, y, 'red');
+            const newProgress = sprayProgress + (100 / TAPS_REQUIRED);
+            setSprayProgress(Math.min(100, newProgress));
+            if (newProgress >= 100) {
+                setTimeout(() => {
                     setStep(2);
                     setDwellTimer(DWELL_TIME);
                     setIsDwelling(true);
-                }
-                break;
-            case 'wipe':
-                if (step === 3) setStep(4);
-                break;
-            case 'developer':
-                if (step === 4) setStep(5);
-                break;
-            case 'inspect':
-                if (step === 5) {
-                    setCrackFound(true);
-                    awardXP();
-                }
-                break;
+                }, 300);
+            }
+        } else if (step === 3) {
+            // Wiping
+            addClickEffect(x, y, 'gray');
+            const newProgress = wipeProgress + (100 / TAPS_REQUIRED);
+            setWipeProgress(Math.min(100, newProgress));
+            if (newProgress >= 100) {
+                setTimeout(() => setStep(4), 300);
+            }
+        } else if (step === 4) {
+            // Applying developer
+            addClickEffect(x, y, 'white');
+            const newProgress = developerProgress + (100 / TAPS_REQUIRED);
+            setDeveloperProgress(Math.min(100, newProgress));
+            if (newProgress >= 100) {
+                setTimeout(() => setStep(5), 300);
+            }
         }
     };
 
-    const awardXP = () => {
-        // Award XP logic
-        const { newXP, levelUp } = GamificationService.addXP(50);
-        const badge = GamificationService.unlockBadge('penetrant_pro'); // Need to add this badge to service if we want specific badge
-
-        setRewardMessage({
-            xp: 50,
-            levelUp,
-            badge
-        });
-        setTimeout(() => setRewardMessage(null), 4000);
+    const handleInspect = () => {
+        if (step === 5) {
+            setCrackFound(true);
+        }
     };
 
     const reset = () => {
@@ -70,181 +100,335 @@ export default function PenetrantLab() {
         setDwellTimer(0);
         setIsDwelling(false);
         setCrackFound(false);
-        setRewardMessage(null);
+        setShowHint(true);
+        setCleanProgress(0);
+        setSprayProgress(0);
+        setWipeProgress(0);
+        setDeveloperProgress(0);
+        setClickEffects([]);
     };
 
-    // Visual styles for the plate based on step
-    const getPlateStyle = () => {
-        const base = "w-64 h-64 rounded-lg shadow-inner transition-all duration-1000 relative flex items-center justify-center border-2 border-gray-300";
-        switch (step) {
-            case 0: return `${base} bg-slate-300`; // Dirty
-            case 1: return `${base} bg-slate-200`; // Cleaned
-            case 2: return `${base} bg-red-500`; // Penetrant Applied
-            case 3: return `${base} bg-red-600`; // Dwell (darker?)
-            case 4: return `${base} bg-slate-200`; // Wiped (looks clean but penetrant in crack)
-            case 5: return `${base} bg-white`; // Developer Applied (White background)
-            default: return base;
-        }
+    const getPlateBackground = () => {
+        if (step === 0) return `linear-gradient(135deg, #64748b ${100 - cleanProgress}%, #94a3b8 ${100 - cleanProgress}%)`;
+        if (step === 1) return `linear-gradient(135deg, #94a3b8 ${100 - sprayProgress}%, #ef4444 ${100 - sprayProgress}%)`;
+        if (step === 2 || step === 3) return '#ef4444';
+        if (step === 4) return `linear-gradient(135deg, #94a3b8 ${100 - developerProgress}%, #ffffff ${100 - developerProgress}%)`;
+        return '#ffffff';
     };
+
+    const getCurrentProgress = () => {
+        if (step === 0) return cleanProgress;
+        if (step === 1) return sprayProgress;
+        if (step === 3) return wipeProgress;
+        if (step === 4) return developerProgress;
+        return 100;
+    };
+
+    const getStepAction = () => {
+        if (step === 0) return { text: `Tap to clean (${Math.ceil((100 - cleanProgress) / 20)} left)`, icon: '🧹', color: 'blue' };
+        if (step === 1) return { text: `Tap to spray (${Math.ceil((100 - sprayProgress) / 20)} left)`, icon: '🔴', color: 'red' };
+        if (step === 3) return { text: `Tap to wipe (${Math.ceil((100 - wipeProgress) / 20)} left)`, icon: '🧽', color: 'gray' };
+        if (step === 4) return { text: `Tap to apply (${Math.ceil((100 - developerProgress) / 20)} left)`, icon: '⚪', color: 'purple' };
+        if (step === 5) return { text: 'Inspect for cracks', icon: '🔍', color: 'green' };
+        return null;
+    };
+
+    const statusLabels = ['Dirty Surface', 'Surface Clean', 'Penetrant Applied', 'Dwell Complete', 'Excess Removed', 'Developer Applied'];
 
     return (
-        <div className="max-w-4xl mx-auto p-4 bg-white rounded-xl shadow-lg border border-gray-200 relative mt-8">
-            <div className="flex justify-between items-start mb-6">
-                <div>
-                    <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                        <Droplets className="h-6 w-6 text-red-500" />
-                        Penetrant Testing Lab (PT)
-                    </h2>
-                    <p className="text-gray-600">Follow the 6-step process to find surface-breaking defects.</p>
+        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            {/* Header */}
+            <div className="bg-green-600 text-white p-4 sm:p-6">
+                <div className="flex justify-between items-start">
+                    <div className="flex items-center gap-3">
+                        <motion.div
+                            className="p-2 bg-white/20 rounded-lg"
+                            animate={step === 2 ? { scale: [1, 1.1, 1] } : {}}
+                            transition={{ repeat: step === 2 ? Infinity : 0, duration: 1 }}
+                        >
+                            <Droplets className="h-5 w-5 sm:h-6 sm:w-6" />
+                        </motion.div>
+                        <div>
+                            <h2 className="text-lg sm:text-xl font-bold">Penetrant Testing Lab</h2>
+                            <p className="text-green-100 text-xs sm:text-sm">Tap the surface to perform each step</p>
+                        </div>
+                    </div>
+                    <button onClick={reset} className="p-2 hover:bg-white/20 rounded-lg transition-colors">
+                        <RotateCcw className="h-5 w-5" />
+                    </button>
                 </div>
-                <button onClick={reset} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors">
-                    <RotateCcw className="h-5 w-5" />
-                </button>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
-                {/* Visualizer */}
-                <div className="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-xl border border-gray-200 relative">
-                    {/* Reward Toast */}
-                    {rewardMessage && (
-                        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 animate-bounce">
-                            <div className="bg-yellow-500 text-white px-6 py-3 rounded-full shadow-xl flex items-center gap-3 border-2 border-yellow-300">
+            <div className="p-4 sm:p-6">
+                {/* Overall Progress */}
+                <div className="mb-4">
+                    <div className="flex justify-between text-xs text-gray-500 mb-2">
+                        <span className="font-semibold">Step {Math.min(step + 1, 6)} of 6: {statusLabels[Math.min(step, 5)]}</span>
+                        <span>{Math.round((step / 5) * 100)}% Complete</span>
+                    </div>
+                    <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <motion.div
+                            className="h-full bg-green-500"
+                            animate={{ width: `${(step / 5) * 100}%` }}
+                            transition={{ duration: 0.3 }}
+                        />
+                    </div>
+                </div>
+
+                <div className="grid lg:grid-cols-2 gap-6">
+                    {/* Interactive Plate */}
+                    <div>
+                        <div className="flex justify-between items-center mb-2">
+                            <h3 className="text-sm font-semibold text-gray-700">Test Specimen</h3>
+                            {step !== 2 && step !== 5 && (
+                                <div className="flex items-center gap-2">
+                                    <span className="text-xs text-gray-500">Step Progress:</span>
+                                    <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <motion.div
+                                            className="h-full bg-green-500"
+                                            animate={{ width: `${getCurrentProgress()}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        <motion.div
+                            ref={plateRef}
+                            className="relative h-72 sm:h-80 md:h-96 rounded-xl overflow-hidden border-4 border-gray-400 cursor-pointer select-none active:border-green-500 transition-colors"
+                            style={{ background: getPlateBackground() }}
+                            onClick={handlePlateInteraction}
+                            whileTap={{ scale: 0.99 }}
+                        >
+                            {/* Click effects */}
+                            <AnimatePresence>
+                                {clickEffects.map(effect => (
+                                    <motion.div
+                                        key={effect.id}
+                                        className="absolute pointer-events-none rounded-full"
+                                        style={{
+                                            left: effect.x - 30,
+                                            top: effect.y - 30,
+                                            width: 60,
+                                            height: 60,
+                                            background: effect.color === 'red' ? 'rgba(239,68,68,0.5)' :
+                                                effect.color === 'blue' ? 'rgba(59,130,246,0.5)' :
+                                                    effect.color === 'white' ? 'rgba(255,255,255,0.8)' :
+                                                        'rgba(100,116,139,0.5)'
+                                        }}
+                                        initial={{ scale: 0, opacity: 1 }}
+                                        animate={{ scale: 2, opacity: 0 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.5 }}
+                                    />
+                                ))}
+                            </AnimatePresence>
+
+                            {/* Dirty texture for step 0 */}
+                            {step === 0 && cleanProgress < 100 && (
+                                <motion.div
+                                    className="absolute inset-0 pointer-events-none"
+                                    style={{
+                                        backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.4) 2px, transparent 2px)',
+                                        backgroundSize: '15px 15px',
+                                        opacity: (100 - cleanProgress) / 100
+                                    }}
+                                />
+                            )}
+
+                            {/* The Crack - visible in final step */}
+                            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                                <motion.div
+                                    className="w-2 h-28 rounded-full"
+                                    style={{
+                                        background: step >= 5
+                                            ? 'linear-gradient(to bottom, #ef4444, #dc2626, #ef4444)'
+                                            : 'transparent'
+                                    }}
+                                    animate={step >= 5 ? {
+                                        boxShadow: ['0 0 10px rgba(239,68,68,0.5)', '0 0 30px rgba(239,68,68,0.9)', '0 0 10px rgba(239,68,68,0.5)']
+                                    } : {}}
+                                    transition={{ repeat: Infinity, duration: 1.2 }}
+                                />
+                            </div>
+
+                            {/* Crack found indicator */}
+                            <AnimatePresence>
+                                {crackFound && (
+                                    <motion.div
+                                        initial={{ scale: 0, rotate: -180 }}
+                                        animate={{ scale: 1, rotate: 0 }}
+                                        className="absolute right-4 top-4 bg-green-500 text-white p-3 rounded-full shadow-xl"
+                                    >
+                                        <CheckCircle className="h-8 w-8" />
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+
+                            {/* Dwell countdown */}
+                            <AnimatePresence>
+                                {isDwelling && (
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+                                    >
+                                        <div className="text-center text-white">
+                                            <motion.div
+                                                className="text-7xl font-bold font-mono"
+                                                animate={{ scale: [1, 1.1, 1] }}
+                                                transition={{ repeat: Infinity, duration: 1 }}
+                                            >
+                                                {dwellTimer}
+                                            </motion.div>
+                                            <p className="text-lg uppercase tracking-widest mt-2">Dwell Time</p>
+                                            <p className="text-sm mt-1 opacity-70">Penetrant soaking into cracks...</p>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+
+                            {/* Action hint overlay */}
+                            {getStepAction() && !isDwelling && !crackFound && (
+                                <motion.div
+                                    className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur px-4 py-3 rounded-xl shadow-lg"
+                                    initial={{ y: 20, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    key={step}
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-2xl">{getStepAction().icon}</span>
+                                            <span className="font-semibold text-gray-700">{getStepAction().text}</span>
+                                        </div>
+                                        {step === 5 && (
+                                            <motion.button
+                                                onClick={(e) => { e.stopPropagation(); handleInspect(); }}
+                                                className="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700"
+                                                whileTap={{ scale: 0.95 }}
+                                            >
+                                                Inspect
+                                            </motion.button>
+                                        )}
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {/* Hint */}
+                            <AnimatePresence>
+                                {showHint && step === 0 && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0 }}
+                                        className="absolute top-3 left-3 right-3 bg-amber-100 border border-amber-300 p-3 rounded-xl"
+                                    >
+                                        <div className="flex justify-between items-start">
+                                            <p className="text-sm text-amber-800">
+                                                <strong>👆 Tap the surface</strong> multiple times to perform each step!
+                                            </p>
+                                            <button onClick={(e) => { e.stopPropagation(); setShowHint(false); }} className="text-amber-600 hover:text-amber-800">
+                                                <X className="h-4 w-4" />
+                                            </button>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </motion.div>
+                    </div>
+
+                    {/* Steps Panel */}
+                    <div className="space-y-2">
+                        <h3 className="text-sm font-semibold text-gray-700 mb-3">Process Steps</h3>
+                        {[
+                            { step: 0, title: 'Pre-Clean', desc: 'Remove contaminants', icon: Eraser, progress: cleanProgress },
+                            { step: 1, title: 'Apply Penetrant', desc: 'Spray red dye', icon: Droplets, color: 'text-red-500', progress: sprayProgress },
+                            { step: 2, title: 'Dwell Time', desc: 'Wait for absorption', icon: Clock },
+                            { step: 3, title: 'Remove Excess', desc: 'Wipe surface clean', icon: Eraser, progress: wipeProgress },
+                            { step: 4, title: 'Developer', desc: 'Apply white powder', icon: Sparkles, color: 'text-gray-400', progress: developerProgress },
+                            { step: 5, title: 'Inspect', desc: 'Find red indications', icon: Search, color: 'text-green-600' },
+                        ].map((s) => {
+                            const Icon = s.icon;
+                            const isActive = step === s.step;
+                            const isCompleted = step > s.step;
+
+                            return (
+                                <motion.div
+                                    key={s.step}
+                                    className={`p-3 rounded-xl border-2 transition-all ${isActive ? 'bg-green-50 border-green-400 shadow-md' :
+                                            isCompleted ? 'bg-gray-50 border-gray-200' :
+                                                'bg-white border-gray-100 opacity-40'
+                                        }`}
+                                    animate={isActive ? { scale: [1, 1.01, 1] } : {}}
+                                    transition={{ repeat: isActive ? Infinity : 0, duration: 2 }}
+                                >
+                                    <div className="flex items-center justify-between gap-3">
+                                        <div className="flex items-center gap-3">
+                                            <div className={`p-2 rounded-lg ${isActive ? 'bg-green-200' : isCompleted ? 'bg-green-100' : 'bg-gray-100'}`}>
+                                                <Icon className={`h-4 w-4 ${isActive || isCompleted ? 'text-green-600' : s.color || 'text-gray-400'}`} />
+                                            </div>
+                                            <div className="flex-1">
+                                                <h4 className={`font-semibold text-sm ${isActive ? 'text-gray-900' : 'text-gray-500'}`}>
+                                                    {s.step + 1}. {s.title}
+                                                </h4>
+                                                <p className="text-xs text-gray-400">{s.desc}</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Progress or status */}
+                                        {isActive && s.progress !== undefined && (
+                                            <div className="w-16">
+                                                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                                    <motion.div
+                                                        className="h-full bg-green-500"
+                                                        style={{ width: `${s.progress}%` }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )}
+                                        {isCompleted && <CheckCircle className="h-5 w-5 text-green-500" />}
+                                        {s.step === 2 && isActive && (
+                                            <span className="text-lg font-mono font-bold text-orange-500">{dwellTimer}s</span>
+                                        )}
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {/* Success Message */}
+                <AnimatePresence>
+                    {crackFound && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mt-6 p-4 bg-green-50 border-2 border-green-300 rounded-xl"
+                        >
+                            <div className="flex items-start gap-3">
+                                <CheckCircle className="h-6 w-6 text-green-600 mt-0.5" />
                                 <div>
-                                    <p className="font-bold text-lg leading-none">+{rewardMessage.xp} XP</p>
-                                    {rewardMessage.levelUp && <p className="text-xs uppercase font-bold tracking-wider text-yellow-100">Level Up!</p>}
+                                    <h4 className="font-bold text-green-800 text-lg">🎉 Crack Detected!</h4>
+                                    <p className="text-sm text-green-700 mt-1">
+                                        The red bleed-out against the white developer confirms a surface-breaking discontinuity.
+                                        In real inspection, you would now document the location, size, and orientation.
+                                    </p>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     )}
+                </AnimatePresence>
 
-                    <div className={getPlateStyle()}>
-                        {/* Crack Visualization */}
-                        {/* 
-                            Step 0: Hidden (Dirty)
-                            Step 1: Hidden (Clean)
-                            Step 2: Hidden (Covered by Red)
-                            Step 3: Hidden (Covered)
-                            Step 4: Hidden (Inside crack)
-                            Step 5: Visible (Bleed out)
-                         */}
-                        {step === 0 && <span className="text-slate-500 font-bold opacity-20">DIRTY SURFACE</span>}
-
-                        {/* The Crack Indication */}
-                        <div className={`absolute w-1 h-24 bg-red-600 rounded-full transition-all duration-1000 ${step >= 5 ? 'opacity-100 scale-150 blur-[2px]' : 'opacity-0'
-                            }`}></div>
-
-                        {/* Developer Powder Effect */}
-                        {step >= 5 && <div className="absolute inset-0 bg-white/50 mix-blend-overlay pointer-events-none"></div>}
-
-                        {crackFound && (
-                            <div className="absolute -right-4 -top-4 bg-green-500 text-white p-2 rounded-full animate-bounce">
-                                <CheckCircle className="h-6 w-6" />
-                            </div>
-                        )}
-
-                        {isDwelling && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/20 text-white text-3xl font-bold font-mono">
-                                00:0{dwellTimer}
-                            </div>
-                        )}
-                    </div>
-                    <div className="mt-4 text-center">
-                        <h3 className="font-bold text-lg text-gray-800">
-                            Status: {
-                                ['Surface Dirty', 'Surface Clean', 'Penetrant Applied', 'Dwelling...', 'Excess Removed', 'Developer Applied'][Math.min(step, 5)]
-                            }
-                        </h3>
-                    </div>
-                </div>
-
-                {/* Controls */}
-                <div className="space-y-4">
-                    <ProcessStep
-                        idx={0} current={step}
-                        title="1. Pre-Cleaning"
-                        desc="Remove dirt, oil, and grease."
-                        icon={Eraser}
-                        action={() => handleAction('clean')}
-                        label="Clean Surface"
-                    />
-                    <ProcessStep
-                        idx={1} current={step}
-                        title="2. Apply Penetrant"
-                        desc="Apply red dye penetrant to surface."
-                        icon={Droplets}
-                        action={() => handleAction('penetrant')}
-                        label="Apply Spray"
-                        color="text-red-500"
-                    />
-                    <ProcessStep
-                        idx={2} current={step}
-                        title="3. Dwell Time"
-                        desc="Wait for penetrant to soak into cracks."
-                        icon={Clock}
-                        disabled={true}
-                        label={isDwelling ? `Wait ${dwellTimer}s` : "Dwell"}
-                    />
-                    <ProcessStep
-                        idx={3} current={step}
-                        title="4. Remove Excess"
-                        desc="Wipe off surface penetrant."
-                        icon={Eraser}
-                        action={() => handleAction('wipe')}
-                        label="Wipe Surface"
-                    />
-                    <ProcessStep
-                        idx={4} current={step}
-                        title="5. Apply Developer"
-                        desc="Apply white developer to draw out penetrant."
-                        icon={Droplets}
-                        action={() => handleAction('developer')}
-                        label="Apply Developer"
-                        color="text-slate-400"
-                    />
-                    <ProcessStep
-                        idx={5} current={step}
-                        title="6. Inspection"
-                        desc="Look for red indications on white background."
-                        icon={Search}
-                        action={() => handleAction('inspect')}
-                        label="Identify Defects"
-                        color="text-green-600"
-                    />
-                </div>
-            </div>
-        </div>
-    );
-}
-
-function ProcessStep({ idx, current, title, desc, icon: Icon, action, label, disabled, color = "text-gray-500" }) {
-    const isActive = current === idx;
-    const isCompleted = current > idx;
-    const isLocked = current < idx;
-
-    return (
-        <div className={`p-4 rounded-lg border transition-all ${isActive ? 'bg-orange-50 border-orange-200 shadow-md transform scale-102' :
-                isCompleted ? 'bg-gray-50 border-gray-100' : 'bg-white border-gray-100 opacity-50'
-            }`}>
-            <div className="flex items-center justify-between">
-                <div className="flex items-start gap-3">
-                    <div className={`mt-1 p-2 rounded-lg ${isActive ? 'bg-orange-100' : 'bg-gray-100'}`}>
-                        <Icon className={`h-5 w-5 ${isActive ? 'text-orange-600' : color}`} />
-                    </div>
-                    <div>
-                        <h4 className={`font-semibold ${isActive ? 'text-gray-900' : 'text-gray-500'}`}>{title}</h4>
-                        <p className="text-sm text-gray-500">{desc}</p>
-                    </div>
-                </div>
-                {isActive && !disabled && (
-                    <button
-                        onClick={action}
-                        className="px-4 py-2 bg-orange-500 text-white text-sm font-semibold rounded-lg hover:bg-orange-600 transition-colors shadow-sm"
-                    >
-                        {label}
-                    </button>
-                )}
-                {isCompleted && <CheckCircle className="h-5 w-5 text-green-500" />}
-                {disabled && isActive && <span className="text-xs font-mono font-bold text-orange-500 animate-pulse">{label}</span>}
+                {/* Info */}
+                <motion.div
+                    className="mt-4 flex items-start gap-2 text-xs sm:text-sm text-gray-600 bg-amber-50 border border-amber-200 p-3 rounded-lg"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                >
+                    <Info className="h-4 w-4 flex-shrink-0 mt-0.5 text-amber-600" />
+                    <span><strong>PT Principle:</strong> Red dye penetrant enters surface cracks by capillary action. After wiping excess and applying white developer, the trapped penetrant "bleeds out" creating visible red indications.</span>
+                </motion.div>
             </div>
         </div>
     );

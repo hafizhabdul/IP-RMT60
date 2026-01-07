@@ -28,12 +28,12 @@ export default function QuizHub() {
     };
 
     const methodInfo = {
-        'UT': { name: 'Ultrasonic Testing', icon: '🔊', color: 'blue', questions: 15 },
-        'RT': { name: 'Radiographic Testing', icon: '☢️', color: 'purple', questions: 0 },
-        'MT': { name: 'Magnetic Particle Testing', icon: '🧲', color: 'red', questions: 0 },
-        'PT': { name: 'Liquid Penetrant Testing', icon: '💧', color: 'green', questions: 0 },
-        'VT': { name: 'Visual Testing', icon: '👁️', color: 'amber', questions: 0 },
-        'ET': { name: 'Eddy Current Testing', icon: '⚡', color: 'cyan', questions: 0 },
+        'UT': { name: 'Ultrasonic Testing', icon: '🔊', color: 'blue', questions: 25 },
+        'MT': { name: 'Magnetic Particle Testing', icon: '🧲', color: 'red', questions: 20 },
+        'PT': { name: 'Liquid Penetrant Testing', icon: '💧', color: 'green', questions: 20 },
+        'RT': { name: 'Radiographic Testing', icon: '☢️', color: 'purple', questions: 20 },
+        'VT': { name: 'Visual Testing', icon: '👁️', color: 'amber', questions: 20 },
+        'ET': { name: 'Eddy Current Testing', icon: '⚡', color: 'cyan', questions: 20 },
     };
 
     return (
@@ -92,8 +92,8 @@ export default function QuizHub() {
                             <div
                                 key={code}
                                 className={`bg-white rounded-lg border-2 p-6 transition-all ${hasQuestions
-                                        ? 'border-gray-200 hover:border-orange-400 hover:shadow-lg cursor-pointer'
-                                        : 'border-gray-100 opacity-60'
+                                    ? 'border-gray-200 hover:border-orange-400 hover:shadow-lg cursor-pointer'
+                                    : 'border-gray-100 opacity-60'
                                     }`}
                             >
                                 <div className="flex items-start justify-between mb-4">
