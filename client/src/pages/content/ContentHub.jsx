@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, BookOpen, Clock, Eye, ChevronRight, Search } from 'lucide-react';
+import { ArrowLeft, BookOpen, Clock, Eye, ChevronRight } from 'lucide-react';
 import { getArticles, getArticleFilters } from '../../services/articleService';
 
 export default function ContentHub() {
@@ -9,6 +9,7 @@ export default function ContentHub() {
     const [loading, setLoading] = useState(true);
     const [selectedMethod, setSelectedMethod] = useState('');
     const [selectedLevel, setSelectedLevel] = useState('');
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         loadData();
@@ -17,6 +18,7 @@ export default function ContentHub() {
     const loadData = async () => {
         try {
             setLoading(true);
+            setError(null);
             const [articlesRes, filtersRes] = await Promise.all([
                 getArticles({ method: selectedMethod, level: selectedLevel, limit: 20 }),
                 getArticleFilters()
@@ -25,6 +27,7 @@ export default function ContentHub() {
             setFilters(filtersRes.data || { methods: [], levels: [], categories: [] });
         } catch (err) {
             console.error('Failed to load articles:', err);
+            setError(err.message || 'Failed to load articles');
         } finally {
             setLoading(false);
         }
@@ -96,6 +99,17 @@ export default function ContentHub() {
                         <div className="animate-spin rounded-full h-12 w-12 border-4 border-orange-500 border-t-transparent mx-auto mb-4"></div>
                         <p className="text-gray-600">Loading articles...</p>
                     </div>
+                ) : error ? (
+                    <div className="text-center py-12 bg-red-50 rounded-lg border border-red-200">
+                        <p className="text-red-600 mb-2">Error loading articles</p>
+                        <p className="text-sm text-red-500">{error}</p>
+                        <button
+                            onClick={loadData}
+                            className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                        >
+                            Retry
+                        </button>
+                    </div>
                 ) : articles.length === 0 ? (
                     <div className="text-center py-12">
                         <BookOpen className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -109,7 +123,7 @@ export default function ContentHub() {
                                 <h2 className="text-lg font-semibold text-gray-900 mb-4">Featured Article</h2>
                                 <Link
                                     to={`/e-learning/content/${featuredArticle.slug}`}
-                                    className="block bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl p-8 text-white hover:shadow-lg transition-shadow group"
+                                    className="block bg-orange-500 rounded-xl p-8 text-white hover:bg-orange-600 transition-colors group"
                                 >
                                     <div className="flex items-start justify-between">
                                         <div className="flex-1">

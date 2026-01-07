@@ -40,7 +40,11 @@ const CheckoutHybrid = lazy(() => import("./pages/CheckoutHybrid"));
 const UserOrders = lazy(() => import("./pages/UserOrders"));
 const PaymentResult = lazy(() => import("./pages/PaymentResult"));
 const MyCourses = lazy(() => import("./pages/MyCourses"));
-const SimulationsDemo = lazy(() => import("./pages/SimulationsDemo"));
+const SimulationsHub = lazy(() => import("./pages/simulations/SimulationsHub"));
+const UTSimulationPage = lazy(() => import("./pages/simulations/UTSimulationPage"));
+const MTSimulationPage = lazy(() => import("./pages/simulations/MTSimulationPage"));
+const PTSimulationPage = lazy(() => import("./pages/simulations/PTSimulationPage"));
+const RTSimulationPage = lazy(() => import("./pages/simulations/RTSimulationPage"));
 const ELearningHub = lazy(() => import("./pages/ELearningHub"));
 const QuizHub = lazy(() => import("./pages/quiz/QuizHub"));
 const QuizPage = lazy(() => import("./pages/quiz/QuizPage"));
@@ -124,7 +128,11 @@ function AppRoutes() {
 
           {/* E-Learning Platform Routes */}
           <Route path="e-learning" element={<ELearningHub />} />
-          <Route path="e-learning/simulations" element={<SimulationsDemo />} />
+          <Route path="e-learning/simulations" element={<SimulationsHub />} />
+          <Route path="e-learning/simulations/ut" element={<UTSimulationPage />} />
+          <Route path="e-learning/simulations/mt" element={<MTSimulationPage />} />
+          <Route path="e-learning/simulations/pt" element={<PTSimulationPage />} />
+          <Route path="e-learning/simulations/rt" element={<RTSimulationPage />} />
           <Route path="e-learning/quizzes" element={<QuizHub />} />
           <Route path="e-learning/quizzes/take" element={<QuizPage />} />
           <Route path="e-learning/content" element={<ContentHub />} />
