@@ -20,7 +20,7 @@ class LectureController {
         ],
         order: [["id", "ASC"]]
       });
-      
+
       res.status(200).json(lectures);
     } catch (err) {
       next(err);
@@ -42,11 +42,11 @@ class LectureController {
           }
         ]
       });
-      
+
       if (!lecture) {
         throw { name: "NotFound", message: "Lecture not found" };
       }
-      
+
       res.status(200).json(lecture);
     } catch (err) {
       next(err);
@@ -67,10 +67,10 @@ class LectureController {
         availability,
         image
       } = req.body;
-      
+
       // Set the current admin as the lecture creator
       const UserId = req.user.id;
-      
+
       const newLecture = await Lecture.create({
         name,
         title,
@@ -84,7 +84,7 @@ class LectureController {
         image,
         UserId
       });
-      
+
       res.status(201).json(newLecture);
     } catch (err) {
       next(err);
@@ -107,9 +107,9 @@ class LectureController {
         image,
         videoUrl // Include videoUrl in the destructuring
       } = req.body;
-      
+
       const lecture = await Lecture.findByPk(id);
-      
+
       if (!lecture) {
         throw { name: "NotFound", message: "Lecture not found" };
       }
@@ -120,7 +120,7 @@ class LectureController {
         const oldAssetId = lecture.videoUrl.split('/').pop().replace('.m3u8', '');
         await mux.video.assets.delete(oldAssetId);
       }
-      
+
       await lecture.update({
         name,
         title,
@@ -134,7 +134,7 @@ class LectureController {
         image,
         videoUrl // Update videoUrl
       });
-      
+
       res.status(200).json(lecture);
     } catch (err) {
       next(err);
@@ -145,7 +145,7 @@ class LectureController {
     try {
       const { id } = req.params;
       const lecture = await Lecture.findByPk(id);
-      
+
       if (!lecture) {
         throw { name: "NotFound", message: "Lecture not found" };
       }
@@ -155,9 +155,9 @@ class LectureController {
         const assetId = lecture.videoUrl.split('/').pop().replace('.m3u8', '');
         await mux.video.assets.delete(assetId);
       }
-      
+
       await lecture.destroy();
-      
+
       res.status(200).json({ message: "Lecture deleted successfully" });
     } catch (err) {
       next(err);
@@ -172,7 +172,7 @@ class LectureController {
 
       // Double check access (middleware should handle this, but extra security)
       const transaction = await Transaction.findOne({
-        where: { 
+        where: {
           UserId,
           status: 'Completed'
         },
@@ -202,7 +202,7 @@ class LectureController {
       if (!lecture) {
         throw { name: "NotFound", message: "Lecture not found" };
       }
-      
+
       res.json({
         message: "Course content accessed successfully",
         lecture,
@@ -234,7 +234,7 @@ class LectureController {
       console.log('All user transactions:', allTransactions.length);
 
       const transactions = await Transaction.findAll({
-        where: { 
+        where: {
           UserId,
           status: 'Completed'
         },
@@ -299,7 +299,7 @@ class LectureController {
       });
     } catch (error) {
       console.error('Error in getUserCourses:', error);
-      res.status(500).json({ 
+      res.status(500).json({
         message: "Internal server error",
         error: error.message,
         stack: process.env.NODE_ENV === 'development' ? error.stack : undefined

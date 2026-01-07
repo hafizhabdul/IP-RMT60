@@ -40,6 +40,12 @@ const CheckoutHybrid = lazy(() => import("./pages/CheckoutHybrid"));
 const UserOrders = lazy(() => import("./pages/UserOrders"));
 const PaymentResult = lazy(() => import("./pages/PaymentResult"));
 const MyCourses = lazy(() => import("./pages/MyCourses"));
+const SimulationsDemo = lazy(() => import("./pages/SimulationsDemo"));
+const ELearningHub = lazy(() => import("./pages/ELearningHub"));
+const QuizHub = lazy(() => import("./pages/quiz/QuizHub"));
+const QuizPage = lazy(() => import("./pages/quiz/QuizPage"));
+const ContentHub = lazy(() => import("./pages/content/ContentHub"));
+const ArticlePage = lazy(() => import("./pages/content/ArticlePage"));
 
 // Modern Admin Pages (Lazy Loaded)
 const ModernDashboard = lazy(() => import("./pages/Admin/ModernDashboard"));
@@ -78,64 +84,73 @@ function AppRoutes() {
     <Suspense fallback={<PageLoader />}>
       <Routes>
         {/* Authentication routes */}
-      <Route path="/login" element={
-        isAuthenticated ? (isAdmin ? <Navigate to="/admin/dashboard" /> : <Navigate to="/" />) : <ModernLogin />
-      } />
-      <Route path="/register" element={
-        isAuthenticated ? (isAdmin ? <Navigate to="/admin/dashboard" /> : <Navigate to="/" />) : <ModernRegister />
-      } />
+        <Route path="/login" element={
+          isAuthenticated ? (isAdmin ? <Navigate to="/admin/dashboard" /> : <Navigate to="/" />) : <ModernLogin />
+        } />
+        <Route path="/register" element={
+          isAuthenticated ? (isAdmin ? <Navigate to="/admin/dashboard" /> : <Navigate to="/" />) : <ModernRegister />
+        } />
 
-      {/* Admin routes */}
-      <Route path="/admin/*" element={
-        isAuthenticated ? (isAdmin ? <ModernAdminLayout /> : <Navigate to="/" />) : <Navigate to="/login" />
-      }>
-        <Route path="dashboard" element={<ModernDashboard />} />
-        <Route path="users" element={<ModernAdminUsers />} />
-        <Route path="courses" element={<ModernAdminCourses />} />
-        <Route path="categories" element={<ModernAdminCategories />} />
-        <Route path="transactions" element={<ModernTransactions />} />
-        <Route path="payments" element={<AdminPayments />} />
-        <Route path="events" element={<AdminEvents />} />
-      </Route>
-
-      {/* User routes - minimal, redirect admin to admin dashboard */}
-      <Route path="/*" element={
-        isAdmin ? <Navigate to="/admin/dashboard" /> : <MinimalLayout />
-      }>
-        <Route index element={<MinimalHome />} />
-        <Route path="about" element={<MinimalAbout />} />
-        <Route path="recertification" element={<MinimalRecertification />} />
-        <Route path="alumni" element={<MinimalAlumni />} />
-        <Route path="schedule" element={<MinimalSchedule />} />
-        <Route path="schedule/:id" element={<MinimalScheduleDetail />} />
-        <Route path="contact" element={<MinimalContact />} />
-        <Route path="privacy" element={<MinimalPrivacy />} />
-        <Route path="terms" element={<MinimalTerms />} />
-        {/* <Route path="enroll" element={<MinimalEnroll />} /> */}
-        <Route path="courses" element={<MinimalCourses />} />
-        <Route path="courses/:id" element={<MinimalCourseDetail />} />
-        <Route path="courses/:id/learn" element={<ModernCourseLearning />} />
-        {/* categories removed from public site */}
-        
-        {/* Protected user routes */}
-        <Route element={isAuthenticated ? <Outlet /> : <Navigate to="/login" />}>
-          <Route path="cart" element={<Cart />} />
-          <Route path="checkout" element={<CheckoutHybrid />} />
-          <Route path="checkout/legacy" element={<Checkout />} />
-          <Route path="orders" element={<UserOrders />} />
-          <Route path="my-courses" element={<MyCourses />} />
-          <Route path="profile" element={<TechnicalProfile />} />
-          <Route path="learn/:id" element={<ModernCourseLearning />} />
+        {/* Admin routes */}
+        <Route path="/admin/*" element={
+          isAuthenticated ? (isAdmin ? <ModernAdminLayout /> : <Navigate to="/" />) : <Navigate to="/login" />
+        }>
+          <Route path="dashboard" element={<ModernDashboard />} />
+          <Route path="users" element={<ModernAdminUsers />} />
+          <Route path="courses" element={<ModernAdminCourses />} />
+          <Route path="categories" element={<ModernAdminCategories />} />
+          <Route path="transactions" element={<ModernTransactions />} />
+          <Route path="payments" element={<AdminPayments />} />
+          <Route path="events" element={<AdminEvents />} />
         </Route>
-        
-        <Route path="*" element={<NotFound />} />
-      </Route>
 
-      {/* Payment Result Routes */}
-      <Route path="/payment/success" element={<PaymentResult />} />
-      <Route path="/payment/failed" element={<PaymentResult />} />
-      <Route path="/payment/pending" element={<PaymentResult />} />
-    </Routes>
+        {/* User routes - minimal, redirect admin to admin dashboard */}
+        <Route path="/*" element={
+          isAdmin ? <Navigate to="/admin/dashboard" /> : <MinimalLayout />
+        }>
+          <Route index element={<MinimalHome />} />
+          <Route path="about" element={<MinimalAbout />} />
+          <Route path="recertification" element={<MinimalRecertification />} />
+          <Route path="alumni" element={<MinimalAlumni />} />
+          <Route path="schedule" element={<MinimalSchedule />} />
+          <Route path="schedule/:id" element={<MinimalScheduleDetail />} />
+          <Route path="contact" element={<MinimalContact />} />
+          <Route path="privacy" element={<MinimalPrivacy />} />
+          <Route path="terms" element={<MinimalTerms />} />
+          {/* <Route path="enroll" element={<MinimalEnroll />} /> */}
+          <Route path="courses" element={<MinimalCourses />} />
+          <Route path="courses/:id" element={<MinimalCourseDetail />} />
+          <Route path="courses/:id/learn" element={<ModernCourseLearning />} />
+
+          {/* E-Learning Platform Routes */}
+          <Route path="e-learning" element={<ELearningHub />} />
+          <Route path="e-learning/simulations" element={<SimulationsDemo />} />
+          <Route path="e-learning/quizzes" element={<QuizHub />} />
+          <Route path="e-learning/quizzes/take" element={<QuizPage />} />
+          <Route path="e-learning/content" element={<ContentHub />} />
+          <Route path="e-learning/content/:slug" element={<ArticlePage />} />
+
+          {/* categories removed from public site */}
+
+          {/* Protected user routes */}
+          <Route element={isAuthenticated ? <Outlet /> : <Navigate to="/login" />}>
+            <Route path="cart" element={<Cart />} />
+            <Route path="checkout" element={<CheckoutHybrid />} />
+            <Route path="checkout/legacy" element={<Checkout />} />
+            <Route path="orders" element={<UserOrders />} />
+            <Route path="my-courses" element={<MyCourses />} />
+            <Route path="profile" element={<TechnicalProfile />} />
+            <Route path="learn/:id" element={<ModernCourseLearning />} />
+          </Route>
+
+          <Route path="*" element={<NotFound />} />
+        </Route>
+
+        {/* Payment Result Routes */}
+        <Route path="/payment/success" element={<PaymentResult />} />
+        <Route path="/payment/failed" element={<PaymentResult />} />
+        <Route path="/payment/pending" element={<PaymentResult />} />
+      </Routes>
     </Suspense>
   );
 }

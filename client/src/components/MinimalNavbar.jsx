@@ -46,8 +46,18 @@ export default function MinimalNavbar() {
           ))}
         </div>
 
+
         <div className="hidden md:flex items-center gap-3">
-          <Button onClick={handleWhatsApp}>Daftar</Button>
+          <div className="flex items-center gap-2">
+            <Button onClick={handleWhatsApp}>Daftar</Button>
+            <Link
+              to="/e-learning"
+              className="h-10 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium rounded-md transition-colors inline-flex items-center justify-center"
+            >
+              E-Learning
+              <span className="ml-2 text-[10px] bg-teal-500 text-white border border-teal-400 px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">Beta</span>
+            </Link>
+          </div>
           {isAuthenticated ? (
             <div className="relative">
               <Button variant="ghost" onClick={() => setOpen((v) => !v)} aria-label="Toggle account menu">
@@ -109,7 +119,18 @@ export default function MinimalNavbar() {
             ))}
 
             <div className="pt-2 border-t border-gray-200">
-              <button onClick={() => { handleWhatsApp(); setOpen(false); }} className="block w-full text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">Daftar</button>
+              <div className="flex flex-col gap-2 px-2 py-2">
+                <button onClick={() => { handleWhatsApp(); setOpen(false); }} className="text-left text-sm text-gray-700 hover:text-gray-900">
+                  Daftar
+                </button>
+                <Link
+                  to="/e-learning"
+                  className="h-10 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium rounded-md transition-colors inline-flex items-center justify-center"
+                >
+                  E-Learning
+                  <span className="ml-2 text-[10px] bg-teal-500 text-white border border-teal-400 px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">Beta</span>
+                </Link>
+              </div>
               {isAuthenticated ? (
                 <>
                   <Link to="/profile" className="block px-2 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setOpen(false)}>Profil</Link>

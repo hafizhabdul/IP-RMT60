@@ -11,6 +11,8 @@ const paymentRoutes = require("./paymentRoutes"); // Add this
 const chatbotRoutes = require("./chatbotRoutes"); // Add this
 const lessonRoutes = require("./lessonRoutes"); // Add this
 const videoRoutes = require("./videoRoutes");
+const quizRoutes = require("./quizRoutes"); // Quiz system
+const articleRoutes = require("./articleRoutes"); // Educational content
 
 // Public routes - do not require authentication
 router.use("/public", publicRoutes);
@@ -26,5 +28,7 @@ router.use("/payments", paymentRoutes); // Add this
 router.use("/chatbot", chatbotRoutes); // Add this
 router.use("/lessons", lessonRoutes); // Add this
 router.use("/videos", videoRoutes);
+router.use("/quiz", quizRoutes); // E-Learning Quiz System
+router.use("/articles", articleRoutes); // Educational Content
 
 module.exports = router;
