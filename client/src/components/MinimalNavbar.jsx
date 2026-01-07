@@ -125,6 +125,7 @@ export default function MinimalNavbar() {
                 </button>
                 <Link
                   to="/e-learning"
+                  onClick={() => setOpen(false)}
                   className="h-10 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium rounded-md transition-colors inline-flex items-center justify-center"
                 >
                   E-Learning

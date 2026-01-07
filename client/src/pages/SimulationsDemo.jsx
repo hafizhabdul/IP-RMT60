@@ -1,4 +1,7 @@
 import UTBeamAngleCalculator from '../components/ndt-sims/UT/BeamAngleCalc';
+import MagneticLab from '../components/ndt-sims/MT/MagneticLab';
+import PenetrantLab from '../components/ndt-sims/PT/PenetrantLab';
+import RadiographyLab from '../components/ndt-sims/RT/RadiographyLab';
 import { ArrowLeft, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -69,7 +72,22 @@ export default function SimulationsDemo() {
                     </div>
                 </div>
 
-                {/* Coming Soon */}
+                {/* Magnetic Particle Simulation */}
+                <div className="mt-8">
+                    <MagneticLab />
+                </div>
+
+                {/* Penetrant Testing Simulation */}
+                <div className="mt-8">
+                    <PenetrantLab />
+                </div>
+
+                {/* Radiography Simulation */}
+                <div className="mt-8">
+                    <RadiographyLab />
+                </div>
+
+                {/* Coming Soon Section */}
                 <div className="mt-8 p-6 bg-gray-100 rounded-lg border border-gray-300">
                     <h3 className="font-semibold text-gray-900 mb-4">🚀 Coming Soon</h3>
                     <div className="grid md:grid-cols-3 gap-4">

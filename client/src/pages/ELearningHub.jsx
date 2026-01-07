@@ -1,5 +1,74 @@
 import { Link } from 'react-router-dom';
-import { BookOpen, Calculator, FileText, Award, ChevronRight, Sparkles } from 'lucide-react';
+import { BookOpen, Calculator, FileText, Award, ChevronRight, Sparkles, Trophy, Star, Zap } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { GamificationService } from '../services/GamificationService';
+
+function UserStats() {
+    const [stats, setStats] = useState(null);
+
+    useEffect(() => {
+        setStats(GamificationService.getState());
+    }, []);
+
+    if (!stats) return null;
+
+    const nextLevelXP = GamificationService.getNextLevelXP(stats.level);
+    const progress = (stats.xp / nextLevelXP) * 100;
+    const title = GamificationService.getLevelTitle(stats.level);
+
+    return (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 flex flex-col md:flex-row items-center gap-6">
+
+                {/* ID Card */}
+                <div className="flex items-center gap-4 min-w-[250px] border-b md:border-b-0 md:border-r border-gray-100 pb-4 md:pb-0 md:pr-6">
+                    <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-md">
+                        {stats.level}
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-gray-900 text-lg">Inspector Trainee</h3>
+                        <p className="text-sm text-orange-600 font-medium">{title}</p>
+                    </div>
+                </div>
+
+                {/* Progress Stats */}
+                <div className="flex-1 w-full space-y-2">
+                    <div className="flex justify-between text-sm">
+                        <span className="font-semibold text-gray-700">Level Progress</span>
+                        <span className="text-gray-500">{stats.xp} / {nextLevelXP} XP</span>
+                    </div>
+                    <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+                        <div
+                            className="h-full bg-gradient-to-r from-orange-400 to-red-500 transition-all duration-1000 ease-out"
+                            style={{ width: `${Math.min(100, progress)}%` }}
+                        ></div>
+                    </div>
+                    <div className="flex gap-4 text-xs text-gray-500 mt-2">
+                        <span className="flex items-center gap-1">
+                            <Trophy className="h-3 w-3 text-yellow-500" /> Need {nextLevelXP - stats.xp} XP for Level {stats.level + 1}
+                        </span>
+                    </div>
+                </div>
+
+                {/* Badges / Streak */}
+                <div className="flex gap-4 min-w-[200px] justify-end">
+                    <div className="text-center p-2 bg-yellow-50 rounded-lg border border-yellow-100">
+                        <div className="text-xl font-bold text-yellow-600 flex justify-center items-center gap-1">
+                            {stats.streak} <Zap className="h-4 w-4 fill-yellow-500" />
+                        </div>
+                        <div className="text-[10px] uppercase font-bold text-yellow-700 tracking-wider">Day Streak</div>
+                    </div>
+                    <div className="text-center p-2 bg-blue-50 rounded-lg border border-blue-100">
+                        <div className="text-xl font-bold text-blue-600 flex justify-center items-center gap-1">
+                            {stats.badges.length} <Award className="h-4 w-4 fill-blue-500" />
+                        </div>
+                        <div className="text-[10px] uppercase font-bold text-blue-700 tracking-wider">Badges</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 export default function ELearningHub() {
     const features = [
@@ -60,6 +129,9 @@ export default function ELearningHub() {
                     </p>
                 </div>
             </div>
+
+            {/* User Stats & Gamification */}
+            <UserStats />
 
             {/* Features Grid */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
