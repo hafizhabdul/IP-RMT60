@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const { User } = require("../models");
 const { comparePassword, hashPassword } = require("../helpers/bcrypt");
 const { generateToken } = require("../helpers/jwt");
@@ -31,7 +32,7 @@ class UserController {
         user = await User.create({
           username: payload.name || payload.email.split('@')[0],
           email: payload.email,
-          password: Math.random().toString(), // Generate random password
+          password: crypto.randomBytes(32).toString('hex'),
           role: "User", // Always set role as User for Google login
           phoneNumber: "0808080808",
           address: "Not specified",
@@ -201,12 +202,7 @@ class UserController {
       const userResponse = user.toJSON();
       delete userResponse.password;
       
-      // In a real app, you would send an email with the temporary password
-      // For demo, just return it (not secure for production)
-      res.status(201).json({
-        ...userResponse,
-        temporaryPassword: randomPassword
-      });
+      res.status(201).json(userResponse);
     } catch (err) {
       next(err);
     }

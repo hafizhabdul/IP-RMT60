@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { useAuth } from "../hooks/useAuth";
 import api from "../utils/api";
+import { useTranslations } from '@/utils/translations';
 
 const loginUser = async (credentials) => {
   const { data } = await api.post("/users/login", credentials);
@@ -21,6 +22,7 @@ const googleLoginUser = async (token) => {
 
 export default function ModernLogin() {
   const navigate = useNavigate();
+  const t = useTranslations();
   const { login: authLogin, googleLogin: authGoogleLogin } = useAuth();
   const googleButtonRef = useRef(null);
 
@@ -166,10 +168,10 @@ export default function ModernLogin() {
             </Link>
             
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
-              Welcome Back
+              {t.login.welcome}
             </h2>
             <p className="text-gray-600">
-              Sign in to continue your NDT learning journey
+              {t.login.subtitle}
             </p>
           </div>
 
@@ -185,14 +187,14 @@ export default function ModernLogin() {
           {/* Login Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t.login.email}</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   type="email"
                   id="email"
                   name="email"
-                  placeholder="Enter your email"
+                  placeholder={t.login.emailPlaceholder}
                   value={formData.email}
                   onChange={handleChange}
                   className="pl-10"
@@ -202,14 +204,14 @@ export default function ModernLogin() {
             </div>
 
             <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t.login.password}</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
-                  placeholder="Enter your password"
+                  placeholder={t.login.passwordPlaceholder}
                   value={formData.password}
                   onChange={handleChange}
                   className="pl-10 pr-10"
@@ -230,7 +232,7 @@ export default function ModernLogin() {
             </div>
 
             <Button type="submit" className="w-full" disabled={mutation.isLoading}>
-              {mutation.isLoading ? "Signing in..." : "Sign In"}
+              {mutation.isLoading ? t.login.signingIn : t.login.signIn}
             </Button>
           </form>
 
@@ -241,7 +243,7 @@ export default function ModernLogin() {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-gray-50 text-gray-500">or continue with</span>
+                <span className="px-2 bg-gray-50 text-gray-500">{t.login.orContinue}</span>
               </div>
             </div>
           </div>
@@ -257,12 +259,12 @@ export default function ModernLogin() {
           {/* Register Link */}
           <div className="mt-8 text-center">
             <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
+              {t.login.noAccount}{" "}
               <Link 
                 to="/register" 
                 className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
               >
-                Create one now
+                {t.login.registerHere}
               </Link>
             </p>
           </div>

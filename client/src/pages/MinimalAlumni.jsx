@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import api from '@/utils/api';
+import { useTranslations } from '@/utils/translations';
 
 const fetchAlumni = async () => {
   const { data } = await api.get('/public/alumni');
@@ -7,13 +8,14 @@ const fetchAlumni = async () => {
 };
 
 export default function MinimalAlumni() {
+  const t = useTranslations();
   const { data, isLoading } = useQuery({ queryKey: ['alumni'], queryFn: fetchAlumni });
 
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-2xl font-semibold text-gray-900">Alumni Sertifikasi SNS</h1>
-        <p className="text-gray-600 mt-1">Beberapa peserta yang telah lulus sertifikasi NDT.</p>
+        <h1 className="text-2xl font-semibold text-gray-900">{t.alumni.title}</h1>
+        <p className="text-gray-600 mt-1">{t.alumni.subtitle}</p>
 
         {isLoading ? (
           <div className="min-h-[30vh] flex items-center justify-center">

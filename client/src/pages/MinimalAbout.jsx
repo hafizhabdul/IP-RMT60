@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Award, Building2, Target, X, ZoomIn } from 'lucide-react';
+import { useTranslations } from '@/utils/translations';
 
 export default function MinimalAbout() {
+  const t = useTranslations();
   const [selectedImage, setSelectedImage] = useState(null);
 
   const certifications = [
@@ -17,9 +19,9 @@ export default function MinimalAbout() {
           <div className="flex items-start gap-6">
             <img src="/logo.png" alt="SNS - SAR NDT Services" className="h-12 w-auto" />
             <div>
-              <h1 className="text-3xl font-semibold tracking-tight text-gray-900">Tentang SNS — SAR NDT Services</h1>
+              <h1 className="text-3xl font-semibold tracking-tight text-gray-900">{t.about.title}</h1>
               <p className="mt-2 text-gray-600 max-w-2xl">
-                SNS menyediakan pelatihan dan sertifikasi Non-Destructive Testing (NDT) yang elegan, sederhana, dan sesuai standar internasional.
+                {t.about.desc}
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {methods.map((m) => (
@@ -34,20 +36,15 @@ export default function MinimalAbout() {
       <section>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="rounded-xl border border-gray-200 p-6">
-            <div className="flex items-center gap-2 text-gray-900 font-medium"><Target className="h-5 w-5" /> Visi</div>
+            <div className="flex items-center gap-2 text-gray-900 font-medium"><Target className="h-5 w-5" /> {t.about.vision}</div>
             <p className="mt-3 text-gray-700">
-              Menjadi mitra terpercaya dalam pengembangan kompetensi NDT dengan layanan pelatihan dan sertifikasi yang berkelas, praktis, dan diakui industri.
+              {t.about.visionText}
             </p>
           </div>
           <div className="rounded-xl border border-gray-200 p-6">
-            <div className="flex items-center gap-2 text-gray-900 font-medium"><Building2 className="h-5 w-5" /> Misi</div>
+            <div className="flex items-center gap-2 text-gray-900 font-medium"><Building2 className="h-5 w-5" /> {t.about.mission}</div>
             <ul className="mt-3 space-y-2 text-gray-700 text-sm">
-              {[
-                'Menyediakan kurikulum NDT yang relevan dan aplikatif',
-                'Mendampingi peserta hingga siap sertifikasi',
-                'Menjaga kualitas instruktur dan materi sesuai standar',
-                'Mendukung kebutuhan pelatihan korporasi secara fleksibel',
-              ].map((m) => (
+              {t.about.missionItems.map((m) => (
                 <li key={m} className="list-disc ml-5">{m}</li>
               ))}
             </ul>

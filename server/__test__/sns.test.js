@@ -12,25 +12,9 @@ const { User, Category, Lecture, Cart, Transaction, TransactionDetail, sequelize
 const jwt = require("jsonwebtoken");
 const { hashPassword } = require("../helpers/bcrypt");
 const axios = require("axios");
-const { sendMessageToDialogflow } = require("../helpers/dialogflow");
 const { createTransaction, getStatus } = require("../helpers/midtrans");
 
 // Mock external dependencies
-jest.mock("@google-cloud/dialogflow", () => {
-  return {
-    SessionsClient: jest.fn().mockImplementation(() => ({
-      projectAgentSessionPath: jest.fn().mockReturnValue("test-session-path"),
-      detectIntent: jest.fn().mockResolvedValue([{
-        queryResult: {
-          fulfillmentText: "This is a test response",
-          intent: { displayName: "test.intent" },
-          parameters: { fields: { param1: { stringValue: "value1" } } }
-        }
-      }])
-    }))
-  };
-});
-
 jest.mock("axios");
 
 // Helper function for safe tests that won't fail the test suite
@@ -1152,18 +1136,6 @@ describe("Payment Routes (POST /api/payments)", () => {
 
 // Remaining tests unchanged
 describe("Helper Function Tests", () => {
-  test("Dialogflow helper - sendMessageToDialogflow", async () => {
-    try {
-      const result = await sendMessageToDialogflow("Hello", "test-session");
-      expect(result).toHaveProperty("text");
-      expect(result).toHaveProperty("intent");
-      expect(result).toHaveProperty("sessionId", "test-session");
-    } catch (error) {
-      // If the real function is called instead of mock
-      console.log("Dialogflow test error:", error.message);
-    }
-  });
-
   test("Midtrans helper - createTransaction", async () => {
     axios.post.mockResolvedValue({
       data: {

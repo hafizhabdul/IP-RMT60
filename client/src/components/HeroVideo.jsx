@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { VIDEO_PATHS, VIDEO_SETTINGS } from '../config/images';
 import { useState, useEffect } from 'react';
+import { useTranslations } from '../utils/translations';
 import '../styles/hero.css';
 
 export default function HeroVideo() {
+  const t = useTranslations();
   const videoUrl = import.meta.env.VITE_HERO_VIDEO_URL || VIDEO_PATHS.demo;
   const poster = VIDEO_SETTINGS.poster || VIDEO_SETTINGS.posterAlt;
   const [isLoaded, setIsLoaded] = useState(false);
@@ -102,8 +104,7 @@ export default function HeroVideo() {
 
           {/* Enhanced description */}
           <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-3xl leading-relaxed text-responsive">
-            Pelatihan praktis dan sertifikasi NDT <span className="text-orange-400 font-semibold">(PT, MT, UT, ET, PAUT, TOFD, RI,
-VT, RT, RFET, PEC, MFL, IRT, Etc.)</span> yang dirancang untuk teknisi dan engineer industri dengan standar internasional.
+            {t.hero.subtitle} <span className="text-orange-400 font-semibold">{t.hero.methodsList}</span> {t.hero.forEngineers}
           </p>
 
           {/* Enhanced CTA buttons */}
@@ -113,7 +114,7 @@ VT, RT, RFET, PEC, MFL, IRT, Etc.)</span> yang dirancang untuk teknisi dan engin
               className="group btn-mobile hero-button-primary inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 px-6 sm:px-8 py-3 sm:py-4 text-base font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-orange-500/25 touch-target"
             >
               <span className="flex items-center text-responsive">
-                Lihat Jadwal Training
+                {t.hero.viewSchedule}
                 <svg className="ml-2 w-4 h-4 sm:w-5 sm:h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -125,7 +126,7 @@ VT, RT, RFET, PEC, MFL, IRT, Etc.)</span> yang dirancang untuk teknisi dan engin
               className="group btn-mobile inline-flex items-center justify-center rounded-lg border-2 border-white/40 hover:border-white/60 hover:bg-white/10 px-6 sm:px-8 py-3 sm:py-4 text-base font-semibold backdrop-blur-sm transition-all duration-300 transform hover:scale-105 hover:shadow-xl touch-target"
             >
               <span className="flex items-center text-responsive">
-                Daftar Sekarang
+                {t.registerNow}
                 <svg className="ml-2 w-4 h-4 sm:w-5 sm:h-5 transform group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>

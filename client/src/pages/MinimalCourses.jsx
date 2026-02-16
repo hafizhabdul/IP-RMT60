@@ -5,6 +5,7 @@ import { Search } from 'lucide-react';
 import api from '@/utils/api';
 import { IMG_PLACEHOLDER_16x9, IMG_PLACEHOLDER_16x10 } from '@/config/images';
 import { Input } from '@/components/ui/Input';
+import { useTranslations } from '@/utils/translations';
 
 const formatIDR = (price) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price || 0);
 
@@ -19,6 +20,7 @@ const fetchCategories = async () => {
 };
 
 export default function MinimalCourses() {
+  const t = useTranslations();
   const navigate = useNavigate();
   const [filters, setFilters] = useState({ page: 1, search: '', categoryId: '' });
   const { data: coursesData, isLoading } = useQuery({ queryKey: ['min-courses', filters], queryFn: () => fetchCourses(filters) });
@@ -29,14 +31,14 @@ export default function MinimalCourses() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900">Kursus NDT</h1>
-            <p className="text-gray-600 mt-1">Pilih kursus sesuai kebutuhan Anda</p>
+            <h1 className="text-2xl font-semibold text-gray-900">{t.courses.title}</h1>
+            <p className="text-gray-600 mt-1">{t.courses.subtitle}</p>
           </div>
           <div className="flex items-center gap-3">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input
-                placeholder="Cari kursus..."
+                placeholder={t.courses.searchPlaceholder}
                 className="pl-9 w-64"
                 value={filters.search}
                 onChange={(e) => setFilters((f) => ({ ...f, search: e.target.value, page: 1 }))}
@@ -47,7 +49,7 @@ export default function MinimalCourses() {
               onChange={(e) => setFilters((f) => ({ ...f, categoryId: e.target.value, page: 1 }))}
               className="h-10 rounded-md border border-gray-300 bg-white px-3 text-sm"
             >
-              <option value="">Semua Kategori</option>
+              <option value="">{t.courses.allCategories}</option>
               {(categories || []).map((c) => (
                 <option key={c.id} value={c.id}>{c.name}</option>
               ))}
@@ -58,7 +60,7 @@ export default function MinimalCourses() {
         {isLoading ? (
           <div className="min-h-[40vh] flex items-center justify-center"><div className="h-8 w-8 rounded-full border-2 border-gray-900 border-t-transparent animate-spin" /></div>
         ) : !coursesData || coursesData.lectures.length === 0 ? (
-          <div className="text-center py-20 text-gray-600">Tidak ada kursus.</div>
+          <div className="text-center py-20 text-gray-600">{t.courses.noCourses}</div>
         ) : (
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {coursesData.lectures.map((c) => (

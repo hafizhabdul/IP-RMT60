@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { useAuth } from "../hooks/useAuth";
 import api from "../utils/api";
+import { useTranslations } from '@/utils/translations';
 
 const registerUser = async (userData) => {
   const { data } = await api.post("/users/register", userData);
@@ -21,6 +22,7 @@ const googleLoginUser = async (token) => {
 
 export default function ModernRegister() {
   const navigate = useNavigate();
+  const t = useTranslations();
   const { googleLogin: authGoogleLogin } = useAuth();
   const googleButtonRef = useRef(null);
 
@@ -154,10 +156,10 @@ export default function ModernRegister() {
             </Link>
             
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
-              Create Your Account
+              {t.register.title}
             </h2>
             <p className="text-gray-600">
-              Join thousands of NDT professionals advancing their careers
+              {t.register.subtitle}
             </p>
           </div>
 
@@ -174,7 +176,7 @@ export default function ModernRegister() {
           {!passwordMatch && (
             <div className="mb-6 bg-red-50 border border-red-200 rounded-xl p-4">
               <div className="flex">
-                <div className="text-red-600 text-sm">Passwords do not match</div>
+                <div className="text-red-600 text-sm">{t.register.passwordMismatch}</div>
               </div>
             </div>
           )}
@@ -182,14 +184,14 @@ export default function ModernRegister() {
           {/* Registration Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="name">{t.register.name}</Label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   type="text"
                   id="name"
                   name="name"
-                  placeholder="Enter your full name"
+                  placeholder={t.register.namePlaceholder}
                   value={formData.name}
                   onChange={handleChange}
                   className="pl-10"
@@ -199,14 +201,14 @@ export default function ModernRegister() {
             </div>
 
             <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t.register.email}</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   type="email"
                   id="email"
                   name="email"
-                  placeholder="Enter your email"
+                  placeholder={t.register.emailPlaceholder}
                   value={formData.email}
                   onChange={handleChange}
                   className="pl-10"
@@ -216,14 +218,14 @@ export default function ModernRegister() {
             </div>
 
             <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t.register.password}</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
-                  placeholder="Create a password"
+                  placeholder={t.register.passwordPlaceholder}
                   value={formData.password}
                   onChange={handleChange}
                   className="pl-10 pr-10"
@@ -244,14 +246,14 @@ export default function ModernRegister() {
             </div>
 
             <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Label htmlFor="confirmPassword">{t.register.confirmPassword}</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   type={showConfirmPassword ? "text" : "password"}
                   id="confirmPassword"
                   name="confirmPassword"
-                  placeholder="Confirm your password"
+                  placeholder={t.register.confirmPlaceholder}
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   className={`pl-10 pr-10 ${!passwordMatch ? "border-red-500" : ""}`}
@@ -272,7 +274,7 @@ export default function ModernRegister() {
             </div>
 
             <Button type="submit" className="w-full" disabled={mutation.isLoading || !passwordMatch}>
-              {mutation.isLoading ? "Creating account..." : "Create Account"}
+              {mutation.isLoading ? t.register.creating : t.register.createAccount}
             </Button>
           </form>
 
@@ -283,7 +285,7 @@ export default function ModernRegister() {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-gray-50 text-gray-500">or continue with</span>
+                <span className="px-2 bg-gray-50 text-gray-500">{t.register.orContinue}</span>
               </div>
             </div>
           </div>
@@ -299,12 +301,12 @@ export default function ModernRegister() {
           {/* Login Link */}
           <div className="mt-8 text-center">
             <p className="text-sm text-gray-600">
-              Already have an account?{" "}
+              {t.register.hasAccount}{" "}
               <Link 
                 to="/login" 
                 className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
               >
-                Sign in here
+                {t.register.loginHere}
               </Link>
             </p>
           </div>

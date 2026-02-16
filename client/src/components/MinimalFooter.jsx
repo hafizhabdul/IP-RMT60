@@ -1,19 +1,22 @@
 import { Link } from 'react-router-dom';
+import { useTranslations } from '../utils/translations';
 
 export default function MinimalFooter() {
+  const t = useTranslations();
+
   const links = {
-    'Perusahaan': [
-      { name: 'Tentang Kami', path: '/about' },
-      { name: 'Jadwal Sertifikasi', path: '/schedule' },
-      { name: 'Hubungi Kami', path: '/contact' },
+    [t.footer.company]: [
+      { name: t.footer.aboutUs, path: '/about' },
+      { name: t.footer.certSchedule, path: '/schedule' },
+      { name: t.footer.contactUs, path: '/contact' },
     ],
-    'Kursus': [
-      { name: 'Semua Kursus', path: '/courses' },
-      { name: 'Alumni', path: '/alumni' },
+    [t.footer.coursesLabel]: [
+      { name: t.footer.allCourses, path: '/courses' },
+      { name: t.footer.alumniLabel, path: '/alumni' },
     ],
-    'Legal': [
-      { name: 'Kebijakan Privasi', path: '/privacy' },
-      { name: 'Syarat & Ketentuan', path: '/terms' },
+    [t.footer.legal]: [
+      { name: t.footer.privacyPolicy, path: '/privacy' },
+      { name: t.footer.termsConditions, path: '/terms' },
     ],
   };
 
@@ -26,7 +29,7 @@ export default function MinimalFooter() {
               <img src="/logo.png" alt="SNS - SAR NDT Services" className="h-8 w-auto" />
               <span className="text-xl font-bold text-gray-900">SNS NDT</span>
             </Link>
-            <p className="mt-4 text-sm text-gray-600">Pusat pelatihan dan sertifikasi Non-Destructive Testing terdepan di Indonesia.</p>
+            <p className="mt-4 text-sm text-gray-600">{t.footer.tagline}</p>
           </div>
 
           <div className="md:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-8">
@@ -49,7 +52,7 @@ export default function MinimalFooter() {
 
         <div className="mt-12 border-t border-gray-200 pt-8 flex flex-col sm:flex-row justify-between items-center">
           <p className="text-sm text-gray-500">&copy; {new Date().getFullYear()} SNS NDT. All rights reserved.</p>
-          <p className="mt-4 sm:mt-0 text-sm text-gray-500">Didesain oleh Tim SNS</p>
+          <p className="mt-4 sm:mt-0 text-sm text-gray-500">{t.footer.designedBy}</p>
         </div>
       </div>
     </footer>

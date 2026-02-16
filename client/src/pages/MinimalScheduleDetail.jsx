@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/utils/api';
 import { IMG_EVENT } from '@/config/images';
+import { useTranslations } from '@/utils/translations';
 
 const fetchEvent = async (id) => {
   const { data } = await api.get(`/public/events/${id}`);
@@ -24,6 +25,7 @@ function toICSDate(date) {
 }
 
 export default function MinimalScheduleDetail() {
+  const t = useTranslations();
   const { id } = useParams();
   const { data: ev, isLoading, error } = useQuery({ 
     queryKey: ['event', id], 
@@ -73,10 +75,10 @@ export default function MinimalScheduleDetail() {
       <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
       </svg>
-      <p className="text-lg">Jadwal tidak ditemukan</p>
-      <p className="text-sm text-gray-500">Jadwal yang Anda cari mungkin sudah tidak tersedia atau belum dijadwalkan.</p>
+      <p className="text-lg">{t.scheduleDetail.notFound}</p>
+      <p className="text-sm text-gray-500">{t.scheduleDetail.notFoundDesc}</p>
       <Link to="/schedule" className="mt-2 inline-flex items-center gap-2 rounded-md bg-gray-900 text-white px-5 py-2 text-sm hover:bg-black">
-        ← Lihat Semua Jadwal
+        {t.scheduleDetail.viewAllSchedule}
       </Link>
     </div>
   );
@@ -88,18 +90,18 @@ export default function MinimalScheduleDetail() {
           <div className="lg:col-span-2">
             <img src={ev.image || IMG_EVENT} alt={ev.title} className="w-full rounded-lg border border-gray-200" />
             <h1 className="mt-6 text-2xl font-semibold text-gray-900">{ev.title}</h1>
-            <div className="mt-2 text-gray-700">Metode: {ev.method}</div>
-            <div className="mt-1 text-gray-700">Tanggal: {formatDate(ev.startDate)} — {formatDate(ev.endDate || ev.startDate)}</div>
-            <div className="mt-1 text-gray-700">Waktu: {ev.time || '-'}</div>
-            <div className="mt-1 text-gray-700">Lokasi: {ev.location || '-'}</div>
+            <div className="mt-2 text-gray-700">{t.scheduleDetail.method}: {ev.method}</div>
+            <div className="mt-1 text-gray-700">{t.scheduleDetail.date}: {formatDate(ev.startDate)} — {formatDate(ev.endDate || ev.startDate)}</div>
+            <div className="mt-1 text-gray-700">{t.scheduleDetail.time}: {ev.time || '-'}</div>
+            <div className="mt-1 text-gray-700">{t.scheduleDetail.location}: {ev.location || '-'}</div>
           </div>
           <aside>
             <div className="rounded-lg border border-gray-200 p-5">
-              <div className="text-sm text-gray-600">Tambahkan ke kalender Anda</div>
+              <div className="text-sm text-gray-600">{t.scheduleDetail.addToCalendar}</div>
               <div className="mt-3 grid grid-cols-1 gap-2">
                 <button onClick={addToGoogle} className="rounded-md bg-gray-900 text-white px-4 py-2 text-sm hover:bg-black">Google Calendar</button>
                 <button onClick={downloadICS} className="rounded-md border border-gray-300 px-4 py-2 text-sm hover:bg-gray-50">Download .ics</button>
-                <button onClick={() => window.open(`https://wa.me/628129258446?text=${encodeURIComponent(`Halo Admin, saya tertarik mendaftar training: ${ev.title}.`)}`, '_blank')} className="rounded-md bg-gray-900 text-white px-4 py-2 text-sm hover:bg-black text-center">Daftar Sekarang</button>
+                <button onClick={() => window.open(`https://wa.me/628129258446?text=${encodeURIComponent(`Halo Admin, saya tertarik mendaftar training: ${ev.title}.`)}`, '_blank')} className="rounded-md bg-gray-900 text-white px-4 py-2 text-sm hover:bg-black text-center">{t.scheduleDetail.registerNow}</button>
               </div>
             </div>
           </aside>

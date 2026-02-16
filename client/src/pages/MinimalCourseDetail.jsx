@@ -7,6 +7,7 @@ import { Check, AlertCircle, MessageCircle } from 'lucide-react';
 import api from '@/utils/api';
 // import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
+import { useTranslations } from '@/utils/translations';
 
 const formatIDR = (price) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price || 0);
 
@@ -21,18 +22,13 @@ const fetchCourse = async (id) => {
 // };
 
 export default function MinimalCourseDetail() {
+  const t = useTranslations();
   const { id } = useParams();
   // const navigate = useNavigate();
   // const { isAuthenticated } = useAuth();
 
   const { data: course, isLoading, error } = useQuery({ queryKey: ['min-course', id], queryFn: () => fetchCourse(id) });
   // const mutation = useMutation({ mutationFn: addToCart, onSuccess: () => navigate('/cart') });
-
-  const prerequisites = [
-    'Terbuka untuk umum (minimal SMA/sederajat)',
-    'Memahami dasar K3 (Keselamatan & Kesehatan Kerja)',
-    'Dapat mengikuti kelas teori dan praktik',
-  ];
 
   const onRegister = () => {
     // Direct to WhatsApp
@@ -60,7 +56,7 @@ export default function MinimalCourseDetail() {
       <div className="min-h-[50vh] flex items-center justify-center text-center">
         <div>
           <AlertCircle className="h-10 w-10 text-red-500 mx-auto" />
-          <div className="mt-2 text-gray-900 font-medium">Kursus tidak ditemukan</div>
+          <div className="mt-2 text-gray-900 font-medium">{t.courseDetail.notFound}</div>
         </div>
       </div>
     );
@@ -78,22 +74,17 @@ export default function MinimalCourseDetail() {
 
             <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="rounded-lg border border-gray-200 p-5">
-                <div className="text-sm font-medium text-gray-900">Apa yang Anda Dapatkan</div>
+                <div className="text-sm font-medium text-gray-900">{t.courseDetail.included}</div>
                 <ul className="mt-3 space-y-2 text-sm text-gray-700">
-                  {[
-                    'Materi teori terstruktur',
-                    // 'Akses video pembelajaran', // Commented out for now
-                    'Sertifikat penyelesaian',
-                    'Dukungan instruktur'
-                  ].map((i) => (
+                  {t.courseDetail.includedItems.map((i) => (
                     <li key={i} className="flex items-start gap-2"><Check className="h-4 w-4 mt-0.5 text-gray-900" /> <span>{i}</span></li>
                   ))}
                 </ul>
               </div>
               <div className="rounded-lg border border-gray-200 p-5">
-                <div className="text-sm font-medium text-gray-900">Persyaratan Pendaftaran</div>
+                <div className="text-sm font-medium text-gray-900">{t.courseDetail.prerequisites}</div>
                 <ul className="mt-3 space-y-2 text-sm text-gray-700">
-                  {prerequisites.map((p) => (
+                  {t.courseDetail.prerequisitesList.map((p) => (
                     <li key={p} className="flex items-start gap-2"><Check className="h-4 w-4 mt-0.5 text-gray-900" /> <span>{p}</span></li>
                   ))}
                 </ul>
@@ -119,7 +110,7 @@ export default function MinimalCourseDetail() {
                 <div className="mt-4">
                   <Button className="w-full bg-green-600 hover:bg-green-700" onClick={onRegister}>
                     <MessageCircle className="mr-2 h-4 w-4" />
-                    Daftar via WhatsApp
+                    {t.courseDetail.registerWhatsapp}
                   </Button>
                   {/* <Button className="w-full" onClick={onRegister} disabled={mutation.isLoading}>
                     {mutation.isLoading ? 'Memproses...' : 'Daftar Sekarang'}
