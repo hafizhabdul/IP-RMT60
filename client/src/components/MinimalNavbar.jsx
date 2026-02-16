@@ -10,15 +10,39 @@ export default function MinimalNavbar() {
   const { isAuthenticated, user, logout, isAdmin } = useAuth();
   const { language, setLanguage } = useContext(LanguageContext);
 
-  const links = [
-    { name: 'Beranda', path: '/' },
-    { name: 'Kursus', path: '/courses' },
-    { name: 'Jadwal', path: '/schedule' },
-    { name: 'Resertifikasi', path: '/recertification' },
-    { name: 'Alumni', path: '/alumni' },
-    { name: 'Tentang', path: '/about' },
-    { name: 'Kontak', path: '/contact' },
-  ];
+  const navTranslations = {
+    id: {
+      links: [
+        { name: 'Beranda', path: '/' },
+        { name: 'Kursus', path: '/courses' },
+        { name: 'Jadwal', path: '/schedule' },
+        { name: 'Resertifikasi', path: '/recertification' },
+        { name: 'Alumni', path: '/alumni' },
+        { name: 'Tentang', path: '/about' },
+        { name: 'Kontak', path: '/contact' },
+      ],
+      register: 'Daftar',
+      profile: 'Profil',
+      logout: 'Keluar',
+      account: 'Akun',
+    },
+    en: {
+      links: [
+        { name: 'Home', path: '/' },
+        { name: 'Courses', path: '/courses' },
+        { name: 'Schedule', path: '/schedule' },
+        { name: 'Recertification', path: '/recertification' },
+        { name: 'Alumni', path: '/alumni' },
+        { name: 'About', path: '/about' },
+        { name: 'Contact', path: '/contact' },
+      ],
+      register: 'Register',
+      profile: 'Profile',
+      logout: 'Logout',
+      account: 'Account',
+    },
+  };
+  const t = navTranslations[language];
 
   const handleWhatsApp = () => {
     const phoneNumber = "628129258446";
@@ -35,9 +59,9 @@ export default function MinimalNavbar() {
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
-          {links.map((l) => (
+          {t.links.map((l) => (
             <NavLink
-              key={l.name}
+              key={l.path}
               to={l.path}
               className={({ isActive }) =>
                 `text-sm transition-colors ${isActive ? 'text-gray-900' : 'text-gray-600 hover:text-gray-900'}`
@@ -75,7 +99,7 @@ export default function MinimalNavbar() {
                 EN
               </button>
             </div>
-            <Button onClick={handleWhatsApp}>Daftar</Button>
+            <Button onClick={handleWhatsApp}>{t.register}</Button>
             <Link
               to="/e-learning"
               className="h-10 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium rounded-md transition-colors inline-flex items-center justify-center"
@@ -88,7 +112,7 @@ export default function MinimalNavbar() {
             <div className="relative">
               <Button variant="ghost" onClick={() => setOpen((v) => !v)} aria-label="Toggle account menu">
                 <User className="h-4 w-4 mr-2" />
-                <span className="text-sm">{user?.username || user?.name || 'Akun'}</span>
+                <span className="text-sm">{user?.username || user?.name || t.account}</span>
               </Button>
               {open && (
                 <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-sm">
@@ -106,7 +130,7 @@ export default function MinimalNavbar() {
                     className="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
                     onClick={() => setOpen(false)}
                   >
-                    Profil
+                    {t.profile}
                   </Link>
                   <button
                     onClick={() => {
@@ -115,7 +139,7 @@ export default function MinimalNavbar() {
                     }}
                     className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
                   >
-                    <LogOut className="inline h-4 w-4 mr-2" /> Keluar
+                    <LogOut className="inline h-4 w-4 mr-2" /> {t.logout}
                   </button>
                 </div>
               )}
@@ -131,9 +155,9 @@ export default function MinimalNavbar() {
       {open && (
         <div className="md:hidden border-t border-gray-200">
           <div className="px-4 py-3 space-y-2">
-            {links.map((l) => (
+            {t.links.map((l) => (
               <NavLink
-                key={l.name}
+                key={l.path}
                 to={l.path}
                 onClick={() => setOpen(false)}
                 className={({ isActive }) =>
@@ -171,7 +195,7 @@ export default function MinimalNavbar() {
                   </button>
                 </div>
                 <button onClick={() => { handleWhatsApp(); setOpen(false); }} className="text-left text-sm text-gray-700 hover:text-gray-900">
-                  Daftar
+                  {t.register}
                 </button>
                 <Link
                   to="/e-learning"
@@ -184,12 +208,12 @@ export default function MinimalNavbar() {
               </div>
               {isAuthenticated ? (
                 <>
-                  <Link to="/profile" className="block px-2 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setOpen(false)}>Profil</Link>
+                  <Link to="/profile" className="block px-2 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setOpen(false)}>{t.profile}</Link>
                   {isAdmin && (
                     <Link to="/admin/dashboard" className="block px-2 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setOpen(false)}>Admin</Link>
                   )}
                   <button className="w-full text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => { logout(); setOpen(false); }}>
-                    Keluar
+                    {t.logout}
                   </button>
                 </>
               ) : null}

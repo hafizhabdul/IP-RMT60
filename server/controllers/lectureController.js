@@ -278,6 +278,7 @@ class LectureController {
   static async getUserCourses(req, res, next) {
     try {
       const UserId = req.user.id;
+      const language = resolveLanguage(req);
 
       console.log('Getting courses for user:', UserId);
 
@@ -301,6 +302,11 @@ class LectureController {
             include: [{
               model: Category,
               as: "category"
+            }, {
+              model: LectureTranslation,
+              as: 'translations',
+              required: false,
+              where: { language }
             }]
           }]
         }],
@@ -329,13 +335,16 @@ class LectureController {
         if (transaction.TransactionDetails && transaction.TransactionDetails.length > 0) {
           transaction.TransactionDetails.forEach(detail => {
             if (detail.Lecture) {
+              const lectureData = detail.Lecture.toJSON ? detail.Lecture.toJSON() : detail.Lecture;
+              const translation = lectureData.translations?.[0];
+              const translated = applyTranslation(lectureData, translation);
               courses.push({
-                id: detail.Lecture.id,
-                name: detail.Lecture.name,
-                description: detail.Lecture.description,
-                technique: detail.Lecture.technique,
-                imgUrl: detail.Lecture.imgUrl,
-                category: detail.Lecture.category,
+                id: translated.id,
+                name: translated.name,
+                description: translated.description,
+                technique: translated.technique,
+                imgUrl: translated.imgUrl,
+                category: translated.category,
                 purchase_date: transaction.createdAt,
                 invoice_number: transaction.invoice_number,
                 payment_method: transaction.payment_method,
