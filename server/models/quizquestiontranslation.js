@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       QuizQuestionTranslation.belongsTo(models.QuizQuestion, {
         foreignKey: "QuizQuestionId",
-        as: "question"
+        as: "quizQuestion"
       });
     }
   }
