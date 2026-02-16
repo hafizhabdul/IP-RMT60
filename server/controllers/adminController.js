@@ -22,36 +22,7 @@ class AdminController {
       // Return transactions directly as an array, not wrapped in an object
       res.json(transactions);
     } catch (err) {
-      // If Transaction table doesn't exist yet or there's another error
-      // Return dummy data
-      const dummyTransactions = Array.from({ length: 10 }).map((_, index) => ({
-        id: index + 1,
-        User: {
-          id: index + 1,
-          username: `user${index + 1}`,
-          email: `user${index + 1}@example.com`
-        },
-        user: {
-          id: index + 1,
-          username: `user${index + 1}`,
-          email: `user${index + 1}@example.com`
-        },
-        total: Math.floor(Math.random() * 5000) + 500,
-        total_amount: Math.floor(Math.random() * 5000) + 500,
-        status: ["Completed", "Processing", "Pending", "Cancelled"][Math.floor(Math.random() * 4)],
-        paymentMethod: ["Credit Card", "Bank Transfer", "PayPal"][Math.floor(Math.random() * 3)],
-        payment_method: ["Credit Card", "Bank Transfer", "PayPal"][Math.floor(Math.random() * 3)],
-        createdAt: new Date(Date.now() - Math.floor(Math.random() * 30) * 86400000),
-        items: Array.from({ length: Math.floor(Math.random() * 3) + 1 }).map((_, itemIndex) => ({
-          lecture: {
-            title: `Course ${itemIndex + 1} for Transaction ${index + 1}`
-          },
-          price: Math.floor(Math.random() * 500) + 100
-        }))
-      }));
-
-      // Return dummyTransactions directly as an array, not wrapped in an object
-      res.json(dummyTransactions);
+      res.json([]);
     }
   }
 
@@ -77,36 +48,7 @@ class AdminController {
 
       res.json({ transaction });
     } catch (err) {
-      // If Transaction table doesn't exist yet or there's another error
-      // Return dummy data for the requested ID
-      const id = parseInt(req.params.id);
-      const dummyTransaction = {
-        id,
-        User: {
-          id: Math.floor(Math.random() * 100) + 1,
-          username: `user${id}`,
-          email: `user${id}@example.com`
-        },
-        user: {
-          id: Math.floor(Math.random() * 100) + 1,
-          username: `user${id}`,
-          email: `user${id}@example.com`
-        },
-        total: Math.floor(Math.random() * 5000) + 500,
-        total_amount: Math.floor(Math.random() * 5000) + 500,
-        status: ["Completed", "Processing", "Pending", "Cancelled"][Math.floor(Math.random() * 4)],
-        paymentMethod: ["Credit Card", "Bank Transfer", "PayPal"][Math.floor(Math.random() * 3)],
-        payment_method: ["Credit Card", "Bank Transfer", "PayPal"][Math.floor(Math.random() * 3)],
-        createdAt: new Date(Date.now() - Math.floor(Math.random() * 30) * 86400000),
-        items: Array.from({ length: Math.floor(Math.random() * 5) + 1 }).map((_, itemIndex) => ({
-          lecture: {
-            title: `Course ${itemIndex + 1} for Transaction ${id}`
-          },
-          price: Math.floor(Math.random() * 500) + 100
-        }))
-      };
-
-      res.json({ transaction: dummyTransaction });
+      next(err);
     }
   }
 
@@ -139,15 +81,7 @@ class AdminController {
         transaction 
       });
     } catch (err) {
-      // If Transaction table doesn't exist yet or there's another error
-      res.json({ 
-        message: "Transaction status updated successfully (simulated)", 
-        transaction: {
-          id: parseInt(req.params.id),
-          status: req.body.status,
-          updatedAt: new Date()
-        }
-      });
+      next(err);
     }
   }
 
@@ -184,23 +118,7 @@ class AdminController {
       
       res.json(exportData);
     } catch (err) {
-      // If Transaction table doesn't exist yet or there's another error
-      // Return dummy data
-      const dummyExportData = Array.from({ length: 20 }).map((_, index) => ({
-        id: index + 1,
-        invoice_number: `INV-${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, '0')}${String(new Date().getDate()).padStart(2, '0')}-${Math.floor(10000 + Math.random() * 90000)}`,
-        user: `user${index + 1} (user${index + 1}@example.com)`,
-        total_amount: Math.floor(Math.random() * 5000) + 500,
-        payment_method: ["Credit Card", "Bank Transfer", "PayPal"][Math.floor(Math.random() * 3)],
-        status: ["Completed", "Processing", "Pending", "Cancelled"][Math.floor(Math.random() * 4)],
-        created_at: new Date(Date.now() - Math.floor(Math.random() * 30) * 86400000),
-        items: Array.from({ length: Math.floor(Math.random() * 3) + 1 }).map((_, itemIndex) => ({
-          lecture_title: `Course ${itemIndex + 1} for Transaction ${index + 1}`,
-          price: Math.floor(Math.random() * 500) + 100
-        }))
-      }));
-      
-      res.json(dummyExportData);
+      res.json([]);
     }
   }
 
@@ -234,24 +152,7 @@ class AdminController {
 
       res.json(payments);
     } catch (err) {
-      // Return dummy payment data
-      const dummyPayments = Array.from({ length: 15 }).map((_, index) => ({
-        id: index + 1,
-        transactionId: index + 1,
-        amount: Math.floor(Math.random() * 5000) + 500,
-        paymentMethod: ["Credit Card", "Bank Transfer", "PayPal", "QRIS", "Virtual Account"][Math.floor(Math.random() * 5)],
-        status: ["Completed", "Processing", "Pending", "Failed", "Cancelled"][Math.floor(Math.random() * 5)],
-        user: {
-          id: index + 1,
-          username: `user${index + 1}`,
-          email: `user${index + 1}@example.com`
-        },
-        createdAt: new Date(Date.now() - Math.floor(Math.random() * 30) * 86400000),
-        updatedAt: new Date(Date.now() - Math.floor(Math.random() * 7) * 86400000),
-        invoiceNumber: `INV-${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, '0')}${String(new Date().getDate()).padStart(2, '0')}-${Math.floor(10000 + Math.random() * 90000)}`
-      }));
-
-      res.json(dummyPayments);
+      res.json([]);
     }
   }
 
@@ -286,25 +187,7 @@ class AdminController {
 
       res.json({ payment });
     } catch (err) {
-      // Return dummy payment data for the requested ID
-      const id = parseInt(req.params.id);
-      const dummyPayment = {
-        id,
-        transactionId: id,
-        amount: Math.floor(Math.random() * 5000) + 500,
-        paymentMethod: ["Credit Card", "Bank Transfer", "PayPal", "QRIS", "Virtual Account"][Math.floor(Math.random() * 5)],
-        status: ["Completed", "Processing", "Pending", "Failed", "Cancelled"][Math.floor(Math.random() * 5)],
-        user: {
-          id: Math.floor(Math.random() * 100) + 1,
-          username: `user${id}`,
-          email: `user${id}@example.com`
-        },
-        createdAt: new Date(Date.now() - Math.floor(Math.random() * 30) * 86400000),
-        updatedAt: new Date(Date.now() - Math.floor(Math.random() * 7) * 86400000),
-        invoiceNumber: `INV-${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, '0')}${String(new Date().getDate()).padStart(2, '0')}-${Math.floor(10000 + Math.random() * 90000)}`
-      };
-
-      res.json({ payment: dummyPayment });
+      next(err);
     }
   }
 
@@ -341,15 +224,7 @@ class AdminController {
         }
       });
     } catch (err) {
-      // If Transaction table doesn't exist yet or there's another error
-      res.json({ 
-        message: "Payment status updated successfully (simulated)", 
-        payment: {
-          id: parseInt(req.params.id),
-          status: req.body.status,
-          updatedAt: new Date()
-        }
-      });
+      next(err);
     }
   }
 
@@ -380,20 +255,7 @@ class AdminController {
       
       res.json(exportData);
     } catch (err) {
-      // Return dummy export data
-      const dummyExportData = Array.from({ length: 25 }).map((_, index) => ({
-        id: index + 1,
-        transaction_id: index + 1,
-        invoice_number: `INV-${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, '0')}${String(new Date().getDate()).padStart(2, '0')}-${Math.floor(10000 + Math.random() * 90000)}`,
-        user: `user${index + 1} (user${index + 1}@example.com)`,
-        amount: Math.floor(Math.random() * 5000) + 500,
-        payment_method: ["Credit Card", "Bank Transfer", "PayPal", "QRIS", "Virtual Account"][Math.floor(Math.random() * 5)],
-        status: ["Completed", "Processing", "Pending", "Failed", "Cancelled"][Math.floor(Math.random() * 5)],
-        created_at: new Date(Date.now() - Math.floor(Math.random() * 30) * 86400000),
-        updated_at: new Date(Date.now() - Math.floor(Math.random() * 7) * 86400000)
-      }));
-      
-      res.json(dummyExportData);
+      res.json([]);
     }
   }
 
@@ -562,9 +424,8 @@ class AdminController {
         });
         totalRevenue = revenueResult || 0;
       } catch (err) {
-        console.log("Transaction model not available, using dummy data");
-        totalOrders = 15;
-        totalRevenue = 25000000;
+        totalOrders = 0;
+        totalRevenue = 0;
       }
       
       // Latest user data
@@ -586,17 +447,7 @@ class AdminController {
           limit: 5
         });
       } catch (err) {
-        // Dummy data for orders
-        recentOrders = Array.from({ length: 5 }).map((_, index) => ({
-          id: index + 1,
-          User: { 
-            id: index + 1,
-            username: `user${index + 1}` 
-          },
-          createdAt: new Date(Date.now() - index * 86400000),
-          totalAmount: Math.floor(Math.random() * 5000000) + 1000000,
-          status: ["Completed", "Processing", "Pending"][Math.floor(Math.random() * 3)]
-        }));
+        recentOrders = [];
       }
       
       // Combine all data
@@ -631,9 +482,8 @@ class AdminController {
         });
         revenue = revenueResult || 0;
       } catch (err) {
-        console.log("Transaction model not available, using dummy data");
-        totalOrders = 15;
-        revenue = 25000000;
+        totalOrders = 0;
+        revenue = 0;
       }
 
       res.json({
@@ -681,19 +531,7 @@ class AdminController {
         
         res.json(orders);
       } catch (err) {
-        // Dummy data
-        const dummyOrders = Array.from({ length: limit }).map((_, index) => ({
-          id: index + 1,
-          User: { 
-            id: index + 1,
-            username: `user${index + 1}` 
-          },
-          createdAt: new Date(Date.now() - index * 86400000),
-          totalAmount: Math.floor(Math.random() * 5000000) + 1000000,
-          status: ["Completed", "Processing", "Pending"][Math.floor(Math.random() * 3)]
-        }));
-        
-        res.json(dummyOrders);
+        res.json([]);
       }
     } catch (err) {
       next(err);
@@ -757,16 +595,7 @@ class AdminController {
         
         res.json(monthlySales);
       } catch (err) {
-        // Dummy data for the last 6 months
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-        
-        const dummyData = months.map((month, index) => ({
-          month,
-          orderCount: Math.floor(Math.random() * 20) + 5,
-          revenue: (Math.floor(Math.random() * 50) + 10) * 1000000
-        }));
-        
-        res.json(dummyData);
+        res.json([]);
       }
     } catch (err) {
       next(err);

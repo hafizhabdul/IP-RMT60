@@ -1,19 +1,7 @@
 const { Category, Lecture, User, Alumni, Schedule, Enrollment, LectureTranslation, sequelize } = require("../models");
 const { sendEnrollmentEmails } = require("../services/emailService");
 const { Op } = require("sequelize");
-const { resolveLanguage } = require('../utils/language');
-
-const applyTranslation = (record, translation) => {
-  if (!translation) {
-    return record;
-  }
-  return {
-    ...record,
-    title: translation.title || record.title,
-    technique: translation.technique || record.technique,
-    description: translation.description || record.description
-  };
-};
+const { resolveLanguage, applyTranslation } = require('../utils/language');
 
 class PublicController {
   static async getCategories(req, res, next) {
@@ -282,11 +270,14 @@ class PublicController {
       if (!name || !email || !message) {
         return res.status(400).json({ message: "Name, email, and message are required" });
       }
-      const db = await readRequestsFile();
-      const item = { id: Date.now(), type: "contact", name, email, phone, message, createdAt: new Date().toISOString() };
-      db.contacts.push(item);
-      await writeRequestsFile(db);
-      res.status(201).json({ message: "Contact request submitted", data: item });
+
+      try {
+        await sendEnrollmentEmails({ name, email, phone, method: 'Contact Form', note: message });
+      } catch (emailErr) {
+        // Email failure should not block the response
+      }
+
+      res.status(201).json({ message: "Contact request submitted" });
     } catch (err) {
       next(err);
     }
@@ -313,9 +304,6 @@ class PublicController {
       // Send emails
       try {
         const emailResults = await sendEnrollmentEmails({ name, email, phone, method, note });
-
-        // Log email results for debugging
-        console.log('Email sending results:', emailResults);
 
         // If both emails fail, we still return success but log the error
         if (emailResults.adminEmail === 'failed' && emailResults.userEmail === 'failed') {

@@ -10,9 +10,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { lazy, Suspense } from 'react';
 
 // Layouts
-import TechnicalLayout from "./layouts/TechnicalLayout";
 import MinimalLayout from "./layouts/MinimalLayout";
-import AuthLayout from "./layouts/AuthLayout";
 import ModernAdminLayout from "./layouts/ModernAdminLayout";
 
 // Lazy Load Pages
@@ -35,7 +33,6 @@ const ModernRegister = lazy(() => import("./pages/ModernRegister"));
 const ModernCourseLearning = lazy(() => import("./pages/ModernCourseLearning"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Cart = lazy(() => import("./pages/Cart"));
-const Checkout = lazy(() => import("./pages/Checkout"));
 const CheckoutHybrid = lazy(() => import("./pages/CheckoutHybrid"));
 const UserOrders = lazy(() => import("./pages/UserOrders"));
 const PaymentResult = lazy(() => import("./pages/PaymentResult"));
@@ -144,7 +141,6 @@ function AppRoutes() {
           <Route element={isAuthenticated ? <Outlet /> : <Navigate to="/login" />}>
             <Route path="cart" element={<Cart />} />
             <Route path="checkout" element={<CheckoutHybrid />} />
-            <Route path="checkout/legacy" element={<Checkout />} />
             <Route path="orders" element={<UserOrders />} />
             <Route path="my-courses" element={<MyCourses />} />
             <Route path="profile" element={<TechnicalProfile />} />

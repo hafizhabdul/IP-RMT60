@@ -313,7 +313,6 @@ Terima kasih! 🙏`;
       // }
 
       const { event, data } = req.body;
-      console.log("Mayar Webhook:", event, data);
 
       if (event === 'payment.received' || event === 'payment.success') {
         // Try to find transaction by matching amount and customer email if invoice_number is not passed back

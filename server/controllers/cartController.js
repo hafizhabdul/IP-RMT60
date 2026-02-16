@@ -65,8 +65,6 @@ class CartController {
       const UserId = req.user.id;
       const { LectureId } = req.params;
 
-      console.log("Attempting to remove cart item:", { LectureId, UserId });
-
       const parsedLectureId = parseInt(LectureId, 10);
       if (isNaN(parsedLectureId)) {
         throw { name: "BadRequest", message: "Invalid LectureId" };
@@ -75,8 +73,6 @@ class CartController {
       const cart = await Cart.findOne({
         where: { LectureId: parsedLectureId, UserId },
       });
-
-      console.log("Cart item found:", cart);
 
       if (!cart) {
         throw { name: "NotFound", message: "Cart item not found" };

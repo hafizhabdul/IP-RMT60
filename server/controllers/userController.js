@@ -19,7 +19,6 @@ class UserController {
       });
       
       const payload = ticket.getPayload();
-      console.log('Google payload:', payload);
 
       if (!payload.email) {
         return res.status(400).json({ message: "Email not found in Google token" });

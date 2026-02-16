@@ -1,21 +1,9 @@
 const { Lecture, Category, User, Transaction, TransactionDetail, LectureTranslation } = require("../models");
 const Mux = require('@mux/mux-node');
-const { resolveLanguage } = require('../utils/language');
+const { resolveLanguage, applyTranslation } = require('../utils/language');
 
 const { MUX_TOKEN_ID, MUX_TOKEN_SECRET } = process.env;
 const mux = new Mux(MUX_TOKEN_ID, MUX_TOKEN_SECRET);
-
-const applyTranslation = (record, translation) => {
-  if (!translation) {
-    return record;
-  }
-  return {
-    ...record,
-    title: translation.title || record.title,
-    technique: translation.technique || record.technique,
-    description: translation.description || record.description
-  };
-};
 
 class LectureController {
   static async getAllLectures(req, res, next) {
@@ -280,15 +268,11 @@ class LectureController {
       const UserId = req.user.id;
       const language = resolveLanguage(req);
 
-      console.log('Getting courses for user:', UserId);
-
       // First, let's check if user has any transactions at all
       const allTransactions = await Transaction.findAll({
         where: { UserId },
         attributes: ['id', 'status', 'total_amount', 'payment_method']
       });
-
-      console.log('All user transactions:', allTransactions.length);
 
       const transactions = await Transaction.findAll({
         where: {
@@ -312,8 +296,6 @@ class LectureController {
         }],
         order: [['createdAt', 'DESC']]
       });
-
-      console.log('Found completed transactions:', transactions.length);
 
       // If no completed transactions, return empty but successful response
       if (transactions.length === 0) {
@@ -354,8 +336,6 @@ class LectureController {
           });
         }
       });
-
-      console.log('Processed courses:', courses.length);
 
       res.json({
         message: "User courses retrieved successfully",

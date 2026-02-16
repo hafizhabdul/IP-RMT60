@@ -14,9 +14,6 @@ class ChatbotController {
         throw { name: "BadRequest", message: "Message too long. Maximum 1000 characters." };
       }
 
-      // Log user interaction for analytics (optional)
-      console.log(`Chatbot query: ${message.substring(0, 100)}${message.length > 100 ? '...' : ''}`);
-
       const geminiResponse = await sendMessageToGemini(message);
 
       // Ensure response is not empty

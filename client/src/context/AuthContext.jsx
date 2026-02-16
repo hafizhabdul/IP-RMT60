@@ -48,24 +48,6 @@ export function AuthProvider({ children }) {
   }, [checkAuthStatus]);
 
   const isAuthenticated = !!user;
-  
-  // Optimized admin redirect with debouncing
-  useEffect(() => {
-    if (!authChecked || loading) return;
-    
-    const timeoutId = setTimeout(() => {
-      if (isAuthenticated && user?.role === "Admin") {
-        const currentPath = window.location.pathname;
-        if (!currentPath.startsWith("/admin")) {
-          // Use replace instead of href to prevent throttling
-          window.history.replaceState(null, "", "/admin/dashboard");
-          window.location.reload();
-        }
-      }
-    }, 100); // Debounce navigation
-
-    return () => clearTimeout(timeoutId);
-  }, [isAuthenticated, user, authChecked, loading]);
 
   const login = (data) => {
     if (!data || !data.access_token) {
