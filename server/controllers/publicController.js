@@ -1,6 +1,19 @@
-const { Category, Lecture, User, Alumni, Schedule, Enrollment, sequelize } = require("../models");
+const { Category, Lecture, User, Alumni, Schedule, Enrollment, LectureTranslation, sequelize } = require("../models");
 const { sendEnrollmentEmails } = require("../services/emailService");
 const { Op } = require("sequelize");
+const { resolveLanguage } = require('../utils/language');
+
+const applyTranslation = (record, translation) => {
+  if (!translation) {
+    return record;
+  }
+  return {
+    ...record,
+    title: translation.title || record.title,
+    technique: translation.technique || record.technique,
+    description: translation.description || record.description
+  };
+};
 
 class PublicController {
   static async getCategories(req, res, next) {
@@ -87,6 +100,8 @@ class PublicController {
         if (maxPrice) whereClause.price[Op.lte] = maxPrice;
       }
       
+      const language = resolveLanguage(req);
+
       const { count, rows } = await Lecture.findAndCountAll({
         where: whereClause,
         include: [
@@ -98,11 +113,26 @@ class PublicController {
             model: User,
             attributes: ['username'],
             required: false
+          },
+          {
+            model: LectureTranslation,
+            as: 'translations',
+            required: false,
+            where: {
+              language
+            }
           }
         ],
         order: [[sortBy, sortDirection]],
         limit: parseInt(limit),
         offset: parseInt(offset)
+      });
+
+      const translatedLectures = rows.map((lecture) => {
+        const record = lecture.toJSON();
+        const translation = record.translations?.[0];
+        delete record.translations;
+        return applyTranslation(record, translation);
       });
       
       // Calculate pagination info
@@ -110,7 +140,7 @@ class PublicController {
       const totalPages = Math.ceil(totalItems / limit);
       
       res.json({
-        lectures: rows,
+        lectures: translatedLectures,
         currentPage: parseInt(page),
         totalPages,
         totalItems
@@ -124,12 +154,21 @@ class PublicController {
   static async getLectureById(req, res, next) {
     try {
       const { id } = req.params;
-      
+      const language = resolveLanguage(req);
+
       const lecture = await Lecture.findByPk(id, {
         include: [
           {
             model: Category,
             as: 'category'
+          },
+          {
+            model: LectureTranslation,
+            as: 'translations',
+            required: false,
+            where: {
+              language
+            }
           }
         ]
       });
@@ -138,7 +177,11 @@ class PublicController {
         throw { name: "NotFound", message: "Lecture not found" };
       }
       
-      res.json(lecture);
+      const lectureData = lecture.toJSON();
+      const translation = lectureData.translations?.[0];
+      delete lectureData.translations;
+
+      res.json(applyTranslation(lectureData, translation));
     } catch (err) {
       next(err);
     }
@@ -147,15 +190,24 @@ class PublicController {
   static async getHomepageBundle(req, res, next) {
     try {
       // Get featured lectures (explicitly selecting only existing columns)
+      const language = resolveLanguage(req);
+
       const featuredLectures = await Lecture.findAll({
         attributes: [
-          'id', 'name', 'title', 'technique', 'CategoryId', 
-          'experience_years', 'certifications', 'description', 
+          'id', 'name', 'title', 'technique', 'CategoryId',
+          'experience_years', 'certifications', 'description',
           'price', 'availability', 'image', 'createdAt', 'updatedAt'
         ],
         include: [{
           model: Category,
           as: 'category'
+        }, {
+          model: LectureTranslation,
+          as: 'translations',
+          required: false,
+          where: {
+            language
+          }
         }],
         limit: 3,
         order: [['createdAt', 'DESC']]
@@ -164,16 +216,37 @@ class PublicController {
       // Get latest lectures (same as featured for now, could be different criteria)
       const latestLectures = await Lecture.findAll({
         attributes: [
-          'id', 'name', 'title', 'technique', 'CategoryId', 
-          'experience_years', 'certifications', 'description', 
+          'id', 'name', 'title', 'technique', 'CategoryId',
+          'experience_years', 'certifications', 'description',
           'price', 'availability', 'image', 'createdAt', 'updatedAt'
         ],
         include: [{
           model: Category,
           as: 'category'
+        }, {
+          model: LectureTranslation,
+          as: 'translations',
+          required: false,
+          where: {
+            language
+          }
         }],
         limit: 3,
         order: [['createdAt', 'DESC']]
+      });
+
+      const translatedFeatured = featuredLectures.map((lecture) => {
+        const record = lecture.toJSON();
+        const translation = record.translations?.[0];
+        delete record.translations;
+        return applyTranslation(record, translation);
+      });
+
+      const translatedLatest = latestLectures.map((lecture) => {
+        const record = lecture.toJSON();
+        const translation = record.translations?.[0];
+        delete record.translations;
+        return applyTranslation(record, translation);
       });
       
       // Get popular categories
@@ -187,8 +260,8 @@ class PublicController {
       const totalUsers = await User.count();
       
       res.json({
-        featuredLectures,
-        latestLectures,
+        featuredLectures: translatedFeatured,
+        latestLectures: translatedLatest,
         popularCategories,
         statistics: {
           totalLectures,

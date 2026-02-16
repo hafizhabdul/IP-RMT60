@@ -1,5 +1,17 @@
-const { Lesson, Lecture, UserProgress, User, Transaction, TransactionDetail } = require('../models');
+const { Lesson, Lecture, UserProgress, User, Transaction, TransactionDetail, LessonTranslation } = require('../models');
 const { Op } = require('sequelize');
+const { resolveLanguage } = require('../utils/language');
+
+const applyTranslation = (record, translation) => {
+  if (!translation) {
+    return record;
+  }
+  return {
+    ...record,
+    title: translation.title || record.title,
+    description: translation.description ?? record.description
+  };
+};
 
 class LessonController {
   // Get all lessons for a lecture
@@ -25,6 +37,8 @@ class LessonController {
       }
 
       // Get lessons
+      const language = resolveLanguage(req);
+
       const lessons = await Lesson.findAll({
         where: { LectureId: lectureId },
         order: [['order', 'ASC']],
@@ -32,22 +46,32 @@ class LessonController {
           model: Lecture,
           as: 'lecture',
           attributes: ['id', 'title', 'name']
+        }, {
+          model: LessonTranslation,
+          as: 'translations',
+          required: false,
+          where: {
+            language
+          }
         }]
       });
 
       // Filter lessons based on purchase status
       const filteredLessons = lessons.map(lesson => {
         const lessonData = lesson.toJSON();
-        
+        const translation = lessonData.translations?.[0];
+        delete lessonData.translations;
+        const translatedLesson = applyTranslation(lessonData, translation);
+
         // If user hasn't purchased and lesson is not preview, hide video URL
         if (!hasPurchased && !lesson.isPreview) {
-          lessonData.videoUrl = null;
-          lessonData.isLocked = true;
+          translatedLesson.videoUrl = null;
+          translatedLesson.isLocked = true;
         } else {
-          lessonData.isLocked = false;
+          translatedLesson.isLocked = false;
         }
-        
-        return lessonData;
+
+        return translatedLesson;
       });
 
       res.status(200).json({
@@ -66,11 +90,20 @@ class LessonController {
       const { id } = req.params;
       const userId = req.user?.id;
 
+      const language = resolveLanguage(req);
+
       const lesson = await Lesson.findByPk(id, {
         include: [{
           model: Lecture,
           as: 'lecture',
           attributes: ['id', 'title', 'name', 'price']
+        }, {
+          model: LessonTranslation,
+          as: 'translations',
+          required: false,
+          where: {
+            language
+          }
         }]
       });
 
@@ -98,18 +131,21 @@ class LessonController {
       }
 
       const lessonData = lesson.toJSON();
+      const translation = lessonData.translations?.[0];
+      delete lessonData.translations;
+      const translatedLesson = applyTranslation(lessonData, translation);
 
       // If user hasn't purchased and lesson is not preview, hide video URL
       if (!hasPurchased && !lesson.isPreview) {
-        lessonData.videoUrl = null;
-        lessonData.isLocked = true;
+        translatedLesson.videoUrl = null;
+        translatedLesson.isLocked = true;
       } else {
-        lessonData.isLocked = false;
+        translatedLesson.isLocked = false;
       }
 
       res.status(200).json({
         success: true,
-        data: lessonData,
+        data: translatedLesson,
         hasPurchased
       });
     } catch (error) {

@@ -1,12 +1,27 @@
-const { Lecture, Category, User, Transaction, TransactionDetail } = require("../models");
+const { Lecture, Category, User, Transaction, TransactionDetail, LectureTranslation } = require("../models");
 const Mux = require('@mux/mux-node');
+const { resolveLanguage } = require('../utils/language');
 
 const { MUX_TOKEN_ID, MUX_TOKEN_SECRET } = process.env;
 const mux = new Mux(MUX_TOKEN_ID, MUX_TOKEN_SECRET);
 
+const applyTranslation = (record, translation) => {
+  if (!translation) {
+    return record;
+  }
+  return {
+    ...record,
+    title: translation.title || record.title,
+    technique: translation.technique || record.technique,
+    description: translation.description || record.description
+  };
+};
+
 class LectureController {
   static async getAllLectures(req, res, next) {
     try {
+      const language = resolveLanguage(req);
+
       const lectures = await Lecture.findAll({
         include: [
           {
@@ -16,12 +31,27 @@ class LectureController {
           {
             model: User,
             attributes: ["username", "email"]
+          },
+          {
+            model: LectureTranslation,
+            as: 'translations',
+            required: false,
+            where: {
+              language
+            }
           }
         ],
         order: [["id", "ASC"]]
       });
 
-      res.status(200).json(lectures);
+      const translatedLectures = lectures.map((lecture) => {
+        const record = lecture.toJSON();
+        const translation = record.translations?.[0];
+        delete record.translations;
+        return applyTranslation(record, translation);
+      });
+
+      res.status(200).json(translatedLectures);
     } catch (err) {
       next(err);
     }
@@ -30,6 +60,7 @@ class LectureController {
   static async getLectureById(req, res, next) {
     try {
       const { id } = req.params;
+      const language = resolveLanguage(req);
       const lecture = await Lecture.findByPk(id, {
         include: [
           {
@@ -39,6 +70,14 @@ class LectureController {
           {
             model: User,
             attributes: ["username", "email"]
+          },
+          {
+            model: LectureTranslation,
+            as: 'translations',
+            required: false,
+            where: {
+              language
+            }
           }
         ]
       });
@@ -47,7 +86,11 @@ class LectureController {
         throw { name: "NotFound", message: "Lecture not found" };
       }
 
-      res.status(200).json(lecture);
+      const lectureData = lecture.toJSON();
+      const translation = lectureData.translations?.[0];
+      delete lectureData.translations;
+
+      res.status(200).json(applyTranslation(lectureData, translation));
     } catch (err) {
       next(err);
     }
@@ -186,6 +229,7 @@ class LectureController {
         throw { name: "Forbidden", message: "Please complete payment to access this course" };
       }
 
+      const language = resolveLanguage(req);
       const lecture = await Lecture.findByPk(id, {
         include: [
           {
@@ -195,6 +239,14 @@ class LectureController {
           {
             model: User,
             attributes: ["username", "email"]
+          },
+          {
+            model: LectureTranslation,
+            as: 'translations',
+            required: false,
+            where: {
+              language
+            }
           }
         ]
       });
@@ -203,9 +255,13 @@ class LectureController {
         throw { name: "NotFound", message: "Lecture not found" };
       }
 
+      const lectureData = lecture.toJSON();
+      const translation = lectureData.translations?.[0];
+      delete lectureData.translations;
+
       res.json({
         message: "Course content accessed successfully",
-        lecture,
+        lecture: applyTranslation(lectureData, translation),
         access_granted: true,
         transaction_info: {
           invoice_number: transaction.invoice_number,

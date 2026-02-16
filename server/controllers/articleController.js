@@ -1,5 +1,18 @@
-const { Article, ArticleTag, ArticleProgress, User } = require('../models');
+const { Article, ArticleTag, ArticleProgress, User, ArticleTranslation } = require('../models');
 const { Op } = require('sequelize');
+const { resolveLanguage } = require('../utils/language');
+
+const applyTranslation = (record, translation) => {
+    if (!translation) {
+        return record;
+    }
+    return {
+        ...record,
+        title: translation.title || record.title,
+        excerpt: translation.excerpt ?? record.excerpt,
+        content: translation.content || record.content
+    };
+};
 
 class ArticleController {
     // Get all published articles with filters
@@ -15,12 +28,31 @@ class ArticleController {
 
             const offset = (parseInt(page) - 1) * parseInt(limit);
 
+            const language = resolveLanguage(req);
+
             const { count, rows: articles } = await Article.findAndCountAll({
                 where,
                 attributes: ['id', 'title', 'slug', 'excerpt', 'method', 'level', 'category', 'coverImage', 'readingTime', 'featured', 'viewCount', 'createdAt'],
+                include: [
+                    {
+                        model: ArticleTranslation,
+                        as: 'translations',
+                        required: false,
+                        where: {
+                            language
+                        }
+                    }
+                ],
                 limit: parseInt(limit),
                 offset,
                 order: [['createdAt', 'DESC']]
+            });
+
+            const translatedArticles = articles.map((article) => {
+                const record = article.toJSON();
+                const translation = record.translations?.[0];
+                delete record.translations;
+                return applyTranslation(record, translation);
             });
 
             res.status(200).json({
@@ -30,7 +62,7 @@ class ArticleController {
                     page: parseInt(page),
                     totalPages: Math.ceil(count / parseInt(limit))
                 },
-                data: articles
+                data: translatedArticles
             });
         } catch (error) {
             next(error);
@@ -41,9 +73,20 @@ class ArticleController {
     static async getArticle(req, res, next) {
         try {
             const { slug } = req.params;
+            const language = resolveLanguage(req);
 
             const article = await Article.findOne({
-                where: { slug, published: true }
+                where: { slug, published: true },
+                include: [
+                    {
+                        model: ArticleTranslation,
+                        as: 'translations',
+                        required: false,
+                        where: {
+                            language
+                        }
+                    }
+                ]
             });
 
             if (!article) {
@@ -56,9 +99,13 @@ class ArticleController {
             // Increment view count
             await article.increment('viewCount');
 
+            const articleData = article.toJSON();
+            const translation = articleData.translations?.[0];
+            delete articleData.translations;
+
             res.status(200).json({
                 success: true,
-                data: article
+                data: applyTranslation(articleData, translation)
             });
         } catch (error) {
             next(error);
@@ -165,6 +212,8 @@ class ArticleController {
         try {
             const { slug } = req.params;
 
+            const language = resolveLanguage(req);
+
             const currentArticle = await Article.findOne({
                 where: { slug, published: true },
                 attributes: ['id', 'method', 'level', 'category']
@@ -188,13 +237,30 @@ class ArticleController {
                     ]
                 },
                 attributes: ['id', 'title', 'slug', 'excerpt', 'method', 'level', 'readingTime'],
+                include: [
+                    {
+                        model: ArticleTranslation,
+                        as: 'translations',
+                        required: false,
+                        where: {
+                            language
+                        }
+                    }
+                ],
                 limit: 3,
                 order: [['viewCount', 'DESC']]
             });
 
+            const relatedTranslated = related.map((item) => {
+                const record = item.toJSON();
+                const translation = record.translations?.[0];
+                delete record.translations;
+                return applyTranslation(record, translation);
+            });
+
             res.status(200).json({
                 success: true,
-                data: related
+                data: relatedTranslated
             });
         } catch (error) {
             next(error);
@@ -205,6 +271,7 @@ class ArticleController {
     static async search(req, res, next) {
         try {
             const { q, limit = 10 } = req.query;
+            const language = resolveLanguage(req);
 
             if (!q || q.length < 2) {
                 return res.status(400).json({
@@ -219,18 +286,38 @@ class ArticleController {
                     [Op.or]: [
                         { title: { [Op.iLike]: `%${q}%` } },
                         { excerpt: { [Op.iLike]: `%${q}%` } },
-                        { content: { [Op.iLike]: `%${q}%` } }
+                        { content: { [Op.iLike]: `%${q}%` } },
+                        { '$translations.title$': { [Op.iLike]: `%${q}%` } },
+                        { '$translations.excerpt$': { [Op.iLike]: `%${q}%` } },
+                        { '$translations.content$': { [Op.iLike]: `%${q}%` } }
                     ]
                 },
                 attributes: ['id', 'title', 'slug', 'excerpt', 'method', 'level', 'readingTime'],
+                include: [
+                    {
+                        model: ArticleTranslation,
+                        as: 'translations',
+                        required: false,
+                        where: {
+                            language
+                        }
+                    }
+                ],
                 limit: parseInt(limit),
                 order: [['viewCount', 'DESC']]
             });
 
+            const translatedArticles = articles.map((article) => {
+                const record = article.toJSON();
+                const translation = record.translations?.[0];
+                delete record.translations;
+                return applyTranslation(record, translation);
+            });
+
             res.status(200).json({
                 success: true,
-                count: articles.length,
-                data: articles
+                count: translatedArticles.length,
+                data: translatedArticles
             });
         } catch (error) {
             next(error);

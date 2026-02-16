@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'currentLessonId',
         as: 'userProgresses'
       });
+      Lesson.hasMany(models.LessonTranslation, {
+        foreignKey: 'LessonId',
+        as: 'translations'
+      });
     }
   }
   Lesson.init({

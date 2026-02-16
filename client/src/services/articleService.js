@@ -1,6 +1,9 @@
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_BASE_URL || '';
+const DEFAULT_LANGUAGE = 'id';
+
+const getLanguage = () => localStorage.getItem('ip-rmt60-language') || DEFAULT_LANGUAGE;
 
 // Get articles with filters
 export const getArticles = async (params = {}) => {
@@ -14,13 +17,17 @@ export const getArticles = async (params = {}) => {
     query.append('page', page);
     query.append('limit', limit);
 
-    const response = await axios.get(`${API_URL}/articles?${query.toString()}`);
+    const response = await axios.get(`${API_URL}/articles?${query.toString()}`, {
+        params: { lang: getLanguage() }
+    });
     return response.data;
 };
 
 // Get single article by slug
 export const getArticle = async (slug) => {
-    const response = await axios.get(`${API_URL}/articles/${slug}`);
+    const response = await axios.get(`${API_URL}/articles/${slug}`, {
+        params: { lang: getLanguage() }
+    });
     return response.data;
 };
 
@@ -32,13 +39,21 @@ export const getArticleFilters = async () => {
 
 // Get related articles
 export const getRelatedArticles = async (slug) => {
-    const response = await axios.get(`${API_URL}/articles/${slug}/related`);
+    const response = await axios.get(`${API_URL}/articles/${slug}/related`, {
+        params: { lang: getLanguage() }
+    });
     return response.data;
 };
 
 // Search articles
 export const searchArticles = async (query, limit = 10) => {
-    const response = await axios.get(`${API_URL}/articles/search?q=${encodeURIComponent(query)}&limit=${limit}`);
+    const response = await axios.get(`${API_URL}/articles/search`, {
+        params: {
+            q: query,
+            limit,
+            lang: getLanguage()
+        }
+    });
     return response.data;
 };
 

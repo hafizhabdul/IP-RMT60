@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             QuizQuestion.belongsTo(models.Lecture, { foreignKey: 'LectureId' });
             QuizQuestion.hasMany(models.QuizAttempt, { foreignKey: 'questionId' });
+            QuizQuestion.hasMany(models.QuizQuestionTranslation, { foreignKey: 'QuizQuestionId', as: 'translations' });
         }
     }
     QuizQuestion.init(

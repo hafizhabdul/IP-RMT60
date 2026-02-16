@@ -1,11 +1,25 @@
-const { QuizQuestion, QuizAttempt, User } = require('../models');
+const { QuizQuestion, QuizAttempt, User, QuizQuestionTranslation } = require('../models');
 const { Op } = require('sequelize');
+const { resolveLanguage } = require('../utils/language');
+
+const applyTranslation = (record, translation) => {
+    if (!translation) {
+        return record;
+    }
+    return {
+        ...record,
+        question: translation.question || record.question,
+        options: translation.options || record.options,
+        explanation: translation.explanation ?? record.explanation
+    };
+};
 
 class QuizController {
     // Get quiz questions with filters
     static async getQuestions(req, res, next) {
         try {
             const { method, level, category, limit = 10, random = 'true' } = req.query;
+            const language = resolveLanguage(req);
 
             const where = {};
             if (method) where.method = method;
@@ -15,9 +29,26 @@ class QuizController {
             let questions = await QuizQuestion.findAll({
                 where,
                 attributes: ['id', 'question', 'options', 'category', 'method', 'level', 'difficulty'],
+                include: [
+                    {
+                        model: QuizQuestionTranslation,
+                        as: 'translations',
+                        required: false,
+                        where: {
+                            language
+                        }
+                    }
+                ],
                 // Don't include correctAnswer for security
                 limit: parseInt(limit),
                 order: random === 'true' ? [['id', 'ASC']] : [['createdAt', 'DESC']]
+            });
+
+            questions = questions.map((question) => {
+                const record = question.toJSON();
+                const translation = record.translations?.[0];
+                delete record.translations;
+                return applyTranslation(record, translation);
             });
 
             // Shuffle if random
@@ -85,17 +116,31 @@ class QuizController {
             const questionIds = answers.map(a => a.questionId);
 
             // Fetch correct answers from database
+            const language = resolveLanguage(req);
+
             const questions = await QuizQuestion.findAll({
                 where: { id: questionIds },
-                attributes: ['id', 'correctAnswer', 'explanation']
+                attributes: ['id', 'correctAnswer', 'explanation'],
+                include: [
+                    {
+                        model: QuizQuestionTranslation,
+                        as: 'translations',
+                        required: false,
+                        where: {
+                            language
+                        }
+                    }
+                ]
             });
 
             // Create a map for quick lookup
             const questionMap = {};
             questions.forEach(q => {
+                const record = q.toJSON();
+                const translation = record.translations?.[0];
                 questionMap[q.id] = {
-                    correctAnswer: q.correctAnswer,
-                    explanation: q.explanation
+                    correctAnswer: record.correctAnswer,
+                    explanation: translation?.explanation ?? record.explanation
                 };
             });
 

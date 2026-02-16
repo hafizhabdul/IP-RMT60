@@ -13,8 +13,16 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token');
+    const language = localStorage.getItem('ip-rmt60-language') || 'id';
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+    config.headers['Accept-Language'] = language;
+    if (config.method?.toLowerCase() === 'get') {
+      config.params = {
+        ...(config.params || {}),
+        lang: config.params?.lang ?? language
+      };
     }
     return config;
   },

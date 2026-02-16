@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Menu, X, User, LogOut } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { Button } from './ui/Button';
+import { LanguageContext } from '../context/LanguageContext';
 
 export default function MinimalNavbar() {
   const [open, setOpen] = useState(false);
   const { isAuthenticated, user, logout, isAdmin } = useAuth();
+  const { language, setLanguage } = useContext(LanguageContext);
 
   const links = [
     { name: 'Beranda', path: '/' },
@@ -49,6 +51,30 @@ export default function MinimalNavbar() {
 
         <div className="hidden md:flex items-center gap-3">
           <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 rounded-full border border-gray-200 px-1 py-1 text-xs">
+              <button
+                type="button"
+                onClick={() => setLanguage('id')}
+                className={`px-2 py-1 rounded-full ${
+                  language === 'id'
+                    ? 'bg-gray-900 text-white'
+                    : 'text-gray-500 hover:text-gray-900'
+                }`}
+              >
+                ID
+              </button>
+              <button
+                type="button"
+                onClick={() => setLanguage('en')}
+                className={`px-2 py-1 rounded-full ${
+                  language === 'en'
+                    ? 'bg-gray-900 text-white'
+                    : 'text-gray-500 hover:text-gray-900'
+                }`}
+              >
+                EN
+              </button>
+            </div>
             <Button onClick={handleWhatsApp}>Daftar</Button>
             <Link
               to="/e-learning"
@@ -120,6 +146,30 @@ export default function MinimalNavbar() {
 
             <div className="pt-2 border-t border-gray-200">
               <div className="flex flex-col gap-2 px-2 py-2">
+                <div className="flex items-center gap-1 rounded-full border border-gray-200 px-1 py-1 text-xs w-fit">
+                  <button
+                    type="button"
+                    onClick={() => setLanguage('id')}
+                    className={`px-2 py-1 rounded-full ${
+                      language === 'id'
+                        ? 'bg-gray-900 text-white'
+                        : 'text-gray-500 hover:text-gray-900'
+                    }`}
+                  >
+                    ID
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLanguage('en')}
+                    className={`px-2 py-1 rounded-full ${
+                      language === 'en'
+                        ? 'bg-gray-900 text-white'
+                        : 'text-gray-500 hover:text-gray-900'
+                    }`}
+                  >
+                    EN
+                  </button>
+                </div>
                 <button onClick={() => { handleWhatsApp(); setOpen(false); }} className="text-left text-sm text-gray-700 hover:text-gray-900">
                   Daftar
                 </button>

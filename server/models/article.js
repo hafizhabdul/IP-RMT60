@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
             Article.belongsTo(models.User, { foreignKey: 'authorId', as: 'author' });
             Article.hasMany(models.ArticleTag, { foreignKey: 'ArticleId', as: 'tags' });
             Article.hasMany(models.ArticleProgress, { foreignKey: 'ArticleId' });
+            Article.hasMany(models.ArticleTranslation, { foreignKey: 'ArticleId', as: 'translations' });
         }
     }
     Article.init(

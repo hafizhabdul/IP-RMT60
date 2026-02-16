@@ -1,6 +1,9 @@
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_BASE_URL || '';
+const DEFAULT_LANGUAGE = 'id';
+
+const getLanguage = () => localStorage.getItem('ip-rmt60-language') || DEFAULT_LANGUAGE;
 
 // Get quiz questions with filters
 export const getQuizQuestions = async (params = {}) => {
@@ -12,13 +15,17 @@ export const getQuizQuestions = async (params = {}) => {
     if (category) query.append('category', category);
     if (limit) query.append('limit', limit);
 
+    query.append('lang', getLanguage());
+
     const response = await axios.get(`${API_URL}/quiz/questions?${query.toString()}`);
     return response.data;
 };
 
 // Get available filters (methods, levels, categories)
 export const getQuizFilters = async () => {
-    const response = await axios.get(`${API_URL}/quiz/filters`);
+    const response = await axios.get(`${API_URL}/quiz/filters`, {
+        params: { lang: getLanguage() }
+    });
     return response.data;
 };
 
@@ -42,6 +49,8 @@ export const getQuizHistory = async (token, params = {}) => {
     if (method) query.append('method', method);
     if (level) query.append('level', level);
     if (limit) query.append('limit', limit);
+
+    query.append('lang', getLanguage());
 
     const response = await axios.get(
         `${API_URL}/quiz/history?${query.toString()}`,
