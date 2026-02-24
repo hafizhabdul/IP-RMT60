@@ -3,7 +3,7 @@ const { Op } = require("sequelize");
 const Mux = require('@mux/mux-node');
 
 const { MUX_TOKEN_ID, MUX_TOKEN_SECRET } = process.env;
-const mux = new Mux(MUX_TOKEN_ID, MUX_TOKEN_SECRET);
+const mux = MUX_TOKEN_ID && MUX_TOKEN_SECRET ? new Mux(MUX_TOKEN_ID, MUX_TOKEN_SECRET) : null;
 
 class AdminController {
   // Transaction Management Methods

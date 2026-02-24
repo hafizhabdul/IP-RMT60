@@ -3,7 +3,7 @@ const Mux = require('@mux/mux-node');
 const { resolveLanguage, applyTranslation } = require('../utils/language');
 
 const { MUX_TOKEN_ID, MUX_TOKEN_SECRET } = process.env;
-const mux = new Mux(MUX_TOKEN_ID, MUX_TOKEN_SECRET);
+const mux = MUX_TOKEN_ID && MUX_TOKEN_SECRET ? new Mux(MUX_TOKEN_ID, MUX_TOKEN_SECRET) : null;
 
 class LectureController {
   static async getAllLectures(req, res, next) {
