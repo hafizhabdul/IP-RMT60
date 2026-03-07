@@ -6,15 +6,15 @@ const API_KEY = process.env.SUMOPOD_API_KEY;
 
 const createSystemPrompt = (lectures, categories) => {
   const lectureInfo = lectures.map(lecture => {
-    const lessonTitles = lecture.Lessons && lecture.Lessons.length > 0
-      ? lecture.Lessons.map(l => l.title).join(', ')
+    const lessonTitles = lecture.lessons && lecture.lessons.length > 0
+      ? lecture.lessons.map(l => l.title).join(', ')
       : 'Details not available';
 
     return {
       id: lecture.id,
       instructor: lecture.name,
       technique: lecture.technique,
-      category: lecture.Category?.name || 'Unknown',
+      category: lecture.category?.name || 'Unknown',
       price: lecture.price,
       description: lecture.description,
       availability: lecture.availability,
@@ -58,8 +58,8 @@ async function sendMessageToAI(message) {
     const [lectures, categories] = await Promise.all([
       Lecture.findAll({
         include: [
-          { model: Category, attributes: ['name'] },
-          { model: Lesson, attributes: ['title'] }
+          { model: Category, as: 'category', attributes: ['name'] },
+          { model: Lesson, as: 'lessons', attributes: ['title'] }
         ]
       }),
       Category.findAll()
