@@ -1,3 +1,5 @@
 images
 commit_messages.txt
 porto
+*.env
+

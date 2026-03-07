@@ -1,4 +1,4 @@
-const { Lesson, Lecture, UserProgress, User, Transaction, TransactionDetail, LessonTranslation } = require('../models');
+const { Lesson, Lecture, UserProgress, User, Transaction, TransactionDetail, LessonTranslation, sequelize } = require('../models');
 const { Op } = require('sequelize');
 const { resolveLanguage } = require('../utils/language');
 
@@ -187,43 +187,49 @@ class LessonController {
         });
       }
 
-      // Find or create user progress
-      let [progress] = await UserProgress.findOrCreate({
-        where: {
-          UserId: userId,
-          LectureId: lesson.LectureId
-        },
-        defaults: {
-          currentLessonId: lessonId,
-          completedLessons: [],
-          progressPercentage: 0,
-          totalWatchTime: 0,
-          lastWatchedAt: new Date()
+      // Use transaction to prevent race conditions on concurrent progress updates
+      const progress = await sequelize.transaction(async (t) => {
+        const [record] = await UserProgress.findOrCreate({
+          where: {
+            UserId: userId,
+            LectureId: lesson.LectureId
+          },
+          defaults: {
+            currentLessonId: lessonId,
+            completedLessons: [],
+            progressPercentage: 0,
+            totalWatchTime: 0,
+            lastWatchedAt: new Date()
+          },
+          lock: t.LOCK.UPDATE,
+          transaction: t
+        });
+
+        // Update progress
+        record.currentLessonId = lessonId;
+        record.lastWatchedAt = new Date();
+        
+        if (watchTime) {
+          record.totalWatchTime += watchTime;
         }
+
+        // Mark lesson as completed
+        if (isCompleted && !record.completedLessons.includes(lessonId)) {
+          record.completedLessons = [...record.completedLessons, lessonId];
+        }
+
+        // Calculate progress percentage
+        const totalLessons = await Lesson.count({
+          where: { LectureId: lesson.LectureId },
+          transaction: t
+        });
+        
+        record.progressPercentage = (record.completedLessons.length / totalLessons) * 100;
+        record.isCompleted = record.progressPercentage === 100;
+
+        await record.save({ transaction: t });
+        return record;
       });
-
-      // Update progress
-      progress.currentLessonId = lessonId;
-      progress.lastWatchedAt = new Date();
-      
-      if (watchTime) {
-        progress.totalWatchTime += watchTime;
-      }
-
-      // Mark lesson as completed
-      if (isCompleted && !progress.completedLessons.includes(lessonId)) {
-        progress.completedLessons = [...progress.completedLessons, lessonId];
-      }
-
-      // Calculate progress percentage
-      const totalLessons = await Lesson.count({
-        where: { LectureId: lesson.LectureId }
-      });
-      
-      progress.progressPercentage = (progress.completedLessons.length / totalLessons) * 100;
-      progress.isCompleted = progress.progressPercentage === 100;
-
-      await progress.save();
 
       res.status(200).json({
         success: true,

@@ -1,4 +1,4 @@
-const { Article, ArticleTag, ArticleProgress, User, ArticleTranslation } = require('../models');
+const { Article, ArticleTag, ArticleProgress, User, ArticleTranslation, sequelize } = require('../models');
 const { Op } = require('sequelize');
 const { resolveLanguage } = require('../utils/language');
 
@@ -153,18 +153,24 @@ class ArticleController {
             const { progress, completed } = req.body;
             const userId = req.user.id;
 
-            const [articleProgress, created] = await ArticleProgress.findOrCreate({
-                where: { UserId: userId, ArticleId: articleId },
-                defaults: { progress, completed, lastReadAt: new Date() }
-            });
-
-            if (!created) {
-                await articleProgress.update({
-                    progress: Math.max(articleProgress.progress, progress || 0),
-                    completed: completed || articleProgress.completed,
-                    lastReadAt: new Date()
+            const articleProgress = await sequelize.transaction(async (t) => {
+                const [record, created] = await ArticleProgress.findOrCreate({
+                    where: { UserId: userId, ArticleId: articleId },
+                    defaults: { progress, completed, lastReadAt: new Date() },
+                    lock: t.LOCK.UPDATE,
+                    transaction: t
                 });
-            }
+
+                if (!created) {
+                    await record.update({
+                        progress: Math.max(record.progress, progress || 0),
+                        completed: completed || record.completed,
+                        lastReadAt: new Date()
+                    }, { transaction: t });
+                }
+
+                return record;
+            });
 
             res.status(200).json({
                 success: true,
