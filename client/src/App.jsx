@@ -46,9 +46,8 @@ const ModernDashboard = lazy(() => import("./pages/Admin/ModernDashboard"));
 const ModernAdminUsers = lazy(() => import("./pages/Admin/ModernUsers"));
 const ModernAdminCourses = lazy(() => import("./pages/Admin/ModernAdminCourses"));
 const ModernAdminCategories = lazy(() => import("./pages/Admin/ModernCategories"));
-const ModernTransactions = lazy(() => import("./pages/Admin/ModernTransactions"));
-const AdminPayments = lazy(() => import("./pages/Admin/AdminPayments"));
 const AdminEvents = lazy(() => import("./pages/Admin/AdminEvents"));
+const AdminAlumni = lazy(() => import("./pages/Admin/AdminAlumni"));
 
 const queryClient = new QueryClient();
 
@@ -87,9 +86,8 @@ function AppRoutes() {
           <Route path="users" element={<ModernAdminUsers />} />
           <Route path="courses" element={<ModernAdminCourses />} />
           <Route path="categories" element={<ModernAdminCategories />} />
-          <Route path="transactions" element={<ModernTransactions />} />
-          <Route path="payments" element={<AdminPayments />} />
           <Route path="events" element={<AdminEvents />} />
+          <Route path="alumni" element={<AdminAlumni />} />
         </Route>
 
         {/* Public routes */}

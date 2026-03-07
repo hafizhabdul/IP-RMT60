@@ -4,60 +4,47 @@ const CategoryController = require("../controllers/categoryController");
 const LectureController = require("../controllers/lectureController");
 const UserController = require("../controllers/userController");
 const AdminController = require("../controllers/adminController");
+const AlumniController = require("../controllers/alumniController");
+const EventController = require("../controllers/eventController");
 const authentication = require("../middlewares/authentication");
 const { adminAuthorization } = require("../middlewares/authorization");
-const EventController = require("../controllers/eventController");
 
-// Add authentication and admin authorization to all admin routes
 router.use(authentication);
 router.use(adminAuthorization);
 
-// Dashboard APIs
-router.get("/dashboard", AdminController.getDashboard); // Combined endpoint for dashboard
+// Dashboard
+router.get("/dashboard", AdminController.getDashboard);
 router.get("/statistics", AdminController.getStatistics);
-router.get("/recent-users", AdminController.getRecentUsers); // Change route name to avoid conflicts
-router.get("/orders", AdminController.getRecentOrders);
 router.get("/categories/stats", AdminController.getCategoriesStats);
-router.get("/orders/monthly", AdminController.getMonthlySales);
 
-// Categories routes
+// Categories
 router.get("/categories", CategoryController.getAllCategories);
 router.post("/categories", CategoryController.createCategory);
 router.put("/categories/:id", CategoryController.updateCategory);
 router.delete("/categories/:id", CategoryController.deleteCategory);
 
-// Lectures routes
+// Courses (Lectures)
 router.get("/lectures", LectureController.getAllLectures);
 router.post("/lectures", LectureController.createLecture);
 router.put("/lectures/:id", LectureController.updateLecture);
 router.delete("/lectures/:id", LectureController.deleteLecture);
 
-// Users routes 
-router.get("/users", UserController.getAllUsers); 
+// Users
+router.get("/users", UserController.getAllUsers);
 router.post("/users", UserController.createUser);
 router.put("/users/:id", UserController.updateUser);
 router.delete("/users/:id", UserController.deleteUser);
 
-// Transactions routes
-router.get("/transactions/export", AdminController.exportTransactions); // Place export route before the :id route
-router.get("/transactions", AdminController.getTransactions);
-router.get("/transactions/:id", AdminController.getTransactionById);
-router.put("/transactions/:id", AdminController.updateTransaction);
-
-// Payments routes
-router.get("/payments", AdminController.getPayments);
-router.get("/payments/pending", AdminController.getPendingPayments);
-router.get("/payments/stats", AdminController.getPaymentStats);
-router.patch("/payments/approve/:invoice_number", AdminController.approvePayment);
-router.patch("/payments/reject/:invoice_number", AdminController.rejectPayment);
-router.get("/payments/export", AdminController.exportPayments);
-router.get("/payments/:id", AdminController.getPaymentById);
-router.put("/payments/:id", AdminController.updatePayment);
-
-// Events (Schedule) management
+// Events (Schedule)
 router.get("/events", EventController.list);
 router.post("/events", EventController.create);
 router.put("/events/:id", EventController.update);
 router.delete("/events/:id", EventController.remove);
+
+// Alumni
+router.get("/alumni", AlumniController.list);
+router.post("/alumni", AlumniController.create);
+router.put("/alumni/:id", AlumniController.update);
+router.delete("/alumni/:id", AlumniController.remove);
 
 module.exports = router;
