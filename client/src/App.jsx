@@ -25,36 +25,28 @@ const MinimalPrivacy = lazy(() => import("./pages/MinimalPrivacy"));
 const MinimalTerms = lazy(() => import("./pages/MinimalTerms"));
 const MinimalCourses = lazy(() => import("./pages/MinimalCourses"));
 const MinimalCourseDetail = lazy(() => import("./pages/MinimalCourseDetail"));
-const TechnicalProfile = lazy(() => import("./pages/TechnicalProfile"));
 const ModernLogin = lazy(() => import("./pages/ModernLogin"));
-const ModernRegister = lazy(() => import("./pages/ModernRegister"));
 
-// Legacy Pages (Lazy Loaded)
-const ModernCourseLearning = lazy(() => import("./pages/ModernCourseLearning"));
-const NotFound = lazy(() => import("./pages/NotFound"));
-const Cart = lazy(() => import("./pages/Cart"));
-const CheckoutHybrid = lazy(() => import("./pages/CheckoutHybrid"));
-const UserOrders = lazy(() => import("./pages/UserOrders"));
-const PaymentResult = lazy(() => import("./pages/PaymentResult"));
-const MyCourses = lazy(() => import("./pages/MyCourses"));
+// E-Learning Pages (public, no auth needed)
+const ELearningHub = lazy(() => import("./pages/ELearningHub"));
 const SimulationsHub = lazy(() => import("./pages/simulations/SimulationsHub"));
 const UTSimulationPage = lazy(() => import("./pages/simulations/UTSimulationPage"));
 const MTSimulationPage = lazy(() => import("./pages/simulations/MTSimulationPage"));
 const PTSimulationPage = lazy(() => import("./pages/simulations/PTSimulationPage"));
 const RTSimulationPage = lazy(() => import("./pages/simulations/RTSimulationPage"));
-const ELearningHub = lazy(() => import("./pages/ELearningHub"));
 const QuizHub = lazy(() => import("./pages/quiz/QuizHub"));
 const QuizPage = lazy(() => import("./pages/quiz/QuizPage"));
 const ContentHub = lazy(() => import("./pages/content/ContentHub"));
 const ArticlePage = lazy(() => import("./pages/content/ArticlePage"));
 
-// Modern Admin Pages (Lazy Loaded)
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+// Admin Pages (still need auth)
 const ModernDashboard = lazy(() => import("./pages/Admin/ModernDashboard"));
 const ModernAdminUsers = lazy(() => import("./pages/Admin/ModernUsers"));
 const ModernAdminCourses = lazy(() => import("./pages/Admin/ModernAdminCourses"));
 const ModernAdminCategories = lazy(() => import("./pages/Admin/ModernCategories"));
 const ModernTransactions = lazy(() => import("./pages/Admin/ModernTransactions"));
-const ModernPayments = lazy(() => import("./pages/Admin/ModernPayments"));
 const AdminPayments = lazy(() => import("./pages/Admin/AdminPayments"));
 const AdminEvents = lazy(() => import("./pages/Admin/AdminEvents"));
 
@@ -73,10 +65,8 @@ const PageLoader = () => (
 function AppRoutes() {
   const { isAuthenticated, isAdmin, loading } = useAuth();
 
-  // Auto scroll to top when navigating to different routes
   useScrollToTop();
 
-  // Loading spinner with modern design
   if (loading) {
     return <PageLoader />;
   }
@@ -84,12 +74,9 @@ function AppRoutes() {
   return (
     <Suspense fallback={<PageLoader />}>
       <Routes>
-        {/* Authentication routes */}
+        {/* Admin login route */}
         <Route path="/login" element={
           isAuthenticated ? (isAdmin ? <Navigate to="/admin/dashboard" /> : <Navigate to="/" />) : <ModernLogin />
-        } />
-        <Route path="/register" element={
-          isAuthenticated ? (isAdmin ? <Navigate to="/admin/dashboard" /> : <Navigate to="/" />) : <ModernRegister />
         } />
 
         {/* Admin routes */}
@@ -105,7 +92,7 @@ function AppRoutes() {
           <Route path="events" element={<AdminEvents />} />
         </Route>
 
-        {/* User routes - minimal, redirect admin to admin dashboard */}
+        {/* Public routes */}
         <Route path="/*" element={
           isAdmin ? <Navigate to="/admin/dashboard" /> : <MinimalLayout />
         }>
@@ -118,12 +105,10 @@ function AppRoutes() {
           <Route path="contact" element={<MinimalContact />} />
           <Route path="privacy" element={<MinimalPrivacy />} />
           <Route path="terms" element={<MinimalTerms />} />
-          {/* <Route path="enroll" element={<MinimalEnroll />} /> */}
           <Route path="courses" element={<MinimalCourses />} />
           <Route path="courses/:id" element={<MinimalCourseDetail />} />
-          <Route path="courses/:id/learn" element={<ModernCourseLearning />} />
 
-          {/* E-Learning Platform Routes */}
+          {/* E-Learning Platform Routes (public) */}
           <Route path="e-learning" element={<ELearningHub />} />
           <Route path="e-learning/simulations" element={<SimulationsHub />} />
           <Route path="e-learning/simulations/ut" element={<UTSimulationPage />} />
@@ -135,25 +120,8 @@ function AppRoutes() {
           <Route path="e-learning/content" element={<ContentHub />} />
           <Route path="e-learning/content/:slug" element={<ArticlePage />} />
 
-          {/* categories removed from public site */}
-
-          {/* Protected user routes */}
-          <Route element={isAuthenticated ? <Outlet /> : <Navigate to="/login" />}>
-            <Route path="cart" element={<Cart />} />
-            <Route path="checkout" element={<CheckoutHybrid />} />
-            <Route path="orders" element={<UserOrders />} />
-            <Route path="my-courses" element={<MyCourses />} />
-            <Route path="profile" element={<TechnicalProfile />} />
-            <Route path="learn/:id" element={<ModernCourseLearning />} />
-          </Route>
-
           <Route path="*" element={<NotFound />} />
         </Route>
-
-        {/* Payment Result Routes */}
-        <Route path="/payment/success" element={<PaymentResult />} />
-        <Route path="/payment/failed" element={<PaymentResult />} />
-        <Route path="/payment/pending" element={<PaymentResult />} />
       </Routes>
     </Suspense>
   );

@@ -29,7 +29,6 @@ app.use(limiter);
 // CORS configuration
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://frontend-sns.onrender.com",
   "https://sarndtservices.com",
   "https://www.sarndtservices.com"
 ];
@@ -61,7 +60,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 //middleware body-parser
 app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+app.use(express.json({ limit: '10kb' }));
 
 app.get("/", (req, res) => {
   res.send("SNS NDT Learning Platform API");
@@ -72,12 +71,6 @@ app.use("/api", routes);
 
 // Error handler middleware
 app.use(errorHandler);
-
-// Add more detailed error logging
-app.use((err, req, res, next) => {
-  console.error("Error details:", err);
-  next(err);
-});
 
 // Only listen if directly running this file (not in test environment)
 if (process.env.NODE_ENV !== "test") {

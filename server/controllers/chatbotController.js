@@ -1,4 +1,4 @@
-const { sendMessageToGemini } = require("../helpers/gemini");
+const { sendMessageToAI } = require("../helpers/sumopod");
 
 class ChatbotController {
   static async sendMessage(req, res, next) {
@@ -14,15 +14,15 @@ class ChatbotController {
         throw { name: "BadRequest", message: "Message too long. Maximum 1000 characters." };
       }
 
-      const geminiResponse = await sendMessageToGemini(message);
+      const aiResponse = await sendMessageToAI(message);
 
       // Ensure response is not empty
-      if (!geminiResponse || geminiResponse.trim().length === 0) {
+      if (!aiResponse || aiResponse.trim().length === 0) {
         throw new Error("Empty response from AI");
       }
 
       res.status(200).json({ 
-        text: geminiResponse,
+        text: aiResponse,
         timestamp: new Date().toISOString()
       });
     } catch (error) {

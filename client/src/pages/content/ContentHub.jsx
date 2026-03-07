@@ -12,19 +12,28 @@ export default function ContentHub() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        loadData();
+        loadFilters();
+    }, []);
+
+    useEffect(() => {
+        loadArticles();
     }, [selectedMethod, selectedLevel]);
 
-    const loadData = async () => {
+    const loadFilters = async () => {
+        try {
+            const filtersRes = await getArticleFilters();
+            setFilters(filtersRes.data || { methods: [], levels: [], categories: [] });
+        } catch (err) {
+            console.error('Failed to load filters:', err);
+        }
+    };
+
+    const loadArticles = async () => {
         try {
             setLoading(true);
             setError(null);
-            const [articlesRes, filtersRes] = await Promise.all([
-                getArticles({ method: selectedMethod, level: selectedLevel, limit: 20 }),
-                getArticleFilters()
-            ]);
+            const articlesRes = await getArticles({ method: selectedMethod, level: selectedLevel, limit: 20 });
             setArticles(articlesRes.data || []);
-            setFilters(filtersRes.data || { methods: [], levels: [], categories: [] });
         } catch (err) {
             console.error('Failed to load articles:', err);
             setError(err.message || 'Failed to load articles');
@@ -95,7 +104,7 @@ export default function ContentHub() {
                     <div className="text-center py-12 bg-red-50 rounded-lg border border-red-100">
                         <p className="text-red-600 mb-2">Unable to load content</p>
                         <button
-                            onClick={loadData}
+                            onClick={loadArticles}
                             className="text-sm text-red-700 font-medium hover:underline"
                         >
                             Try again

@@ -185,14 +185,13 @@ class UserController {
     try {
       const { username, email, role, phoneNumber, address } = req.body;
 
-      // Generate random password
+      // Generate random password (will be hashed by model beforeCreate hook)
       const randomPassword = Math.random().toString(36).slice(-8);
-      const hashedPassword = hashPassword(randomPassword);
 
       const user = await User.create({
         username,
         email,
-        password: hashedPassword,
+        password: randomPassword,
         role: role || 'User',
         phoneNumber,
         address

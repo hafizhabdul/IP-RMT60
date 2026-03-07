@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Clock, AlertCircle, BookOpen, Send } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { ArrowLeft, Clock, AlertCircle, BookOpen, Send, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import QuizCard from '../../components/quiz/QuizCard';
 import QuizResults from '../../components/quiz/QuizResults';
@@ -18,10 +18,11 @@ export default function QuizPage() {
     const [error, setError] = useState(null);
     const [results, setResults] = useState(null);
     const [timeElapsed, setTimeElapsed] = useState(0);
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const timerRef = useRef(null);
 
-    // Get query params
-    const searchParams = new URLSearchParams(window.location.search);
+    // Get query params via useSearchParams
+    const [searchParams] = useSearchParams();
     const method = searchParams.get('method') || 'UT';
     const level = searchParams.get('level') || 'Level I';
     const questionCount = parseInt(searchParams.get('count')) || 10;
@@ -72,12 +73,11 @@ export default function QuizPage() {
     const handleSubmit = async () => {
         // Check if all questions are answered
         const answeredCount = Object.keys(answers).length;
-        if (answeredCount < questions.length) {
-            const confirm = window.confirm(
-                `You have only answered ${answeredCount} of ${questions.length} questions. Submit anyway?`
-            );
-            if (!confirm) return;
+        if (answeredCount < questions.length && !showConfirmDialog) {
+            setShowConfirmDialog(true);
+            return;
         }
+        setShowConfirmDialog(false);
 
         setSubmitting(true);
         clearInterval(timerRef.current);
@@ -303,6 +303,40 @@ export default function QuizPage() {
                     </div>
                 )}
             </div>
+
+            {/* Confirm Submit Dialog */}
+            {showConfirmDialog && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                    <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-6">
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-lg font-bold text-gray-900">Submit Quiz?</h3>
+                            <button
+                                onClick={() => setShowConfirmDialog(false)}
+                                className="text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                                <X className="h-5 w-5" />
+                            </button>
+                        </div>
+                        <p className="text-gray-600 mb-6">
+                            You have only answered <strong>{Object.keys(answers).length}</strong> of <strong>{questions.length}</strong> questions. Unanswered questions will be marked as incorrect.
+                        </p>
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => setShowConfirmDialog(false)}
+                                className="flex-1 px-4 py-2.5 border-2 border-gray-300 hover:border-gray-400 text-gray-700 font-medium rounded-lg transition-colors"
+                            >
+                                Go Back
+                            </button>
+                            <button
+                                onClick={handleSubmit}
+                                className="flex-1 px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors"
+                            >
+                                Submit Anyway
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

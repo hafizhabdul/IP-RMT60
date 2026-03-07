@@ -15,8 +15,8 @@ services:
       context: ./client
       args:
         VITE_BASE_URL: https://sarndtservices.com/api
-        VITE_GOOGLE_CLIENT_ID: 320295330330-cnmpi71hghehrhge8v4bg2v7f24gnu6v.apps.googleusercontent.com
-        VITE_WA_NUMBER: 628129258446
+        VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID}
+        VITE_WA_NUMBER: ${VITE_WA_NUMBER:-628129258446}
         VITE_HERO_VIDEO_URL: /videos/3987526-hd_1920_1080_25fps.mp4
     restart: always
 

@@ -47,7 +47,7 @@ export default function SimulationsHub() {
                     </Link>
                     <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Simulation Lab</h1>
                     <p className="mt-4 text-xl text-gray-500 max-w-3xl font-light">
-                        Explore NDT physics through hands-on simulations. select a method below to enter the virtual lab.
+                        Explore NDT physics through hands-on simulations. Select a method below to enter the virtual lab.
                     </p>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen } from 'lucide-react';
+import { motion } from 'framer-motion';
 import '../styles/enhancements.css';
 import { LanguageContext } from '../context/LanguageContext';
 
@@ -177,20 +178,35 @@ export default function ELearningHub() {
                             </button>
                         </div>
                     </div>
-                    <h1 className="text-4xl font-bold text-gray-900 tracking-tight mb-4">
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="text-4xl font-bold text-gray-900 tracking-tight mb-4"
+                    >
                         {t.heroTitle}
-                    </h1>
-                    <p className="text-xl text-gray-500 max-w-2xl font-light leading-relaxed">
+                    </motion.h1>
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.1 }}
+                        className="text-xl text-gray-500 max-w-2xl font-light leading-relaxed"
+                    >
                         {t.heroDescription}
-                    </p>
-                    <div className="mt-8 bg-gray-50 border border-gray-200 rounded-2xl p-6">
+                    </motion.p>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        className="mt-8 bg-gray-50 border border-gray-200 rounded-2xl p-6"
+                    >
                         <h2 className="text-lg font-semibold text-gray-900 mb-3">
                             {t.ndtIntroTitle}
                         </h2>
                         <p className="text-gray-600 leading-relaxed">
                             {t.ndtIntroDescription}
                         </p>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
 
@@ -202,70 +218,83 @@ export default function ELearningHub() {
                         <h2 className="text-2xl font-semibold">{t.startHereTitle}</h2>
                     </div>
                     <div className="grid md:grid-cols-3 gap-6">
-                        {t.startHereItems.map((item) => (
-                            <Link
+                        {t.startHereItems.map((item, index) => (
+                            <motion.div
                                 key={item.title}
-                                to={item.link}
-                                className="group bg-white border border-gray-200 rounded-xl p-6 transition-all duration-300 hover:border-orange-200 hover:shadow-lg"
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: index * 0.1 }}
                             >
-                                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                                    {item.title}
-                                </h3>
-                                <p className="text-gray-600 mb-6 leading-relaxed">
-                                    {item.description}
-                                </p>
-                                <div className="flex items-center text-sm font-medium text-gray-900 group-hover:text-orange-600 transition-colors">
-                                    {item.action}
-                                    <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
-                                </div>
-                            </Link>
+                                <Link
+                                    to={item.link}
+                                    className="block h-full group bg-white border border-gray-200 rounded-xl p-6 transition-all duration-300 hover:border-orange-200 hover:shadow-lg"
+                                >
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                                        {item.title}
+                                    </h3>
+                                    <p className="text-gray-600 mb-6 leading-relaxed">
+                                        {item.description}
+                                    </p>
+                                    <div className="flex items-center text-sm font-medium text-gray-900 group-hover:text-orange-600 transition-colors">
+                                        {item.action}
+                                        <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+                                    </div>
+                                </Link>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
                 <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
                     {features.map((feature, index) => (
-                        feature.disabled ? (
-                            <div
-                                key={index}
-                                aria-disabled="true"
-                                className="group bg-white rounded-xl p-8 border border-gray-200 transition-all duration-300 opacity-60 cursor-not-allowed"
-                            >
-                                <div className="flex flex-col h-full justify-between">
-                                    <div>
-                                        <h3 className="text-2xl font-semibold text-gray-900 mb-3">
-                                            {feature.title}
-                                        </h3>
-                                        <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                                            {feature.description}
-                                        </p>
-                                    </div>
-                                    <div className="flex items-center text-sm font-medium text-gray-900">
-                                        {feature.action}
-                                    </div>
-                                </div>
-                            </div>
-                        ) : (
-                            <Link
-                                key={index}
-                                to={feature.link}
-                                className="group bg-white rounded-xl p-8 border border-gray-200 transition-all duration-300 hover:border-orange-200 hover:shadow-lg hover:-translate-y-1"
-                            >
-                                <div className="flex flex-col h-full justify-between">
-                                    <div>
-                                        <h3 className="text-2xl font-semibold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors">
-                                            {feature.title}
-                                        </h3>
-                                        <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                                            {feature.description}
-                                        </p>
-                                    </div>
-                                    <div className="flex items-center text-sm font-medium text-gray-900 group-hover:text-orange-600 transition-colors">
-                                        {feature.action}
-                                        <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+                        <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.4, delay: index * 0.1 }}
+                        >
+                            {feature.disabled ? (
+                                <div
+                                    aria-disabled="true"
+                                    className="group bg-white rounded-xl p-8 border border-gray-200 transition-all duration-300 opacity-60 cursor-not-allowed h-full"
+                                >
+                                    <div className="flex flex-col h-full justify-between">
+                                        <div>
+                                            <h3 className="text-2xl font-semibold text-gray-900 mb-3">
+                                                {feature.title}
+                                            </h3>
+                                            <p className="text-gray-600 text-lg leading-relaxed mb-8">
+                                                {feature.description}
+                                            </p>
+                                        </div>
+                                        <div className="flex items-center text-sm font-medium text-gray-900">
+                                            {feature.action}
+                                        </div>
                                     </div>
                                 </div>
-                            </Link>
-                        )
+                            ) : (
+                                <Link
+                                    to={feature.link}
+                                    className="block group bg-white rounded-xl p-8 border border-gray-200 transition-all duration-300 hover:border-orange-200 hover:shadow-lg hover:-translate-y-1 h-full"
+                                >
+                                    <div className="flex flex-col h-full justify-between">
+                                        <div>
+                                            <h3 className="text-2xl font-semibold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors">
+                                                {feature.title}
+                                            </h3>
+                                            <p className="text-gray-600 text-lg leading-relaxed mb-8">
+                                                {feature.description}
+                                            </p>
+                                        </div>
+                                        <div className="flex items-center text-sm font-medium text-gray-900 group-hover:text-orange-600 transition-colors">
+                                            {feature.action}
+                                            <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+                                        </div>
+                                    </div>
+                                </Link>
+                            )}
+                        </motion.div>
                     ))}
                 </div>
 

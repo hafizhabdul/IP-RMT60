@@ -39,16 +39,16 @@ export default function QuizResults({ results, onRetry, onBackToHub }) {
                 <div className="mt-6 p-6 bg-orange-50 border-2 border-orange-200 rounded-xl text-center">
                     <LogIn className="h-8 w-8 text-orange-600 mx-auto mb-3" />
                     <h3 className="text-lg font-bold text-orange-900 mb-2">
-                        Ingin Lihat Jawaban yang Benar?
+                        Want to See the Correct Answers?
                     </h3>
                     <p className="text-orange-800 mb-4">
-                        Login atau daftar untuk melihat jawaban yang benar, penjelasan, dan simpan progress belajar Anda.
+                        Log in or register to see correct answers, explanations, and save your learning progress.
                     </p>
                     <Link
                         to="/login?redirect=/e-learning/quizzes"
                         className="inline-block px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors"
                     >
-                        Login untuk Lihat Hasil
+                        Log In to See Results
                     </Link>
                 </div>
 

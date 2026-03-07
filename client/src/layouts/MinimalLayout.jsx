@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import MinimalNavbar from '@/components/MinimalNavbar';
 import MinimalFooter from '@/components/MinimalFooter';
-import WhatsappFloating from '@/components/WhatsappFloating';
+import ChatbotFloating from '@/components/ChatbotFloating';
 
 export default function MinimalLayout() {
   return (
@@ -11,7 +11,7 @@ export default function MinimalLayout() {
         <Outlet />
       </main>
       <MinimalFooter />
-      <WhatsappFloating />
+      <ChatbotFloating />
     </>
   );
 }

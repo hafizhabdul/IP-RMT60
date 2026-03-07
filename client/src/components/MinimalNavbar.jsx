@@ -1,13 +1,13 @@
 import { useContext, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, X, User, LogOut } from 'lucide-react';
+import { Menu, X, LogOut } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { Button } from './ui/Button';
 import { LanguageContext } from '../context/LanguageContext';
 
 export default function MinimalNavbar() {
   const [open, setOpen] = useState(false);
-  const { isAuthenticated, user, logout, isAdmin } = useAuth();
+  const { isAuthenticated, isAdmin, logout } = useAuth();
   const { language, setLanguage } = useContext(LanguageContext);
 
   const navTranslations = {
@@ -22,9 +22,7 @@ export default function MinimalNavbar() {
         { name: 'Kontak', path: '/contact' },
       ],
       register: 'Daftar',
-      profile: 'Profil',
       logout: 'Keluar',
-      account: 'Akun',
     },
     en: {
       links: [
@@ -37,9 +35,7 @@ export default function MinimalNavbar() {
         { name: 'Contact', path: '/contact' },
       ],
       register: 'Register',
-      profile: 'Profile',
       logout: 'Logout',
-      account: 'Account',
     },
   };
   const t = navTranslations[language];
@@ -72,79 +68,39 @@ export default function MinimalNavbar() {
           ))}
         </div>
 
-
         <div className="hidden md:flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 rounded-full border border-gray-200 px-1 py-1 text-xs">
-              <button
-                type="button"
-                onClick={() => setLanguage('id')}
-                className={`px-2 py-1 rounded-full ${
-                  language === 'id'
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-500 hover:text-gray-900'
-                }`}
-              >
-                ID
-              </button>
-              <button
-                type="button"
-                onClick={() => setLanguage('en')}
-                className={`px-2 py-1 rounded-full ${
-                  language === 'en'
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-500 hover:text-gray-900'
-                }`}
-              >
-                EN
-              </button>
-            </div>
-            <Button onClick={handleWhatsApp}>{t.register}</Button>
-            <Link
-              to="/e-learning"
-              className="h-10 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium rounded-md transition-colors inline-flex items-center justify-center"
+          <div className="flex items-center gap-1 rounded-full border border-gray-200 px-1 py-1 text-xs">
+            <button
+              type="button"
+              onClick={() => setLanguage('id')}
+              className={`px-2 py-1 rounded-full ${language === 'id' ? 'bg-gray-900 text-white' : 'text-gray-500 hover:text-gray-900'}`}
             >
-              E-Learning
-              <span className="ml-2 text-[10px] bg-teal-500 text-white border border-teal-400 px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">Beta</span>
-            </Link>
+              ID
+            </button>
+            <button
+              type="button"
+              onClick={() => setLanguage('en')}
+              className={`px-2 py-1 rounded-full ${language === 'en' ? 'bg-gray-900 text-white' : 'text-gray-500 hover:text-gray-900'}`}
+            >
+              EN
+            </button>
           </div>
-          {isAuthenticated ? (
-            <div className="relative">
-              <Button variant="ghost" onClick={() => setOpen((v) => !v)} aria-label="Toggle account menu">
-                <User className="h-4 w-4 mr-2" />
-                <span className="text-sm">{user?.username || user?.name || t.account}</span>
-              </Button>
-              {open && (
-                <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-sm">
-                  {isAdmin && (
-                    <Link
-                      to="/admin/dashboard"
-                      className="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                      onClick={() => setOpen(false)}
-                    >
-                      Admin
-                    </Link>
-                  )}
-                  <Link
-                    to="/profile"
-                    className="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                    onClick={() => setOpen(false)}
-                  >
-                    {t.profile}
-                  </Link>
-                  <button
-                    onClick={() => {
-                      logout();
-                      setOpen(false);
-                    }}
-                    className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                  >
-                    <LogOut className="inline h-4 w-4 mr-2" /> {t.logout}
-                  </button>
-                </div>
-              )}
+          <Button onClick={handleWhatsApp}>{t.register}</Button>
+          <Link
+            to="/e-learning"
+            className="h-10 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium rounded-md transition-colors inline-flex items-center justify-center"
+          >
+            E-Learning
+            <span className="ml-2 text-[10px] bg-teal-500 text-white border border-teal-400 px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">Beta</span>
+          </Link>
+          {isAuthenticated && isAdmin && (
+            <div className="flex items-center gap-2">
+              <Link to="/admin/dashboard" className="text-sm text-gray-600 hover:text-gray-900">Admin</Link>
+              <button onClick={logout} className="text-sm text-gray-500 hover:text-gray-900" title={t.logout}>
+                <LogOut className="h-4 w-4" />
+              </button>
             </div>
-          ) : null}
+          )}
         </div>
 
         <button className="md:hidden" aria-label="Toggle navigation" onClick={() => setOpen((v) => !v)}>
@@ -167,56 +123,24 @@ export default function MinimalNavbar() {
                 {l.name}
               </NavLink>
             ))}
-
             <div className="pt-2 border-t border-gray-200">
               <div className="flex flex-col gap-2 px-2 py-2">
                 <div className="flex items-center gap-1 rounded-full border border-gray-200 px-1 py-1 text-xs w-fit">
-                  <button
-                    type="button"
-                    onClick={() => setLanguage('id')}
-                    className={`px-2 py-1 rounded-full ${
-                      language === 'id'
-                        ? 'bg-gray-900 text-white'
-                        : 'text-gray-500 hover:text-gray-900'
-                    }`}
-                  >
-                    ID
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setLanguage('en')}
-                    className={`px-2 py-1 rounded-full ${
-                      language === 'en'
-                        ? 'bg-gray-900 text-white'
-                        : 'text-gray-500 hover:text-gray-900'
-                    }`}
-                  >
-                    EN
-                  </button>
+                  <button type="button" onClick={() => setLanguage('id')} className={`px-2 py-1 rounded-full ${language === 'id' ? 'bg-gray-900 text-white' : 'text-gray-500 hover:text-gray-900'}`}>ID</button>
+                  <button type="button" onClick={() => setLanguage('en')} className={`px-2 py-1 rounded-full ${language === 'en' ? 'bg-gray-900 text-white' : 'text-gray-500 hover:text-gray-900'}`}>EN</button>
                 </div>
-                <button onClick={() => { handleWhatsApp(); setOpen(false); }} className="text-left text-sm text-gray-700 hover:text-gray-900">
-                  {t.register}
-                </button>
-                <Link
-                  to="/e-learning"
-                  onClick={() => setOpen(false)}
-                  className="h-10 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium rounded-md transition-colors inline-flex items-center justify-center"
-                >
+                <button onClick={() => { handleWhatsApp(); setOpen(false); }} className="text-left text-sm text-gray-700 hover:text-gray-900">{t.register}</button>
+                <Link to="/e-learning" onClick={() => setOpen(false)} className="h-10 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium rounded-md transition-colors inline-flex items-center justify-center">
                   E-Learning
                   <span className="ml-2 text-[10px] bg-teal-500 text-white border border-teal-400 px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">Beta</span>
                 </Link>
               </div>
-              {isAuthenticated ? (
-                <>
-                  <Link to="/profile" className="block px-2 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setOpen(false)}>{t.profile}</Link>
-                  {isAdmin && (
-                    <Link to="/admin/dashboard" className="block px-2 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setOpen(false)}>Admin</Link>
-                  )}
-                  <button className="w-full text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => { logout(); setOpen(false); }}>
-                    {t.logout}
-                  </button>
-                </>
-              ) : null}
+              {isAuthenticated && isAdmin && (
+                <div className="flex items-center gap-2 px-2 py-2">
+                  <Link to="/admin/dashboard" className="text-sm text-gray-700 hover:bg-gray-50" onClick={() => setOpen(false)}>Admin</Link>
+                  <button className="text-sm text-gray-700 hover:bg-gray-50" onClick={() => { logout(); setOpen(false); }}>{t.logout}</button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -224,4 +148,3 @@ export default function MinimalNavbar() {
     </header>
   );
 }
-
