@@ -2,4 +2,5 @@ images
 commit_messages.txt
 porto
 *.env
+.claude/
 

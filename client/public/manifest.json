@@ -1,8 +1,7 @@
 {
   "name": "SNS NDT Services - Industrial Training & Certification",
   "short_name": "SNS NDT",
-  "description": "Professional NDT training and certification services since 2020. PT, MT, UT, ET, PAUT, TOFD, RI,
-VT, RT, RFET, PEC, MFL, IRT, Etc. methods with international standards.",
+  "description": "Professional NDT training and certification services since 2020. PT, MT, UT, ET, PAUT, TOFD, RI, VT, RT, RFET, PEC, MFL, IRT, Etc. methods with international standards.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",
