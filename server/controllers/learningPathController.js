@@ -1,6 +1,31 @@
 const { LearningPath, Module, LessonStep, UserEnrollment, UserModuleProgress, UserStepProgress, User, sequelize } = require('../models');
 const { Op } = require('sequelize');
 
+async function computePathProgressFromSteps(userId, pathId) {
+  // Count total steps across all modules in this path
+  const totalSteps = await LessonStep.count({
+    include: [{ model: Module, as: 'module', where: { LearningPathId: pathId }, required: true, attributes: [] }]
+  });
+  if (totalSteps === 0) return { percent: 0, doneSteps: 0, totalSteps: 0 };
+
+  const doneSteps = await UserStepProgress.count({
+    where: { UserId: userId, status: 'done' },
+    include: [{
+      model: LessonStep,
+      as: 'lessonStep',
+      required: true,
+      attributes: [],
+      include: [{ model: Module, as: 'module', where: { LearningPathId: pathId }, required: true, attributes: [] }]
+    }]
+  });
+
+  return {
+    percent: Math.round((doneSteps / totalSteps) * 100),
+    doneSteps,
+    totalSteps
+  };
+}
+
 const METHOD_GRADIENTS = {
   UT: ['#0EA5E9', '#06B6D4'],
   MT: ['#8B5CF6', '#A855F7'],
@@ -28,6 +53,7 @@ class LearningPathController {
       });
 
       let enrollmentsMap = {};
+      let pathProgressMap = {};
       if (userId) {
         const enrollments = await UserEnrollment.findAll({
           where: { UserId: userId }
@@ -35,11 +61,22 @@ class LearningPathController {
         enrollments.forEach((e) => {
           enrollmentsMap[e.LearningPathId] = e.toJSON();
         });
+
+        // Recompute true progress from step records (covers cases where enrollment.completionPercent is stale or user has progress without formal enrollment)
+        await Promise.all(paths.map(async (p) => {
+          pathProgressMap[p.id] = await computePathProgressFromSteps(userId, p.id);
+        }));
       }
 
       const result = paths.map((p) => {
         const json = p.toJSON();
         const enrollment = enrollmentsMap[p.id] || null;
+        const progress = pathProgressMap[p.id] || { percent: 0, doneSteps: 0, totalSteps: 0 };
+        // True progress: prefer computed (live count) over stored enrollment.completionPercent
+        const livePercent = progress.percent;
+        const hasProgress = progress.doneSteps > 0;
+        const isEnrolled = !!enrollment || hasProgress;
+
         return {
           id: json.id,
           code: json.code,
@@ -55,13 +92,22 @@ class LearningPathController {
           enrollment: enrollment ? {
             id: enrollment.id,
             status: enrollment.status,
-            completionPercent: enrollment.completionPercent,
+            completionPercent: livePercent,
             currentModuleId: enrollment.currentModuleId,
             currentStepId: enrollment.currentStepId,
             enrolledAt: enrollment.enrolledAt
-          } : null,
-          isEnrolled: !!enrollment,
-          progressPercent: enrollment?.completionPercent ?? 0
+          } : (hasProgress ? {
+            id: null,
+            status: 'active',
+            completionPercent: livePercent,
+            currentModuleId: null,
+            currentStepId: null,
+            enrolledAt: null
+          } : null),
+          isEnrolled,
+          progressPercent: livePercent,
+          stepsDone: progress.doneSteps,
+          stepsTotal: progress.totalSteps
         };
       });
 
@@ -86,7 +132,7 @@ class LearningPathController {
             include: [{
               model: LessonStep,
               as: 'steps',
-              attributes: ['id', 'orderIndex', 'kind', 'title', 'durationSeconds', 'simulationRef'],
+              attributes: ['id', 'orderIndex', 'kind', 'title', 'durationSeconds', 'simulationRef', 'contentJson'],
               order: [['orderIndex', 'ASC']]
             }]
           },
@@ -169,6 +215,18 @@ class LearningPathController {
         return result;
       });
 
+      // Live progress: count done steps across all modules in this path
+      let livePercent = 0;
+      let stepsDone = 0;
+      let stepsTotal = 0;
+      if (userId) {
+        const live = await computePathProgressFromSteps(userId, path.id);
+        livePercent = live.percent;
+        stepsDone = live.doneSteps;
+        stepsTotal = live.totalSteps;
+      }
+      const hasProgress = stepsDone > 0;
+
       res.status(200).json({
         success: true,
         path: {
@@ -184,8 +242,20 @@ class LearningPathController {
           instructor: json.instructor,
           prerequisite: json.prerequisite,
           modules: json.modules,
-          enrollment: enrollment ? enrollment.toJSON() : null,
-          isEnrolled: !!enrollment
+          enrollment: enrollment ? {
+            ...enrollment.toJSON(),
+            completionPercent: livePercent
+          } : (hasProgress ? {
+            id: null,
+            status: 'active',
+            completionPercent: livePercent,
+            currentModuleId: null,
+            currentStepId: null
+          } : null),
+          isEnrolled: !!enrollment || hasProgress,
+          progressPercent: livePercent,
+          stepsDone,
+          stepsTotal
         }
       });
     } catch (err) {

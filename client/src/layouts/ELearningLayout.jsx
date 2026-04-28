@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { LayoutGrid, BookOpen, Award, Beaker, FileText, Menu, X, ChevronRight } from 'lucide-react';
+import { LayoutGrid, BookOpen, Award, Beaker, FileText, Menu, X, ChevronRight, ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 import { useMyProgress } from '@/hooks/useProgress';
@@ -37,7 +37,7 @@ export default function ELearningLayout() {
         {/* Sidebar — desktop sticky, mobile drawer */}
         <aside
           className={cn(
-            'el-scroll fixed inset-y-0 left-0 z-40 w-[260px] -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:self-start bg-slate-950 text-slate-400 flex-col gap-7 px-4 py-5 overflow-y-auto transition-transform',
+            'el-scroll fixed inset-y-0 left-0 z-40 w-[260px] -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:self-start bg-slate-950 text-slate-400 flex-col gap-5 px-4 py-5 overflow-y-auto transition-transform',
             drawerOpen ? 'translate-x-0 flex' : 'hidden lg:flex'
           )}
         >
@@ -49,6 +49,14 @@ export default function ELearningLayout() {
           >
             <X className="h-5 w-5" />
           </button>
+
+          <Link
+            to="/"
+            className="group inline-flex items-center gap-1.5 px-2 py-1 -ml-1 rounded text-[11.5px] font-plexMono uppercase tracking-[0.12em] text-slate-400 hover:text-white transition-colors"
+          >
+            <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-0.5" />
+            Back to home
+          </Link>
 
           <Link to="/e-learning" className="flex items-center gap-3 px-2">
             <span className="block h-8 w-8 rounded-lg bg-orange-amber shadow-el-orange" />
