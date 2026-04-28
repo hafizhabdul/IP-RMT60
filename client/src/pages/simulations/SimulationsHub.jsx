@@ -1,87 +1,128 @@
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowRight, Beaker } from 'lucide-react';
+import { MethodIcon } from '@/components/elearning/primitives';
 
-const simulations = [
+const SIMS = [
     {
-        id: 'ut',
-        title: 'Ultrasonic Testing (UT)',
-        description: 'Calculate beam angles, wavelengths, and near field lengths. Visualize how ultrasound travels through materials.',
+        method: 'UT',
+        title: 'Ultrasonic Testing',
+        description: 'Hitung beam angle, wavelength, dan near field length. Visualisasi propagasi gelombang di material.',
         path: '/e-learning/simulations/ut',
-        status: 'Available'
+        topics: ['Beam angle', 'Snell law', 'Near field'],
     },
     {
-        id: 'mt',
-        title: 'Magnetic Particle (MT)',
-        description: 'Interactive yoke simulation. Position and magnetize to reveal hidden cracks through particle accumulation.',
+        method: 'MT',
+        title: 'Magnetic Particle',
+        description: 'Yoke simulation interaktif. Position & magnetize untuk reveal crack via flux leakage.',
         path: '/e-learning/simulations/mt',
-        status: 'Available'
+        topics: ['Yoke', 'Flux pattern', 'Particle behavior'],
     },
     {
-        id: 'pt',
-        title: 'Penetrant Testing (PT)',
-        description: 'Step-by-step process flow. Learn the 6 stages of dye penetrant inspection from cleaning to inspection.',
+        method: 'PT',
+        title: 'Liquid Penetrant',
+        description: 'Step-by-step process flow. 6 stages dari cleaning sampai inspection.',
         path: '/e-learning/simulations/pt',
-        status: 'Available'
+        topics: ['Capillary', 'Dwell time', 'Developer'],
     },
     {
-        id: 'rt',
-        title: 'Radiography (RT)',
-        description: 'Geometric unsharpness (Ug) calculator. See how source size and distances affect radiograph clarity.',
+        method: 'RT',
+        title: 'Radiographic Testing',
+        description: 'Geometric unsharpness calculator. Lihat efek source size & distance ke radiograph clarity.',
         path: '/e-learning/simulations/rt',
-        status: 'Available'
-    }
+        topics: ['Ug calc', 'IQI', 'Density'],
+    },
 ];
 
 export default function SimulationsHub() {
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="space-y-6 sm:space-y-7">
             {/* Header */}
-            <div className="bg-white border-b border-gray-200">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <Link
-                        to="/e-learning"
-                        className="inline-flex items-center text-sm text-gray-500 hover:text-gray-900 mb-8 transition-colors"
-                    >
-                        <ArrowLeft className="h-4 w-4 mr-2" />
-                        Back to Hub
-                    </Link>
-                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Simulation Lab</h1>
-                    <p className="mt-4 text-xl text-gray-500 max-w-3xl font-light">
-                        Explore NDT physics through hands-on simulations. Select a method below to enter the virtual lab.
-                    </p>
+            <div data-el-reveal="1">
+                <div className="font-plexMono text-[11px] uppercase tracking-[0.12em] text-slate-500">
+                    SNS NDT / E-Learning / Simulations
                 </div>
+                <h1 className="mt-2 text-[28px] sm:text-[32px] font-bold tracking-tight leading-tight">
+                    Simulation Lab
+                </h1>
+                <p className="text-[14px] text-slate-600 mt-1 max-w-[60ch]">
+                    Eksplor fisika NDT melalui simulasi interaktif. Pilih method untuk masuk virtual lab.
+                </p>
             </div>
 
-            {/* Simulation Cards */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div className="grid md:grid-cols-2 gap-8">
-                    {simulations.map((sim) => (
+            {/* Stat banner */}
+            <div className="rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 text-white p-5 sm:p-6 grid grid-cols-1 sm:grid-cols-[auto_1fr_auto] gap-4 items-center" data-el-reveal="2">
+                <div className="inline-flex h-12 w-12 rounded-lg bg-orange-amber items-center justify-center shadow-el-orange">
+                    <Beaker className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                    <div className="font-plexMono text-[10.5px] uppercase tracking-[0.12em] text-amber-400">
+                        Hands-on physics
+                    </div>
+                    <div className="text-[16px] sm:text-[18px] font-bold tracking-tight mt-0.5">
+                        4 simulasi siap pakai · belajar lewat pengalaman
+                    </div>
+                </div>
+                <span className="font-plexMono text-[11px] uppercase tracking-[0.08em] text-slate-400 tabular-nums">
+                    UT · MT · PT · RT
+                </span>
+            </div>
+
+            {/* Simulation grid */}
+            <section data-el-reveal="3">
+                <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-[18px] font-bold tracking-tight">Pilih Simulasi</h2>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                    {SIMS.map((sim) => (
                         <Link
-                            key={sim.id}
+                            key={sim.method}
                             to={sim.path}
-                            className="group bg-white rounded-xl p-8 border border-gray-200 hover:border-orange-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                            className="group relative overflow-hidden bg-white rounded-xl border border-slate-200 p-6 hover:border-orange-300 hover:shadow-el-card-hover transition-all"
                         >
-                            <div className="flex flex-col h-full justify-between">
-                                <div>
-                                    <div className="flex justify-between items-start mb-4">
-                                        <h3 className="text-2xl font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">
-                                            {sim.title}
-                                        </h3>
-                                        <span className="px-3 py-1 bg-gray-50 text-gray-600 text-xs font-medium rounded-full border border-gray-100">
-                                            {sim.status}
-                                        </span>
-                                    </div>
-                                    <p className="text-gray-600 leading-relaxed mb-8">
-                                        {sim.description}
-                                    </p>
-                                </div>
-                                <div className="flex items-center text-sm font-medium text-gray-900 group-hover:text-orange-600 transition-colors">
-                                    Launch Simulation
-                                    <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
-                                </div>
+                            <div className="flex items-start justify-between mb-4">
+                                <MethodIcon method={sim.method} size="md" />
+                                <span className="rounded-full bg-emerald-100 text-emerald-700 px-2.5 py-1 font-plexMono text-[10.5px] font-bold uppercase tracking-[0.08em]">
+                                    Available
+                                </span>
+                            </div>
+                            <div className="font-plexMono text-[10.5px] uppercase tracking-[0.1em] text-slate-500 mb-1">
+                                NDT / {sim.method}
+                            </div>
+                            <h3 className="text-[20px] font-bold tracking-tight leading-snug mb-2 group-hover:text-orange-700 transition-colors">
+                                {sim.title}
+                            </h3>
+                            <p className="text-[13.5px] text-slate-600 mb-4 line-clamp-3">{sim.description}</p>
+
+                            <div className="flex flex-wrap gap-1.5 mb-5">
+                                {sim.topics.map((t) => (
+                                    <span
+                                        key={t}
+                                        className="rounded-full border border-slate-200 px-2.5 py-0.5 font-plexMono text-[10px] uppercase tracking-[0.06em] text-slate-600"
+                                    >
+                                        {t}
+                                    </span>
+                                ))}
+                            </div>
+
+                            <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                                <span className="text-[13px] font-semibold text-slate-700 group-hover:text-orange-700 transition-colors">
+                                    Launch simulation
+                                </span>
+                                <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-orange-600 group-hover:translate-x-0.5 transition-all" />
                             </div>
                         </Link>
                     ))}
+                </div>
+            </section>
+
+            {/* Coming soon row */}
+            <div className="rounded-xl border-2 border-dashed border-slate-200 bg-white p-6 text-center" data-el-reveal="4">
+                <div className="font-plexMono text-[11px] uppercase tracking-[0.12em] text-slate-500 mb-1">
+                    Coming soon
+                </div>
+                <div className="text-[14px] text-slate-700">
+                    VT (Visual) · ET (Eddy Current) · PAUT · TOFD simulations
                 </div>
             </div>
         </div>

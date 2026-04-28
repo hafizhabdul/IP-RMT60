@@ -33,6 +33,7 @@ const LearningHub = lazy(() => import("./pages/elearning/LearningHub"));
 const LearningPathDetail = lazy(() => import("./pages/elearning/LearningPathDetail"));
 const LessonPlayer = lazy(() => import("./pages/elearning/LessonPlayer"));
 const CertificatesPage = lazy(() => import("./pages/elearning/CertificatesPage"));
+const CertificateVerifyPage = lazy(() => import("./pages/elearning/CertificateVerifyPage"));
 const SimulationsHub = lazy(() => import("./pages/simulations/SimulationsHub"));
 const UTSimulationPage = lazy(() => import("./pages/simulations/UTSimulationPage"));
 const MTSimulationPage = lazy(() => import("./pages/simulations/MTSimulationPage"));
@@ -131,6 +132,9 @@ function AppRoutes() {
 
         {/* Lesson Player — full-screen, no layout */}
         <Route path="/e-learning/paths/:code/modules/:number/steps/:stepId" element={<LessonPlayer />} />
+
+        {/* Certificate verify — public, no layout */}
+        <Route path="/e-learning/certificates/verify/:qrToken" element={<CertificateVerifyPage />} />
       </Routes>
     </Suspense>
   );

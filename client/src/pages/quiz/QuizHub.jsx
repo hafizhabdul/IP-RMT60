@@ -1,7 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CheckCircle, Clock, BookOpen, ChevronRight } from 'lucide-react';
+import { ArrowRight, CheckCircle, Clock, BookOpen, ChevronRight } from 'lucide-react';
 import { getQuizFilters } from '../../services/quizService';
+import { MethodIcon } from '@/components/elearning/primitives';
+
+const METHOD_INFO = {
+    UT: { name: 'Ultrasonic Testing', desc: 'Pulse-echo, defect characterization, calibration.' },
+    MT: { name: 'Magnetic Particle', desc: 'Flux leakage, particle selection, demag.' },
+    PT: { name: 'Liquid Penetrant', desc: 'Capillary action, dwell time, excess removal.' },
+    RT: { name: 'Radiographic Testing', desc: 'Sources, IQI, exposure, density.' },
+    VT: { name: 'Visual Testing', desc: 'Lighting standards, weld profile, AWS D1.1.' },
+    ET: { name: 'Eddy Current', desc: 'Skin depth, impedance plane, tubing.' },
+};
 
 export default function QuizHub() {
     const [filters, setFilters] = useState({ methods: [], levels: [] });
@@ -19,113 +29,102 @@ export default function QuizHub() {
             console.error('Failed to load filters:', err);
             setFilters({
                 methods: ['UT', 'RT', 'MT', 'PT', 'VT', 'ET'],
-                levels: ['Level I', 'Level II', 'Level III']
+                levels: ['Level I', 'Level II', 'Level III'],
             });
         } finally {
             setLoading(false);
         }
     };
 
-    const methodInfo = {
-        'UT': { name: 'Ultrasonic Testing', questions: 25 },
-        'MT': { name: 'Magnetic Particle Testing', questions: 20 },
-        'PT': { name: 'Liquid Penetrant Testing', questions: 20 },
-        'RT': { name: 'Radiographic Testing', questions: 20 },
-        'VT': { name: 'Visual Testing', questions: 20 },
-        'ET': { name: 'Eddy Current Testing', questions: 20 },
-    };
-
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="space-y-6 sm:space-y-7">
             {/* Header */}
-            <div className="bg-white border-b border-gray-200">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <Link
-                        to="/e-learning"
-                        className="inline-flex items-center text-sm text-gray-500 hover:text-gray-900 mb-8 transition-colors"
-                    >
-                        <ArrowLeft className="h-4 w-4 mr-2" />
-                        Back to Hub
-                    </Link>
-                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Certification Practice</h1>
-                    <p className="mt-4 text-xl text-gray-500 max-w-3xl font-light">
-                        Test your NDT knowledge with ASNT-style practice questions.
-                    </p>
+            <div data-el-reveal="1">
+                <div className="font-plexMono text-[11px] uppercase tracking-[0.12em] text-slate-500">
+                    SNS NDT / E-Learning / Quiz Practice
                 </div>
+                <h1 className="mt-2 text-[28px] sm:text-[32px] font-bold tracking-tight leading-tight">
+                    Quiz Practice
+                </h1>
+                <p className="text-[14px] text-slate-600 mt-1 max-w-[60ch]">
+                    Latihan soal bergaya ASNT untuk persiapan sertifikasi. Lulus 70% buat masuk grade pass.
+                </p>
             </div>
 
-            {/* Content */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-
-                {/* Intro Stats */}
-                <div className="grid md:grid-cols-3 gap-8 mb-16">
-                    <div className="bg-white p-6 rounded-xl border border-gray-200">
-                        <CheckCircle className="h-6 w-6 text-gray-900 mb-4" />
-                        <h3 className="font-semibold text-gray-900 mb-1">Pass Requirement</h3>
-                        <p className="text-gray-500 text-sm">70% score needed to pass mock exams</p>
-                    </div>
-                    <div className="bg-white p-6 rounded-xl border border-gray-200">
-                        <Clock className="h-6 w-6 text-gray-900 mb-4" />
-                        <h3 className="font-semibold text-gray-900 mb-1">Timed Sessions</h3>
-                        <p className="text-gray-500 text-sm">Simulate real exam pressure with timers</p>
-                    </div>
-                    <div className="bg-white p-6 rounded-xl border border-gray-200">
-                        <BookOpen className="h-6 w-6 text-gray-900 mb-4" />
-                        <h3 className="font-semibold text-gray-900 mb-1">Instant Feedback</h3>
-                        <p className="text-gray-500 text-sm">Detailed explanations for every question</p>
-                    </div>
-                </div>
-
-                <h2 className="text-xl font-bold text-gray-900 mb-8 pb-4 border-b border-gray-200">
-                    Select a Method
-                </h2>
-
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {Object.entries(methodInfo).map(([code, info]) => {
-                        const hasQuestions = info.questions > 0;
-
-                        return (
-                            <div
-                                key={code}
-                                className={`group bg-white rounded-xl border border-gray-200 p-8 transition-all ${hasQuestions
-                                    ? 'hover:border-orange-300 hover:shadow-lg hover:-translate-y-1'
-                                    : 'opacity-60 bg-gray-50'
-                                    }`}
-                            >
-                                <div className="flex justify-between items-start mb-6">
-                                    <span className="text-4xl font-bold text-gray-200 group-hover:text-gray-300 transition-colors">
-                                        {code}
-                                    </span>
-                                    {hasQuestions && (
-                                        <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded font-medium">
-                                            {info.questions} Qs
-                                        </span>
-                                    )}
-                                </div>
-
-                                <h3 className="text-lg font-bold text-gray-900 mb-4">{info.name}</h3>
-
-                                {hasQuestions ? (
-                                    <div className="space-y-3">
-                                        {['Level I', 'Level II'].map(level => (
-                                            <Link
-                                                key={level}
-                                                to={`/e-learning/quizzes/take?method=${code}&level=${encodeURIComponent(level)}&count=10`}
-                                                className="flex items-center justify-between w-full px-4 py-3 bg-gray-50 hover:bg-orange-50 text-gray-700 hover:text-orange-700 rounded-lg text-sm font-medium transition-colors"
-                                            >
-                                                {level} Assessment
-                                                <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-orange-500" />
-                                            </Link>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <p className="text-sm text-gray-400 italic">Coming soon</p>
-                                )}
-                            </div>
-                        );
-                    })}
-                </div>
+            {/* Stats strip */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4" data-el-reveal="2">
+                <StatCard
+                    icon={<CheckCircle className="h-4 w-4" />}
+                    title="Pass Threshold"
+                    desc="Minimum 70% untuk lolos mock exam"
+                />
+                <StatCard
+                    icon={<Clock className="h-4 w-4" />}
+                    title="Timed Sessions"
+                    desc="Simulasi tekanan ujian sertifikasi nyata"
+                />
+                <StatCard
+                    icon={<BookOpen className="h-4 w-4" />}
+                    title="Instant Feedback"
+                    desc="Penjelasan tiap soal setelah submit"
+                />
             </div>
+
+            {/* Method picker */}
+            <section data-el-reveal="3">
+                <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-[18px] font-bold tracking-tight">Pilih Method</h2>
+                    <span className="font-plexMono text-[11px] uppercase tracking-[0.08em] text-slate-500">
+                        6 METHODS · 3 LEVELS
+                    </span>
+                </div>
+
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {Object.entries(METHOD_INFO).map(([code, info]) => (
+                        <MethodQuizCard key={code} code={code} info={info} />
+                    ))}
+                </div>
+            </section>
         </div>
+    );
+}
+
+function StatCard({ icon, title, desc }) {
+    return (
+        <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
+            <div className="inline-flex items-center justify-center h-9 w-9 rounded-md bg-orange-50 text-orange-600 mb-3">
+                {icon}
+            </div>
+            <div className="text-[14px] font-bold tracking-tight">{title}</div>
+            <div className="text-[12.5px] text-slate-600 mt-0.5">{desc}</div>
+        </div>
+    );
+}
+
+function MethodQuizCard({ code, info }) {
+    return (
+        <article className="group bg-white rounded-xl border border-slate-200 p-5 hover:border-orange-300 hover:shadow-el-card-hover transition-all">
+            <div className="flex items-start justify-between mb-4">
+                <MethodIcon method={code} size="md" />
+                <span className="font-plexMono text-[10.5px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                    NDT / {code}
+                </span>
+            </div>
+            <h3 className="text-[18px] font-bold tracking-tight leading-snug mb-1">{info.name}</h3>
+            <p className="text-[13px] text-slate-600 mb-5 line-clamp-2">{info.desc}</p>
+
+            <div className="space-y-1.5">
+                {['Level I', 'Level II'].map((level) => (
+                    <Link
+                        key={level}
+                        to={`/e-learning/quizzes/take?method=${code}&level=${encodeURIComponent(level)}&count=10`}
+                        className="group/link flex items-center justify-between rounded-md border border-slate-200 px-3 py-2.5 text-[13px] font-medium text-slate-700 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-colors"
+                    >
+                        <span>{level} · 10 questions</span>
+                        <ArrowRight className="h-3.5 w-3.5 opacity-50 group-hover/link:opacity-100 group-hover/link:translate-x-0.5 transition-all" />
+                    </Link>
+                ))}
+            </div>
+        </article>
     );
 }
