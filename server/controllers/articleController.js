@@ -232,29 +232,35 @@ class ArticleController {
                 });
             }
 
+            // Build OR clause defensively — only include non-null fields
+            const orConditions = [];
+            if (currentArticle.method) orConditions.push({ method: currentArticle.method });
+            if (currentArticle.level) orConditions.push({ level: currentArticle.level });
+            if (currentArticle.category) orConditions.push({ category: currentArticle.category });
+
+            const whereClause = {
+                id: { [Op.ne]: currentArticle.id },
+                published: true
+            };
+            if (orConditions.length > 0) {
+                whereClause[Op.or] = orConditions;
+            }
+
             const related = await Article.findAll({
-                where: {
-                    id: { [Op.ne]: currentArticle.id },
-                    published: true,
-                    [Op.or]: [
-                        { method: currentArticle.method },
-                        { level: currentArticle.level },
-                        { category: currentArticle.category }
-                    ]
-                },
+                where: whereClause,
                 attributes: ['id', 'title', 'slug', 'excerpt', 'method', 'level', 'readingTime'],
                 include: [
                     {
                         model: ArticleTranslation,
                         as: 'translations',
                         required: false,
-                        where: {
-                            language
-                        }
+                        where: { language },
+                        separate: false
                     }
                 ],
                 limit: 3,
-                order: [['viewCount', 'DESC']]
+                order: [['viewCount', 'DESC']],
+                subQuery: false
             });
 
             const relatedTranslated = related.map((item) => {

@@ -5,12 +5,13 @@ import { MethodIcon, StatusBadge, ELProgressBar } from '../primitives';
 
 export default function PathRow({ path, className, active = false }) {
   const enrollment = path.enrollment;
-  const isLocked = !!path.prerequisite && !path.isEnrolled && path.prerequisite?.code;
-  const lockedHardcoded = path.code === 'ET-L1' && !path.isEnrolled; // matches the seed prerequisite
-  const isInProgress = enrollment && enrollment.status === 'active' && enrollment.completionPercent > 0;
-  const isCompleted = enrollment && enrollment.status === 'completed';
+  const livePercent = path.progressPercent ?? enrollment?.completionPercent ?? 0;
+  const hasProgress = livePercent > 0 || (path.stepsDone ?? 0) > 0;
+  const isLocked = !!path.prerequisite && !path.isEnrolled && !hasProgress;
+  const isCompleted = (enrollment && enrollment.status === 'completed') || livePercent >= 100;
+  const isInProgress = !isCompleted && (hasProgress || (enrollment && enrollment.status === 'active'));
   let status = 'available';
-  if (isLocked || lockedHardcoded) status = 'locked';
+  if (isLocked) status = 'locked';
   else if (isCompleted) status = 'done';
   else if (isInProgress) status = 'in_progress';
 
@@ -36,9 +37,18 @@ export default function PathRow({ path, className, active = false }) {
         </div>
         <div className="mt-0.5 truncate text-[15px] font-semibold text-slate-900">
           {path.title.replace(/ — .*$/, '')}
-          {status === 'locked' && <Lock className="inline-block ml-1.5 h-3.5 w-3.5 text-slate-400" />}
+          {status === 'locked' && (
+            <Lock className="inline-block ml-1.5 h-3.5 w-3.5 text-slate-400" />
+          )}
         </div>
-        <div className="mt-0.5 truncate text-[12.5px] text-slate-500 line-clamp-1 hidden sm:block">{path.description}</div>
+        {status === 'locked' && path.prerequisite ? (
+          <div className="mt-0.5 truncate text-[12.5px] text-slate-500 line-clamp-1 hidden sm:block">
+            <span className="text-amber-700 font-medium">Selesaikan {path.prerequisite.code} dulu</span>
+            <span className="text-slate-400"> — {path.prerequisite.title?.replace(/ — .*$/, '') || ''}</span>
+          </div>
+        ) : (
+          <div className="mt-0.5 truncate text-[12.5px] text-slate-500 line-clamp-1 hidden sm:block">{path.description}</div>
+        )}
       </div>
 
       <div className="hidden sm:flex justify-center">
@@ -47,12 +57,14 @@ export default function PathRow({ path, className, active = false }) {
 
       <div className="hidden sm:block min-w-0">
         <div className="flex justify-between font-plexMono text-[11px] text-slate-500">
-          <span>{path.totalModules} modul</span>
-          <span className="font-semibold text-slate-900">
-            {enrollment?.completionPercent ?? 0}%
+          <span>
+            {path.stepsDone != null && path.stepsTotal
+              ? `${path.stepsDone}/${path.stepsTotal} steps`
+              : `${path.totalModules} modul`}
           </span>
+          <span className="font-semibold text-slate-900">{livePercent}%</span>
         </div>
-        <ELProgressBar value={enrollment?.completionPercent ?? 0} className="mt-1.5" />
+        <ELProgressBar value={livePercent} className="mt-1.5" />
       </div>
 
       <div className="hidden sm:flex gap-1">

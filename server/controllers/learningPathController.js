@@ -1,4 +1,4 @@
-const { LearningPath, Module, LessonStep, UserEnrollment, UserModuleProgress, UserStepProgress, User, sequelize } = require('../models');
+const { LearningPath, Module, LessonStep, UserEnrollment, UserModuleProgress, UserStepProgress, User, QuizQuestion, sequelize } = require('../models');
 const { Op } = require('sequelize');
 
 async function computePathProgressFromSteps(userId, pathId) {
@@ -133,7 +133,13 @@ class LearningPathController {
               model: LessonStep,
               as: 'steps',
               attributes: ['id', 'orderIndex', 'kind', 'title', 'durationSeconds', 'simulationRef', 'contentJson'],
-              order: [['orderIndex', 'ASC']]
+              order: [['orderIndex', 'ASC']],
+              include: [{
+                model: QuizQuestion,
+                as: 'quizQuestions',
+                required: false,
+                attributes: ['id', 'question', 'options', 'correctAnswer', 'explanation', 'difficulty']
+              }]
             }]
           },
           {
@@ -335,7 +341,13 @@ class LearningPathController {
         include: [{
           model: LessonStep,
           as: 'steps',
-          order: [['orderIndex', 'ASC']]
+          order: [['orderIndex', 'ASC']],
+          include: [{
+            model: QuizQuestion,
+            as: 'quizQuestions',
+            required: false,
+            attributes: ['id', 'question', 'options', 'correctAnswer', 'explanation', 'difficulty']
+          }]
         }]
       });
       if (!moduleRow) throw { name: 'NotFound', message: `Module ${number} not found` };

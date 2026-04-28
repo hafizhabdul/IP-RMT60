@@ -16,13 +16,19 @@ const errorHandler = require("./middlewares/errorHandler");
 app.use(helmet()); // Secure HTTP headers
 app.use(compression()); // Compress responses
 
-// Rate Limiting
+// Rate Limiting (skip in development to avoid blocking local dev refresh storms)
+const isDev = process.env.NODE_ENV !== "production";
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  max: isDev ? 10000 : 300, // Generous in dev; 300/15min in prod (~20 req/min/IP)
+  standardHeaders: true,
+  legacyHeaders: false,
   message: "Too many requests from this IP, please try again after 15 minutes",
+  skip: (req) => {
+    // Always skip for localhost during dev
+    if (isDev) return true;
+    return false;
+  },
 });
 app.use(limiter);
 

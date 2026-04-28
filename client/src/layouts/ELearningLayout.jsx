@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { LayoutGrid, BookOpen, Award, Beaker, FileText, Menu, X, ChevronRight, ArrowLeft } from 'lucide-react';
+import { LayoutGrid, BookOpen, Award, Beaker, FileText, Menu, X, ChevronRight, ArrowLeft, LogOut, LogIn } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 import { useMyProgress } from '@/hooks/useProgress';
@@ -15,9 +16,18 @@ const NAV_ITEMS = [
 
 export default function ELearningLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { user } = useAuth();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const { user, logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const { data: progress } = useMyProgress({ enabled: !!user });
   const { data: paths } = useLearningPaths();
+
+  const handleLogout = () => {
+    logout();
+    setUserMenuOpen(false);
+    setDrawerOpen(false);
+    navigate('/');
+  };
 
   const enrolledPaths = (paths || []).filter((p) => p.isEnrolled);
 
@@ -125,16 +135,44 @@ export default function ELearningLayout() {
             </div>
           )}
 
-          <div className="mt-auto rounded-lg bg-slate-900 p-3 flex items-center gap-2.5">
-            <div className="h-9 w-9 rounded-full bg-orange-amber grid place-items-center text-white font-bold text-[13px]">
-              {(user?.username || 'NDT').slice(0, 2).toUpperCase()}
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="truncate text-[13px] font-semibold text-white">{user?.username || 'Guest'}</div>
-              <div className="font-plexMono text-[11px] text-slate-500">
-                {user ? 'Level I · Student' : 'Login to track progress'}
+          <div className="mt-auto relative">
+            {userMenuOpen && isAuthenticated && (
+              <div className="absolute bottom-full mb-2 left-0 right-0 rounded-lg bg-slate-900 border border-slate-800 shadow-xl overflow-hidden">
+                <div className="px-3 py-2.5 border-b border-slate-800">
+                  <div className="text-[13px] font-semibold text-white truncate">{user?.username}</div>
+                  <div className="font-plexMono text-[11px] text-slate-500 truncate">{user?.email}</div>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="w-full grid grid-cols-[16px_1fr] gap-3 items-center px-3 py-2.5 text-left text-[13px] font-medium text-rose-400 hover:bg-rose-500/10"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Logout</span>
+                </button>
               </div>
-            </div>
+            )}
+
+            <button
+              type="button"
+              onClick={() => isAuthenticated ? setUserMenuOpen((o) => !o) : navigate('/login')}
+              className="w-full rounded-lg bg-slate-900 p-3 flex items-center gap-2.5 hover:bg-slate-800 transition-colors text-left"
+            >
+              <div className="h-9 w-9 rounded-full bg-orange-amber grid place-items-center text-white font-bold text-[13px]">
+                {(user?.username || 'NDT').slice(0, 2).toUpperCase()}
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="truncate text-[13px] font-semibold text-white">{user?.username || 'Guest'}</div>
+                <div className="font-plexMono text-[11px] text-slate-500">
+                  {user ? 'Level I · Student' : 'Login to track progress'}
+                </div>
+              </div>
+              {isAuthenticated ? (
+                <ChevronRight className={`h-4 w-4 text-slate-500 transition-transform ${userMenuOpen ? 'rotate-90' : ''}`} />
+              ) : (
+                <LogIn className="h-4 w-4 text-slate-500" />
+              )}
+            </button>
           </div>
         </aside>
 

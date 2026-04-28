@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Clock } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getArticles, getArticleFilters } from '../../services/articleService';
+
+const PAGE_SIZE = 9;
 
 export default function ContentHub() {
     const [articles, setArticles] = useState([]);
+    const [pagination, setPagination] = useState({ total: 0, page: 1, totalPages: 1 });
     const [filters, setFilters] = useState({ methods: [], levels: [], categories: [] });
     const [loading, setLoading] = useState(true);
     const [selectedMethod, setSelectedMethod] = useState('');
     const [selectedLevel, setSelectedLevel] = useState('');
+    const [page, setPage] = useState(1);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -16,8 +20,13 @@ export default function ContentHub() {
     }, []);
 
     useEffect(() => {
-        loadArticles();
+        // reset page when filter changes
+        setPage(1);
     }, [selectedMethod, selectedLevel]);
+
+    useEffect(() => {
+        loadArticles();
+    }, [selectedMethod, selectedLevel, page]);
 
     const loadFilters = async () => {
         try {
@@ -32,8 +41,14 @@ export default function ContentHub() {
         try {
             setLoading(true);
             setError(null);
-            const articlesRes = await getArticles({ method: selectedMethod, level: selectedLevel, limit: 20 });
+            const articlesRes = await getArticles({
+                method: selectedMethod,
+                level: selectedLevel,
+                limit: PAGE_SIZE,
+                page
+            });
             setArticles(articlesRes.data || []);
+            setPagination(articlesRes.pagination || { total: 0, page: 1, totalPages: 1 });
         } catch (err) {
             console.error('Failed to load articles:', err);
             setError(err.message || 'Failed to load articles');
@@ -42,8 +57,10 @@ export default function ContentHub() {
         }
     };
 
-    const featuredArticle = articles.find(a => a.featured);
-    const regularArticles = articles.filter(a => !a.featured);
+    // Featured only on first page; otherwise treat all as regular
+    const featuredArticle = page === 1 ? articles.find(a => a.featured) : null;
+    const regularArticles = page === 1 ? articles.filter(a => !a.featured) : articles;
+    const totalPages = pagination.totalPages || 1;
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -155,7 +172,7 @@ export default function ContentHub() {
                                 >
                                     <div className="flex items-center gap-2 mb-4">
                                         <span className="text-xs font-semibold text-orange-600 tracking-wider uppercase">
-                                            {article.method}
+                                            {article.method || 'GENERAL'}
                                         </span>
                                         <span className="text-xs text-gray-400">
                                             •
@@ -177,6 +194,65 @@ export default function ContentHub() {
                                 </Link>
                             ))}
                         </div>
+
+                        {/* Pagination */}
+                        {totalPages > 1 && (
+                            <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-gray-200">
+                                <div className="text-sm text-gray-500">
+                                    Menampilkan halaman <b className="text-gray-900 font-semibold">{pagination.page}</b> dari{' '}
+                                    <b className="text-gray-900 font-semibold">{totalPages}</b> · total{' '}
+                                    <b className="text-gray-900 font-semibold">{pagination.total}</b> artikel
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => setPage(p => Math.max(1, p - 1))}
+                                        disabled={page === 1 || loading}
+                                        className="inline-flex items-center gap-1.5 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                                    >
+                                        <ChevronLeft className="h-4 w-4" /> Prev
+                                    </button>
+
+                                    {/* Page buttons (max 5 visible) */}
+                                    {Array.from({ length: totalPages }, (_, i) => i + 1)
+                                        .filter(n => {
+                                            if (totalPages <= 5) return true;
+                                            if (n === 1 || n === totalPages) return true;
+                                            return Math.abs(n - page) <= 1;
+                                        })
+                                        .map((n, idx, arr) => {
+                                            const prev = arr[idx - 1];
+                                            const showGap = prev && n - prev > 1;
+                                            return (
+                                                <span key={n} className="flex items-center gap-2">
+                                                    {showGap && <span className="text-gray-400 px-1">…</span>}
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setPage(n)}
+                                                        disabled={loading}
+                                                        className={`min-w-[36px] h-9 rounded-md text-sm font-semibold ${
+                                                            n === page
+                                                                ? 'bg-orange-600 text-white shadow-sm'
+                                                                : 'border border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
+                                                        }`}
+                                                    >
+                                                        {n}
+                                                    </button>
+                                                </span>
+                                            );
+                                        })}
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                                        disabled={page >= totalPages || loading}
+                                        className="inline-flex items-center gap-1.5 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                                    >
+                                        Next <ChevronRight className="h-4 w-4" />
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </>
                 )}
             </div>

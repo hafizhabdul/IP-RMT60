@@ -196,7 +196,7 @@ export default function LessonPlayer() {
             )}
             {step.kind === 'quiz' && (
               <QuizRunner
-                questions={step.contentJson?.questions}
+                questions={step.quizQuestions || step.contentJson?.questions}
                 onComplete={({ score }) => setQuizScore(score)}
               />
             )}
