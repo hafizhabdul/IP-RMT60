@@ -1,3 +1,5 @@
+@import './styles/elearning.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

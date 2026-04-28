@@ -1,0 +1,600 @@
+{
+  "project": "SNS NDT — E-Learning Redesign",
+  "goal": "Replace flat ELearningHub with a structured, Coursera-style learning platform: 6 method paths (UT, MT, PT, RT, VT, ET) × 3 levels (I, II, III), lessons as animated + reading + quiz steps, progress tracking, gated progression, certificates.",
+  "updated": "2026-04-23",
+  "execution_log": [
+    "2026-04-23 — Phase 1 done: SQL schema (8 tables) + 7 Sequelize models + UT-L1 seed (12 modules, 5 steps in Module 3) + 18 paths metadata.",
+    "2026-04-23 — Phase 2 done: learningPathController + progressController + certificateController + 3 route files wired into routes/index.js.",
+    "2026-04-23 — Phase 3 done: IBM Plex fonts + tailwind tokens (method gradients, shadows, animations) + .elearning-surface scoped CSS + 5 primitives (MethodIcon, StatusBadge, ELProgressBar, Callout, Kbd) + 13 domain components.",
+    "2026-04-23 — Phase 4 done: services + React Query hooks + ELearningLayout + LearningHub + LearningPathDetail + LessonPlayer + App.jsx routing. Build verified clean (vite build 9.83s).",
+    "2026-04-23 — Phase 5 partial: real Module 3 content seeded inline in SQL (3.1-3.5 with realistic content_jsonb). README_ELEARNING.md written. Manual QA pending live backend test."
+  ],
+  "pilot_scope": "UT Level I end-to-end. Other 5 methods seeded as metadata only; content added later.",
+  "stack_reminder": {
+    "db": "Supabase (Postgres host only, not SDK) — schema runs via Supabase SQL Editor",
+    "orm": "Sequelize on top of Postgres",
+    "backend": "Express + JWT auth",
+    "frontend": "React + Vite + Tailwind + Framer Motion + React Query",
+    "schema_workflow": [
+      "1. Write SQL in server/sql/create_elearning_tables.sql",
+      "2. Run in Supabase SQL Editor",
+      "3. Add matching Sequelize models in server/models/",
+      "4. Register associations in server/models/index.js (or model's associate)"
+    ]
+  },
+
+  "design_direction": {
+    "concept": "Calibrated Precision — a professional learning surface for NDT inspectors. The Hub is an inviting control panel (dashboard, warm, rounded). The Lesson Player is a focused reading instrument (sharp, linear, distraction-free). Together they behave like a calibrated workspace: pick a path in the panel, drop into the instrument, come back out.",
+    "hub_surface": {
+      "reference_file": "client/public/elearning-alt-b.html",
+      "name": "Technical Workspace (Alt B)",
+      "character": "Dashboard · app-like · soft corners · dense but scannable · method color-coding",
+      "primary_use": "Landing, enrolment, progress overview, activity stream"
+    },
+    "player_surface": {
+      "reference_file": "client/public/elearning-alt-d-ibm.html",
+      "name": "IBM SkillsBuild-inspired (Alt D)",
+      "character": "Full-screen focus mode · sharp edges · strong typographic hierarchy · left course menu + navy hero + reading body",
+      "primary_use": "In-course experience: reading lessons, animated steps, quiz runner"
+    },
+    "rules_of_consistency": [
+      "Orange-600 is ALWAYS the primary brand accent across both surfaces.",
+      "Amber-500 is the secondary (warning / current / highlight).",
+      "Slate-900/950 is the dark surface (hub sidebar, player hero).",
+      "IBM Plex Sans for headings + body in both e-learning surfaces; Inter stays on existing marketing pages to avoid breaking them.",
+      "IBM Plex Mono for data, codes, drawing numbers, timestamps (same in both).",
+      "Radius rule: Hub surfaces use 0.5rem (rounded-lg). Player surfaces use 0 (sharp, focus-mode). This is intentional — don't mix.",
+      "Method colors (UT/MT/PT/RT/VT/ET) are constant across both surfaces — same gradient wherever a method appears.",
+      "All icons from lucide-react (already installed). No emoji in UI except badges/decorative."
+    ]
+  },
+
+  "design_system": {
+    "tokens": {
+      "color_primary": "orange-600 #EA580C",
+      "color_accent": "amber-500 #F59E0B",
+      "color_dark_surface": "slate-950 #020617 (sidebar), slate-900 #0F172A (player hero)",
+      "color_light_surface": "slate-50 #F8FAFC (hub bg), white (player body)",
+      "color_semantic": {
+        "success": "emerald-500 #10B981 — completed steps",
+        "warning": "amber-500 #F59E0B — current / in progress",
+        "danger": "rose-500 #F43F5E — failed quiz, errors",
+        "muted": "slate-400 #94A3B8 — locked / disabled"
+      },
+      "method_gradients": {
+        "UT": "from-sky-500 to-cyan-500",
+        "MT": "from-violet-500 to-fuchsia-500",
+        "PT": "from-orange-600 to-amber-500",
+        "RT": "from-emerald-500 to-green-600",
+        "VT": "from-rose-500 to-red-500",
+        "ET": "from-slate-600 to-slate-700"
+      },
+      "typography": {
+        "display": "IBM Plex Sans · 600/700 · letter-spacing -0.015em to -0.03em",
+        "body": "IBM Plex Sans · 400 · 15-17px · line-height 1.55-1.65",
+        "ui": "IBM Plex Sans · 500 · 13-14px",
+        "mono": "IBM Plex Mono · 500 · 10-12px · letter-spacing 0.1-0.2em uppercase (for labels, codes, data)"
+      },
+      "spacing_base": "4px (Tailwind default); section vertical rhythm 80-100px on hub, 56px on player",
+      "radius": { "hub": "8px (lg)", "player": "0 (sharp)", "pill": "9999px" },
+      "shadows": {
+        "card_hover": "0 18px 40px -20px rgba(15,23,42,0.25)",
+        "primary_btn": "0 2px 10px rgba(234,88,12,0.28)",
+        "dark_panel": "inset 0 0 0 1px rgba(255,255,255,0.04)"
+      },
+      "motion": {
+        "micro": "120-180ms · ease",
+        "page_reveal": "400-600ms · ease · staggered 60ms",
+        "progress_fill": "400ms · ease",
+        "accordion": "250ms · ease"
+      }
+    },
+    "primitives_to_build": [
+      "Button (variants: primary, secondary, ghost, dark, sm/md/lg)",
+      "Badge (variants: done/active/available/locked, pill/square)",
+      "StatusChip (with optional pulse dot)",
+      "ProgressBar (thin · gradient fill · with optional label)",
+      "Avatar (initials · gradient · sizes xs/sm/md)",
+      "MethodIcon (UT/MT/PT/RT/VT/ET · size variants · consistent gradient from tokens)",
+      "Card (base + hoverable variants · radius respects surface rule)",
+      "Callout (reading body accent box — orange left-border)",
+      "Kbd (keyboard shortcut chip)"
+    ],
+    "domain_components_to_build": [
+      "KPICard — dashboard metric (label + value + delta)",
+      "PathRow — horizontal path in hub table (icon + title + status + progress + levels + CTA)",
+      "PathCard — featured path card (for mobile / tiles variant)",
+      "ModuleAccordion — collapsible module with step list",
+      "StepListItem — single step row (check/ring/empty icon + title + kind badge + duration)",
+      "ActivityStreamItem — timeline event row (dot + text + timestamp)",
+      "CertificatePreviewCard — upcoming or earned cert",
+      "CourseSidebar — left-rail navigation with collapsible sections (player)",
+      "LessonHero — navy header block with module label + title + brand mark (player)",
+      "LessonFooter — prev/dots/next navigation (player)",
+      "QuizRunner — question renderer with option states and feedback",
+      "SlideDeck — reading-style slide container with keyboard nav",
+      "AnimatedStepFrame — wrapper that mounts a simulation as a step"
+    ],
+    "pattern_library_notes": [
+      "Always pair an orange accent with a slate-900 counterweight. Never leave orange floating in white without a structural anchor (border, heading weight, icon).",
+      "Mono type is for tabular/immutable data only (codes, timestamps, counts). Never use mono for prose.",
+      "Progress bars fill left-to-right, orange→amber gradient, 4-6px height.",
+      "Locked states use repeating diagonal stripes (8% opacity) + slate-400 text, never just gray opacity.",
+      "Completed states use emerald fill (not orange). Orange is reserved for active/primary action."
+    ],
+    "accessibility_requirements": [
+      "Color contrast ≥ 4.5:1 for body text, ≥ 3:1 for large text and UI components (verify via axe).",
+      "All interactive elements reachable via keyboard with visible focus ring (orange-500 2px offset 2px).",
+      "Sidebar in player surface collapsible via keyboard (Escape to close drawer on mobile).",
+      "Progress announces via aria-valuenow on ProgressBar.",
+      "Quiz options use proper radiogroup semantics."
+    ]
+  },
+
+  "legend": {
+    "status": ["todo", "in_progress", "blocked", "done"],
+    "priority": ["P0 critical-path", "P1 high", "P2 nice-to-have"]
+  },
+
+  "phases": [
+    {
+      "id": "phase-1",
+      "name": "Backend Schema",
+      "objective": "Data model ready in Supabase + Sequelize. No API yet.",
+      "estimate": "3-4 hours",
+      "deliverables": [
+        {
+          "id": "D1.1",
+          "title": "Design ER diagram (sketch/notes)",
+          "status": "todo",
+          "priority": "P0",
+          "tables_to_create": [
+            "learning_paths (id, code, method, level, title, description, total_modules, est_hours, prerequisite_path_id, order_index, is_published)",
+            "modules (id, learning_path_id, order_index, title, description, est_minutes, is_final_assessment)",
+            "lesson_steps (id, module_id, order_index, kind ENUM(animated|reading|quiz), title, content_jsonb, duration_seconds, simulation_ref)",
+            "quiz_questions extends existing (add lesson_step_id FK)",
+            "user_enrollments (id, user_id, learning_path_id, enrolled_at, current_module_id, current_step_id, status)",
+            "user_step_progress (id, user_id, lesson_step_id, status ENUM(not_started|in_progress|done), completed_at, time_spent_seconds)",
+            "user_module_progress (id, user_id, module_id, status, completion_percent, started_at, completed_at)",
+            "certificates (id, user_id, learning_path_id, serial_number, issued_at, score, pdf_url, qr_token)"
+          ],
+          "acceptance": "ER relationships clear, FK cascades decided, status enums defined. Written as short .md note or inline comment in SQL."
+        },
+        {
+          "id": "D1.2",
+          "title": "Write server/sql/create_elearning_tables.sql",
+          "status": "todo",
+          "priority": "P0",
+          "depends_on": ["D1.1"],
+          "pattern_reference": "server/sql/create_quiz_tables.sql",
+          "must_include": [
+            "CREATE TABLE IF NOT EXISTS for all 8 tables above",
+            "Foreign keys with ON DELETE CASCADE where appropriate",
+            "ENUM types (lesson_kind, step_status, enrollment_status)",
+            "Indexes on (user_id, learning_path_id), (module_id, order_index), (learning_path_id, order_index)",
+            "Comment header: -- Run this in Supabase SQL Editor"
+          ],
+          "acceptance": "File runs clean in Supabase SQL Editor without errors. Verified via \\dt in psql or Supabase Table Editor UI."
+        },
+        {
+          "id": "D1.3",
+          "title": "Add Sequelize models",
+          "status": "todo",
+          "priority": "P0",
+          "depends_on": ["D1.2"],
+          "files_to_create": [
+            "server/models/learningpath.js",
+            "server/models/module.js",
+            "server/models/lessonstep.js",
+            "server/models/userenrollment.js",
+            "server/models/userstepprogress.js",
+            "server/models/usermoduleprogress.js",
+            "server/models/certificate.js"
+          ],
+          "pattern_reference": "server/models/lesson.js, server/models/article.js",
+          "acceptance": "All models loaded in server/models/index.js without sync errors. Server starts without throwing."
+        },
+        {
+          "id": "D1.4",
+          "title": "Seed UT Level I pilot data",
+          "status": "todo",
+          "priority": "P0",
+          "depends_on": ["D1.3"],
+          "file_to_create": "server/seeders/YYYYMMDD-seed-elearning-ut-l1.js OR server/sql/seed_ut_l1.sql",
+          "scope": [
+            "1 learning_path: UT-L1",
+            "12 modules (numbered 1..12, last one is_final_assessment=true)",
+            "Module 3 (pilot module for demo) with 5 lesson_steps: 3.1-3.5 matching the Alt D mockup",
+            "Other modules empty of steps — enough for the UI to show structure"
+          ],
+          "acceptance": "GET /learning-paths returns UT-L1 with 12 modules. Module 3 has 5 steps. Safe to re-run (uses upsert / WHERE NOT EXISTS)."
+        },
+        {
+          "id": "D1.5",
+          "title": "Seed metadata for remaining 5 paths (no content)",
+          "status": "todo",
+          "priority": "P1",
+          "depends_on": ["D1.4"],
+          "scope": "MT-L1..3, PT-L1..3, RT-L1..3, VT-L1..3, ET-L1..3 — paths only, no modules yet. Plus path-level prerequisite links (ET-L1 depends on MT-L1).",
+          "acceptance": "18 learning_paths total in DB. Frontend paths table can render 6 methods."
+        }
+      ]
+    },
+
+    {
+      "id": "phase-2",
+      "name": "Backend API",
+      "objective": "REST endpoints for frontend consumption.",
+      "estimate": "3-4 hours",
+      "deliverables": [
+        {
+          "id": "D2.1",
+          "title": "learningPathController + routes",
+          "status": "todo",
+          "priority": "P0",
+          "depends_on": ["D1.3"],
+          "file_to_create": "server/controllers/learningPathController.js, server/routes/learningPathRoutes.js",
+          "endpoints": [
+            "GET /learning-paths → list all, with user progress joined if authenticated",
+            "GET /learning-paths/:code → detail incl. modules[] and user enrollment status",
+            "POST /learning-paths/:code/enroll → create user_enrollment",
+            "GET /learning-paths/:code/modules/:number → module incl. lesson_steps[]"
+          ],
+          "response_shape_notes": "Include every field the UI needs in a single payload so the hub's PathRow / player's CourseSidebar can render without N+1. Use camelCase transforming from snake_case DB columns.",
+          "acceptance": "Tested via curl/Postman. Response shape matches hub (Alt B) and player (Alt D) UI needs (code, method, level, progressPercent, isEnrolled, currentStepId, modules with step counts)."
+        },
+        {
+          "id": "D2.2",
+          "title": "progressController — step completion",
+          "status": "todo",
+          "priority": "P0",
+          "depends_on": ["D2.1"],
+          "endpoints": [
+            "POST /progress/steps/:id/start → user_step_progress status=in_progress",
+            "POST /progress/steps/:id/complete { score? } → mark done, cascade to module progress",
+            "GET /progress/me → aggregated: enrolled paths, streak, total time, quiz avg"
+          ],
+          "critical_logic": "When a step completes, recompute user_module_progress.completion_percent. If all steps in module done → module.status='done'. If module is final_assessment AND score ≥ 75 → trigger certificate generation.",
+          "acceptance": "Completing 5 steps of Module 3 sets module status to done. Dashboard /progress/me returns correct streak."
+        },
+        {
+          "id": "D2.3",
+          "title": "Gating middleware update",
+          "status": "todo",
+          "priority": "P1",
+          "depends_on": ["D2.1"],
+          "reference": "server/middlewares/courseAccess.js",
+          "rule": "Module N only accessible if Module N-1 is done (same path), OR unlocked via admin override. Path-level prereq check for ET→MT-L1.",
+          "acceptance": "Unauthorized step access returns 403 with reason."
+        },
+        {
+          "id": "D2.4",
+          "title": "certificateController",
+          "status": "todo",
+          "priority": "P1",
+          "depends_on": ["D2.2"],
+          "endpoints": [
+            "POST /certificates/generate (internal, called by progress after final assessment pass)",
+            "GET /certificates/me → list user's certs",
+            "GET /certificates/verify/:qr_token → public verify endpoint"
+          ],
+          "acceptance": "After passing UT-L1 final (stub for now), certificate row created with unique serial SNS-UT-L1-NNNNN."
+        }
+      ]
+    },
+
+    {
+      "id": "phase-3",
+      "name": "Frontend — Design System Foundation",
+      "objective": "Tokens + primitives + domain components BEFORE pages. This prevents UI drift across Hub (Alt B) and Lesson Player (Alt D).",
+      "estimate": "4-5 hours",
+      "deliverables": [
+        {
+          "id": "D3.1",
+          "title": "Design tokens — CSS variables + Tailwind extension",
+          "status": "todo",
+          "priority": "P0",
+          "file_to_modify": "client/tailwind.config.js, client/src/index.css",
+          "tasks": [
+            "Add IBM Plex Sans + IBM Plex Mono to index.html <link> (Google Fonts) — keep Inter for existing pages",
+            "In index.css: add CSS variables under new :root scope — method gradients, semantic colors, shadow tokens, motion durations (match design_system.tokens above)",
+            "In tailwind.config.js: extend fontFamily (plex, plexMono), add utilities for method gradients (bg-method-ut etc.), extend boxShadow (card-hover, primary-btn)",
+            "Create client/src/styles/elearning.css for e-learning-specific tokens + body font override scoped under a .elearning-surface class — prevents affecting MinimalHome/MinimalCourses"
+          ],
+          "acceptance": "Existing pages (MinimalHome, MinimalCourses) look UNCHANGED. New utility classes available. npm run dev has zero warnings. Hot-reload picks up token changes."
+        },
+        {
+          "id": "D3.2",
+          "title": "Primitive components library",
+          "status": "todo",
+          "priority": "P0",
+          "depends_on": ["D3.1"],
+          "folder_to_create": "client/src/components/elearning/primitives/",
+          "components": [
+            "Button.jsx (variants via cva or clsx: primary/secondary/ghost/dark · sizes sm/md/lg)",
+            "Badge.jsx (variants: done/active/available/locked · shapes pill/square)",
+            "StatusChip.jsx (with optional pulse dot · used in Live status indicators)",
+            "ProgressBar.jsx (thin · animated fill · optional label · aria-valuenow)",
+            "Avatar.jsx (gradient background from initials · xs/sm/md)",
+            "MethodIcon.jsx ({ method: 'UT'|'MT'|...|'ET', size }) — renders gradient badge",
+            "Card.jsx (base · with surfaceMode prop 'hub' | 'player' — controls radius)",
+            "Callout.jsx (orange left border · for reading body notes)",
+            "Kbd.jsx (monospace chip for ⌘K etc.)"
+          ],
+          "best_practices": [
+            "Every primitive accepts className for composition",
+            "Use forwardRef for all interactive primitives (Button, Badge-as-link)",
+            "Consistent prop naming: `size` not `sz`, `variant` not `kind`",
+            "Export via client/src/components/elearning/primitives/index.js barrel"
+          ],
+          "acceptance": "All primitives render at /e-learning/_preview (a dev-only route showing each primitive in all variants). No inline styles — all via Tailwind + tokens."
+        },
+        {
+          "id": "D3.3",
+          "title": "Domain components — shared between Hub and Player",
+          "status": "todo",
+          "priority": "P0",
+          "depends_on": ["D3.2"],
+          "folder_to_create": "client/src/components/elearning/domain/",
+          "shared": [
+            "KPICard.jsx — label, value, delta, optional accent variant",
+            "ProgressRow.jsx — progress label + bar + percent (hub + player share this)",
+            "StepListItem.jsx — used in both hub's ModuleRoadmap and player's CourseSidebar (different sizes)",
+            "CertificatePreviewCard.jsx — upcoming / issued cert with serial"
+          ],
+          "hub_specific": [
+            "GreetCard.jsx — personal greeting + resume next-step",
+            "PathRow.jsx — horizontal path (6 methods)",
+            "PathCard.jsx — mobile tile variant",
+            "ModuleAccordion.jsx — collapsible module with steps",
+            "ActivityStreamItem.jsx — dot + text + time"
+          ],
+          "player_specific": [
+            "CourseSidebar.jsx — full-height sidebar with collapsible module sections (ref: Alt D)",
+            "LessonHero.jsx — navy header with module label + title + brand mark + geometric decor",
+            "LessonFooter.jsx — prev/dots/next navigation",
+            "ReadingSlide.jsx — typography-driven reading content",
+            "AnimatedStepFrame.jsx — wrapper mounting a simulation",
+            "QuizRunner.jsx — reuses existing quiz components if possible"
+          ],
+          "rules": [
+            "Components NEVER query React Query directly — pages pass data as props. Keeps components testable.",
+            "No component opens Axios directly. Services + hooks own data.",
+            "Every component exports propTypes or TypeScript-style JSDoc."
+          ],
+          "acceptance": "All components render with mock data in the _preview route. Visual parity with Alt B / Alt D references."
+        }
+      ]
+    },
+
+    {
+      "id": "phase-4",
+      "name": "Frontend — Services, Layouts, Pages",
+      "objective": "Wire backend to frontend. Ship Hub and Player.",
+      "estimate": "6-8 hours",
+      "deliverables": [
+        {
+          "id": "D4.1",
+          "title": "Services + React Query hooks",
+          "status": "todo",
+          "priority": "P0",
+          "depends_on": ["D2.1", "D2.2"],
+          "files_to_create": [
+            "client/src/services/learningPathService.js",
+            "client/src/services/progressService.js",
+            "client/src/hooks/useLearningPaths.js",
+            "client/src/hooks/usePathDetail.js",
+            "client/src/hooks/useProgress.js",
+            "client/src/hooks/useStepNavigation.js"
+          ],
+          "pattern_reference": "client/src/services/articleService.js",
+          "acceptance": "Hooks return typed data matching API contract. Proper loading/error states. React Query keys documented."
+        },
+        {
+          "id": "D4.2",
+          "title": "ELearningLayout — Hub shell (Alt B)",
+          "status": "todo",
+          "priority": "P0",
+          "depends_on": ["D3.3"],
+          "file_to_create": "client/src/layouts/ELearningLayout.jsx",
+          "tasks": [
+            "Dark slate-950 sidebar with Navigate + My Paths + User chip sections",
+            "Sticky sidebar on desktop; hamburger-drawer on mobile (Radix Dialog for a11y)",
+            "Content area with breadcrumb slot + outlet",
+            "Applies .elearning-surface class so IBM Plex fonts kick in",
+            "Consumes CourseSidebar primitive style from Alt B reference"
+          ],
+          "acceptance": "Renders on /e-learning route. Mobile drawer opens/closes via keyboard + tap. No layout overflow at 320px."
+        },
+        {
+          "id": "D4.3",
+          "title": "LearningHub page (Alt B composition)",
+          "status": "todo",
+          "priority": "P0",
+          "depends_on": ["D4.1", "D4.2"],
+          "file_to_create": "client/src/pages/elearning/LearningHub.jsx",
+          "file_to_deprecate": "client/src/pages/ELearningHub.jsx (replace or redirect)",
+          "composition": [
+            "<GreetCard /> — uses useProgress().data for next-step resume",
+            "<KPIStrip /> — 4 KPICards driven by useProgress()",
+            "<PathsPanel /> — paths table with tabs (All / In Progress / Available / Locked), PathRows from useLearningPaths()",
+            "<ModuleRoadmap /> — active enrollment's ModuleAccordion",
+            "<ActivityStream /> — last 7 days from useProgress().activity",
+            "<CertificatePreviewCard /> — next expected cert"
+          ],
+          "acceptance": "Route /e-learning loads with real API data. All interactions wired. Mobile responsive at 360/768/1024. Matches Alt B visual reference."
+        },
+        {
+          "id": "D4.4",
+          "title": "LearningPathDetail page",
+          "status": "todo",
+          "priority": "P0",
+          "depends_on": ["D4.3"],
+          "file_to_create": "client/src/pages/elearning/LearningPathDetail.jsx",
+          "route": "/e-learning/paths/:code",
+          "composition": [
+            "PathHero — title, instructor, total modules, enroll button",
+            "ModuleAccordion list — expand to see steps; click step → LessonPlayer route",
+            "Side: PathTelemetry + CertificatePreviewCard + Instructor card"
+          ],
+          "acceptance": "Clicking a path row in Hub navigates here. Accordion state persists. Click step navigates to player."
+        },
+        {
+          "id": "D4.5",
+          "title": "LessonPlayer page (Alt D composition)",
+          "status": "todo",
+          "priority": "P0",
+          "depends_on": ["D3.3", "D4.1"],
+          "file_to_create": "client/src/pages/elearning/LessonPlayer.jsx",
+          "route": "/e-learning/paths/:code/modules/:number/steps/:stepId",
+          "layout_reference": "client/public/elearning-alt-d-ibm.html",
+          "composition": [
+            "Full-screen layout (escapes ELearningLayout; uses its own LessonPlayerLayout)",
+            "<TopProgress /> + <CourseTitleBar /> — sticky top",
+            "<CourseSidebar /> — collapsible course menu on left (orange branded)",
+            "<LessonHero /> — navy header with module label + current step title + geometric decor",
+            "<LessonBody /> — renders step content based on kind:",
+            "  · kind='reading' → <ReadingSlide content={step.content_jsonb} />",
+            "  · kind='animated' → <AnimatedStepFrame simulationRef={step.simulation_ref} />",
+            "  · kind='quiz' → <QuizRunner questions={step.questions} onComplete={handleComplete} />",
+            "<LessonFooter /> — prev/dots/next; Next calls progressService.complete(stepId) then navigates"
+          ],
+          "acceptance": "Can traverse UT-L1 Module 3 steps 3.1 → 3.5 end-to-end. State updates in DB. Visual parity with Alt D. Player keyboard-navigable (← → arrows advance steps)."
+        },
+        {
+          "id": "D4.6",
+          "title": "Reuse existing simulations as animated steps",
+          "status": "todo",
+          "priority": "P1",
+          "depends_on": ["D4.5"],
+          "reference_files": [
+            "client/src/pages/simulations/UTSimulationPage.jsx",
+            "client/src/pages/simulations/MTSimulationPage.jsx",
+            "client/src/pages/simulations/PTSimulationPage.jsx",
+            "client/src/pages/simulations/RTSimulationPage.jsx"
+          ],
+          "approach": "Extract simulation body into a component (client/src/components/ndt-sims/UTScene.jsx etc.) that accepts a `scene` prop matching step.simulation_ref. LessonPlayer mounts via AnimatedStepFrame.",
+          "acceptance": "Step 3.1 (Why couplant) renders a UT simulation scene inline. No navigation required."
+        },
+        {
+          "id": "D4.7",
+          "title": "Routing integration + navbar state",
+          "status": "todo",
+          "priority": "P0",
+          "tasks": [
+            "Update client/src/App.jsx router: /e-learning uses ELearningLayout with nested children for hub/path; /e-learning/paths/:code/modules/:n/steps/:id uses LessonPlayerLayout (full-screen)",
+            "MinimalNavbar: E-Learning active state still works on nested routes",
+            "Preserve old /e-learning/content, /e-learning/simulations, /e-learning/quizzes for backward compat OR redirect them to the new path-based structure"
+          ],
+          "acceptance": "No broken links. E-Learning nav highlights on all nested routes. Direct deep-link to /e-learning/paths/UT-L1/modules/3/steps/abc works."
+        }
+      ]
+    },
+
+    {
+      "id": "phase-5",
+      "name": "Design System QA + Content + Ship",
+      "objective": "Enforce consistency, seed real content, validate.",
+      "estimate": "3-4 hours",
+      "deliverables": [
+        {
+          "id": "D5.1",
+          "title": "Seed real Module 3 content",
+          "status": "todo",
+          "priority": "P1",
+          "depends_on": ["D4.5"],
+          "tasks": [
+            "3.1 animated — couplant acoustic coupling scene (wires to UTScene)",
+            "3.2 reading — acoustic impedance slides (content_jsonb with 4-6 slides, matching Alt D body)",
+            "3.3 animated — DAC curve construction",
+            "3.4 reading — block types slides (IIW V1, V2, step wedge)",
+            "3.5 quiz — 8 questions (reuse quiz_questions table)"
+          ],
+          "acceptance": "Real user can complete Module 3 end-to-end with meaningful content."
+        },
+        {
+          "id": "D5.2",
+          "title": "Design system audit",
+          "status": "todo",
+          "priority": "P1",
+          "depends_on": ["D4.5"],
+          "checklist": [
+            "Open /e-learning/_preview — verify every primitive + domain component renders correctly",
+            "Verify token rules: rounded-lg only on hub surfaces, sharp edges only on player surfaces",
+            "Verify method color consistency: UT always sky→cyan, PT always orange→amber, etc., in every instance across hub + player",
+            "Verify mono font only on data/codes (never prose) across all screens",
+            "Run axe DevTools on /e-learning, /e-learning/paths/UT-L1, and a lesson player route — target 0 serious issues",
+            "Keyboard-only test: can navigate hub, open path, complete a step, return, without mouse",
+            "Test color contrast: all text ≥ 4.5:1 (large text ≥ 3:1) against its background"
+          ],
+          "acceptance": "Checklist all green. Document any intentional token exceptions in design_system.notes for future devs."
+        },
+        {
+          "id": "D5.3",
+          "title": "Empty states + loading skeletons",
+          "status": "todo",
+          "priority": "P1",
+          "states": [
+            "No enrollments → 'Start your first path' CTA on GreetCard + PathsPanel",
+            "Zero activity → ActivityStream placeholder with illustrative empty graphic",
+            "Path has no modules yet (other 5 methods pre-content) → 'Content launching soon' card",
+            "Skeleton loaders for paths table (6 row shimmer) and KPI strip"
+          ],
+          "acceptance": "No blank white pages during loading. Every empty state is intentional and matches design direction."
+        },
+        {
+          "id": "D5.4",
+          "title": "Manual QA — pilot walkthrough",
+          "status": "todo",
+          "priority": "P0",
+          "depends_on": ["D5.1"],
+          "checklist": [
+            "Enroll flow: unenrolled user → enrolls UT-L1 → appears in sidebar and hub",
+            "Progress persistence: complete a step, refresh page, still marked done",
+            "Gating: Module 4 locked while Module 3 incomplete; try deep-link to Module 4 step → 403",
+            "Mobile: sidebar drawer works on hub; player sidebar collapses below 980px",
+            "Certificate: complete final assessment stub with score ≥ 75 → certificate card issued",
+            "Dark/light parity: e-learning area shouldn't break existing light mode on home/courses"
+          ],
+          "acceptance": "All items pass. Any bugs filed as follow-up issues — don't block merge unless P0."
+        },
+        {
+          "id": "D5.5",
+          "title": "Cleanup preview files",
+          "status": "todo",
+          "priority": "P2",
+          "notes": "Only after final approval. Keep elearning-alt-b.html and elearning-alt-d-ibm.html as references until React version matches pixel-close; then archive to /porto or delete.",
+          "files": [
+            "client/public/elearning-design.html",
+            "client/public/elearning-alt-a.html",
+            "client/public/elearning-alt-b.html",
+            "client/public/elearning-alt-c.html",
+            "client/public/elearning-alt-d-ibm.html",
+            "client/public/preview-alt-a.jpg",
+            "client/public/preview-alt-b.jpg",
+            "client/public/preview-alt-c.jpg",
+            "client/public/elearning-design-preview.png"
+          ]
+        }
+      ]
+    }
+  ],
+
+  "open_questions": [
+    "Monetization: Level I gratis, Level II/III berbayar? Atau path-based pricing seperti existing lectures? (Affects enrollment flow.)",
+    "Certificate PDF generation — client-side (react-pdf) atau server-side (puppeteer / pdfkit)?",
+    "Content authoring — admin panel CRUD untuk modules/steps, atau cukup via SQL seeders for now? (If MVP: seeders. If scaling: admin panel.)",
+    "Simulation reuse — apakah simulation components pernah di-refactor jadi embeddable, atau masih page-level only? (D4.6 depends on answer.)",
+    "Font delivery — self-host IBM Plex or Google Fonts CDN? (Self-host avoids layout shift; Google Fonts is lazy default.)"
+  ],
+
+  "quick_start_when_resuming": [
+    "1. cd server && ensure DATABASE_URL points to Supabase in .env",
+    "2. Open tracker.json → start Phase 1 D1.1",
+    "3. Update status: 'todo' → 'in_progress' → 'done' as you go",
+    "4. Keep both references open side-by-side:",
+    "   - Hub: client/public/elearning-alt-b.html",
+    "   - Player: client/public/elearning-alt-d-ibm.html",
+    "5. Phase 3 MUST complete before Phase 4 — design system first prevents rework"
+  ]
+}

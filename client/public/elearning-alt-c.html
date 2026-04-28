@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Alt C — Editorial Bold · SNS NDT E-Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --orange-50:  #FFF7ED;
+    --orange-100: #FFEDD5;
+    --orange-200: #FED7AA;
+    --orange-500: #F97316;
+    --orange-600: #EA580C;
+    --orange-700: #C2410C;
+    --amber-500: #F59E0B;
+    --slate-50:  #F8FAFC;
+    --slate-100: #F1F5F9;
+    --slate-200: #E2E8F0;
+    --slate-300: #CBD5E1;
+    --slate-400: #94A3B8;
+    --slate-500: #64748B;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1E293B;
+    --slate-900: #0F172A;
+    --paper: #FBF8F3;
+    --paper-ink: #1A1410;
+    --green-600: #059669;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); color: var(--slate-900); font-family: "Inter", system-ui, sans-serif; }
+  body {
+    font-size: 15px; line-height: 1.55;
+    background-image: radial-gradient(ellipse 60% 40% at 10% 0%, rgba(234,88,12,0.04), transparent 60%);
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; cursor: pointer; border: 0; background: transparent; }
+  .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+  ::selection { background: var(--orange-100); color: var(--orange-700); }
+
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 0 32px; }
+  @media (max-width: 720px) { .wrap { padding: 0 20px; } }
+
+  /* Top bar */
+  .topbar { position: sticky; top: 0; z-index: 40; background: rgba(251,248,243,0.88); backdrop-filter: blur(14px); border-bottom: 1px solid var(--slate-200); }
+  .topbar-inner { display: grid; grid-template-columns: auto 1fr auto; align-items: center; height: 72px; gap: 28px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; letter-spacing: -0.01em; }
+  .brand .mark { width: 28px; height: 28px; border-radius: 6px; background: linear-gradient(135deg, var(--orange-600), var(--amber-500)); box-shadow: 0 2px 8px rgba(234,88,12,0.3); }
+  .top-nav { display: flex; gap: 28px; justify-content: center; font-size: 14px; color: var(--slate-700); font-weight: 500; }
+  .top-nav a { padding: 4px 0; position: relative; }
+  .top-nav a.active { color: var(--orange-700); }
+  .top-nav a.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -26px; height: 2px; background: var(--orange-600); border-radius: 2px; }
+  .top-right { display: flex; gap: 10px; align-items: center; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border: 1px solid var(--slate-300); background: transparent; color: var(--slate-900); border-radius: 999px; font-size: 13.5px; font-weight: 600; transition: all 150ms; }
+  .btn:hover { background: var(--slate-900); color: white; border-color: var(--slate-900); }
+  .btn.primary { background: var(--slate-900); color: white; border-color: var(--slate-900); }
+  .btn.primary:hover { background: var(--orange-600); border-color: var(--orange-600); }
+  .btn.orange { background: var(--orange-600); color: white; border-color: var(--orange-600); }
+  .btn.orange:hover { background: var(--orange-700); border-color: var(--orange-700); }
+  .btn.sm { padding: 8px 14px; font-size: 12.5px; }
+
+  /* Eyebrow + small caps */
+  .issue-tag {
+    display: inline-block; font: 500 11px "JetBrains Mono", monospace;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--slate-500);
+  }
+  .issue-tag .orange { color: var(--orange-600); font-weight: 600; }
+
+  /* Hero — magazine cover style */
+  .masthead {
+    position: relative; padding: 60px 0 32px;
+  }
+  .masthead .top-line {
+    display: flex; justify-content: space-between; padding-bottom: 18px;
+    border-bottom: 2px solid var(--slate-900); margin-bottom: 44px;
+    font: 500 11px "JetBrains Mono", monospace; letter-spacing: 0.16em; text-transform: uppercase; color: var(--slate-500);
+  }
+  .masthead .top-line .i { display: flex; gap: 22px; }
+  .masthead .top-line .i b { color: var(--slate-900); font-weight: 600; }
+
+  .hero-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 60px; align-items: start; }
+  @media (max-width: 960px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero-left .kicker { font: 600 13px "JetBrains Mono", monospace; color: var(--orange-600); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 18px; display: block; }
+  .hero-left h1 {
+    font-size: clamp(60px, 9vw, 128px);
+    line-height: 0.88; letter-spacing: -0.045em; font-weight: 800;
+    color: var(--slate-900);
+  }
+  .hero-left h1 em {
+    font-style: italic; font-weight: 300;
+    background: linear-gradient(120deg, var(--orange-600), var(--amber-500));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero-left h1 .under { text-decoration: underline; text-decoration-color: var(--orange-500); text-decoration-thickness: 4px; text-underline-offset: 8px; }
+  .hero-left .byline { display: flex; gap: 20px; margin: 32px 0; padding: 16px 0; border-top: 1px solid var(--slate-300); border-bottom: 1px solid var(--slate-300); font-size: 13px; color: var(--slate-600); }
+  .hero-left .byline .b { display: flex; flex-direction: column; gap: 2px; }
+  .hero-left .byline .b .k { font: 500 10.5px "JetBrains Mono", monospace; letter-spacing: 0.12em; color: var(--slate-500); text-transform: uppercase; }
+  .hero-left .byline .b .v { font-weight: 500; color: var(--slate-900); }
+  .hero-left p.lede {
+    font-size: 19px; line-height: 1.55; color: var(--slate-700); max-width: 52ch;
+    font-weight: 400;
+  }
+  .hero-left p.lede::first-letter {
+    font-size: 58px; line-height: 1; float: left; padding: 4px 10px 0 0;
+    font-weight: 700; color: var(--orange-600);
+  }
+  .hero-left .cta-row { margin-top: 36px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .hero-right {
+    position: sticky; top: 100px;
+  }
+  .hero-right .figure {
+    background: white; border: 1px solid var(--slate-200); border-radius: 4px;
+    box-shadow: 0 1px 0 var(--slate-200), 0 20px 40px -24px rgba(15,23,42,0.3);
+    padding: 20px; position: relative;
+  }
+  .hero-right .figure .fig-tag { font: 500 10.5px "JetBrains Mono", monospace; color: var(--slate-500); letter-spacing: 0.14em; text-transform: uppercase; }
+  .hero-right .figure .fig-t { font-size: 15px; font-weight: 600; margin-top: 4px; letter-spacing: -0.01em; }
+  .hero-right .figure .fig-b { display: flex; justify-content: space-between; align-items: baseline; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--slate-100); }
+  .hero-right .figure .fig-b .n { font-size: 48px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  .hero-right .figure .fig-b .sub { font-size: 12px; color: var(--slate-500); text-align: right; max-width: 16ch; }
+  .hero-right .figure .bar { margin-top: 14px; height: 4px; background: var(--slate-100); border-radius: 999px; overflow: hidden; }
+  .hero-right .figure .bar .fill { height: 100%; background: linear-gradient(90deg, var(--orange-600), var(--amber-500)); }
+
+  .hero-right .quote {
+    margin-top: 20px; padding: 22px 24px;
+    background: var(--slate-900); color: white; border-radius: 4px; font-size: 17px;
+    font-weight: 500; letter-spacing: -0.01em; line-height: 1.4;
+    position: relative;
+  }
+  .hero-right .quote::before {
+    content: """; position: absolute; top: 2px; left: 14px; font-size: 60px;
+    font-family: "Inter", serif; color: var(--orange-500); line-height: 1; font-weight: 700;
+  }
+  .hero-right .quote .who { font: 500 10.5px "JetBrains Mono", monospace; color: var(--orange-500); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 14px; display: block; }
+
+  /* Bulletin strip */
+  .bulletin {
+    padding: 14px 0; border-top: 1px solid var(--slate-900); border-bottom: 1px solid var(--slate-900);
+    margin-top: 72px; overflow: hidden; background: white;
+  }
+  .bulletin .track {
+    display: flex; gap: 48px; white-space: nowrap;
+    animation: slide 40s linear infinite;
+    font: 500 13px "JetBrains Mono", monospace; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate-700);
+  }
+  .bulletin .track span .dot { color: var(--orange-600); margin: 0 6px; }
+  @keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* Section */
+  section { padding: 100px 0; position: relative; }
+  .section-head { max-width: 800px; margin-bottom: 60px; }
+  .section-head .eyebrow { font: 600 13px "JetBrains Mono", monospace; color: var(--orange-600); letter-spacing: 0.14em; text-transform: uppercase; display: block; margin-bottom: 16px; }
+  .section-head h2 { font-size: clamp(40px, 5vw, 64px); font-weight: 800; line-height: 1; letter-spacing: -0.03em; }
+  .section-head h2 em { font-style: italic; font-weight: 300; color: var(--orange-600); }
+  .section-head p { margin-top: 22px; font-size: 17px; color: var(--slate-600); max-width: 52ch; font-weight: 400; }
+
+  /* Feature: "Continue reading" article */
+  .continue-article {
+    display: grid; grid-template-columns: 1fr 1.3fr; gap: 48px; align-items: center;
+    padding: 48px 0; border-top: 1px solid var(--slate-300); border-bottom: 1px solid var(--slate-300);
+  }
+  @media (max-width: 860px) { .continue-article { grid-template-columns: 1fr; } }
+  .continue-article .meta { font: 500 12px "JetBrains Mono", monospace; color: var(--slate-500); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; }
+  .continue-article h3 { font-size: clamp(28px, 3.5vw, 44px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.05; color: var(--slate-900); }
+  .continue-article h3 em { font-style: italic; font-weight: 300; color: var(--orange-600); }
+  .continue-article p { margin-top: 18px; font-size: 16px; color: var(--slate-600); max-width: 54ch; }
+  .continue-article .mini { display: flex; gap: 18px; margin-top: 22px; align-items: center; }
+  .continue-article .mini .pct { font-size: 42px; font-weight: 800; letter-spacing: -0.03em; color: var(--orange-600); line-height: 1; }
+  .continue-article .mini .bar { flex: 1; height: 6px; background: var(--slate-200); border-radius: 999px; overflow: hidden; }
+  .continue-article .mini .bar .fill { height: 100%; background: linear-gradient(90deg, var(--orange-600), var(--amber-500)); }
+  .continue-article .card-fig {
+    background: white; border: 1px solid var(--slate-200); border-radius: 4px; padding: 28px;
+    position: relative;
+  }
+  .continue-article .card-fig .lbl { font: 500 11px "JetBrains Mono", monospace; color: var(--slate-500); letter-spacing: 0.14em; text-transform: uppercase; }
+  .continue-article .card-fig h4 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin-top: 6px; }
+  .continue-article .card-fig .step-list { margin-top: 18px; display: flex; flex-direction: column; gap: 4px; }
+  .continue-article .card-fig .step-list .s { display: grid; grid-template-columns: 22px 1fr auto; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--slate-100); font-size: 14px; color: var(--slate-700); }
+  .continue-article .card-fig .step-list .s:last-child { border-bottom: 0; }
+  .continue-article .card-fig .step-list .s .c { width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--slate-300); display: grid; place-items: center; font-size: 10px; color: var(--slate-400); }
+  .continue-article .card-fig .step-list .s.done .c { background: var(--slate-900); color: white; border-color: var(--slate-900); }
+  .continue-article .card-fig .step-list .s.current .c { background: var(--orange-600); color: white; border-color: var(--orange-600); }
+  .continue-article .card-fig .step-list .s .d { font: 500 11px "JetBrains Mono", monospace; color: var(--slate-400); }
+  .continue-article .card-fig .step-list .s.current { font-weight: 600; color: var(--slate-900); }
+
+  /* Paths — editorial grid */
+  .paths {
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 1px; background: var(--slate-300);
+    border-top: 1px solid var(--slate-300); border-bottom: 1px solid var(--slate-300);
+  }
+  @media (max-width: 960px) { .paths { grid-template-columns: 1fr; } }
+  .path {
+    background: var(--paper); padding: 40px 32px; position: relative; transition: background 200ms;
+    display: flex; flex-direction: column; min-height: 380px;
+  }
+  .path:hover { background: white; }
+  .path .drw { font: 500 11px "JetBrains Mono", monospace; color: var(--slate-500); letter-spacing: 0.14em; text-transform: uppercase; }
+  .path h3 { font-size: clamp(32px, 2.8vw, 44px); font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-top: 16px; color: var(--slate-900); }
+  .path h3 em { font-style: italic; font-weight: 300; color: var(--orange-600); display: block; margin-top: 6px; }
+  .path .d { font-size: 14.5px; color: var(--slate-600); margin-top: 14px; max-width: 36ch; }
+  .path .foot { margin-top: auto; padding-top: 20px; border-top: 1px dashed var(--slate-300); display: flex; flex-direction: column; gap: 10px; }
+  .path .status-row { display: flex; justify-content: space-between; align-items: center; font: 500 11.5px "JetBrains Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate-500); }
+  .path .status-row b { color: var(--slate-900); font-variant-numeric: tabular-nums; }
+  .path .status-row .st.prog { color: var(--orange-600); font-weight: 600; }
+  .path .status-row .st.avail { color: var(--slate-900); font-weight: 600; }
+  .path .status-row .st.locked { color: var(--slate-400); }
+  .path .bar { height: 3px; background: var(--slate-200); }
+  .path .bar .fill { height: 100%; background: var(--orange-600); }
+  .path .levels { display: flex; gap: 14px; font-size: 12.5px; color: var(--slate-500); }
+  .path .levels b { color: var(--slate-900); font-weight: 700; }
+  .path .levels .done { color: var(--green-600); font-weight: 700; }
+  .path .levels .active { color: var(--orange-600); font-weight: 700; }
+  .path .arrow { position: absolute; top: 32px; right: 32px; font-size: 20px; color: var(--slate-400); transition: all 150ms; }
+  .path:hover .arrow { color: var(--orange-600); transform: translate(4px, -4px); }
+  .path.feature {
+    background: var(--slate-900); color: white; grid-row: span 2;
+  }
+  .path.feature h3 { color: white; font-size: clamp(42px, 4vw, 68px); }
+  .path.feature h3 em { color: var(--amber-500); }
+  .path.feature .drw { color: var(--orange-500); }
+  .path.feature .d { color: var(--slate-300); }
+  .path.feature .foot { border-top-color: rgba(255,255,255,0.12); }
+  .path.feature .status-row { color: var(--slate-400); }
+  .path.feature .status-row b { color: white; }
+  .path.feature .bar { background: rgba(255,255,255,0.12); }
+  .path.feature .bar .fill { background: linear-gradient(90deg, var(--orange-500), var(--amber-500)); }
+  .path.feature .arrow { color: var(--amber-500); font-size: 26px; }
+  .path.feature .levels b { color: white; }
+  .path.feature .expanded { margin-top: 18px; }
+  .path.feature .expanded .ep { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 13px; color: var(--slate-300); }
+  .path.feature .expanded .ep:last-child { border-bottom: 0; }
+  .path.feature .expanded .ep b { color: white; font-weight: 500; }
+  .path.feature .cta-inner { margin-top: 24px; display: flex; gap: 8px; }
+  .path.feature .btn { background: var(--orange-600); color: white; border-color: var(--orange-600); }
+  .path.feature .btn:hover { background: var(--orange-700); border-color: var(--orange-700); }
+  .path.feature .btn.ghost { background: transparent; color: white; border-color: rgba(255,255,255,0.25); }
+  .path.feature .btn.ghost:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.5); }
+
+  /* Editorial module section */
+  .mod-editorial { padding: 100px 0; background: white; border-top: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200); }
+  .mod-editorial .col-2 { display: grid; grid-template-columns: 1fr 1.6fr; gap: 80px; align-items: start; }
+  @media (max-width: 960px) { .mod-editorial .col-2 { grid-template-columns: 1fr; gap: 40px; } }
+  .mod-editorial .col-left .drw { font: 500 11px "JetBrains Mono", monospace; color: var(--orange-600); letter-spacing: 0.14em; text-transform: uppercase; }
+  .mod-editorial .col-left h2 {
+    font-size: clamp(40px, 5vw, 72px); font-weight: 800; line-height: 0.95; letter-spacing: -0.035em; margin-top: 14px;
+  }
+  .mod-editorial .col-left h2 em { font-style: italic; font-weight: 300; color: var(--orange-600); }
+  .mod-editorial .col-left .kv-list { margin-top: 36px; padding: 24px 0; border-top: 2px solid var(--slate-900); border-bottom: 2px solid var(--slate-900); display: flex; flex-direction: column; gap: 10px; }
+  .mod-editorial .col-left .kv-list .r { display: flex; justify-content: space-between; font-size: 13.5px; }
+  .mod-editorial .col-left .kv-list .r .k { color: var(--slate-500); font-weight: 500; }
+  .mod-editorial .col-left .kv-list .r .v { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .mod-editorial .col-left .kv-list .r .v.orange { color: var(--orange-600); }
+  .mod-editorial .mod-row {
+    display: grid; grid-template-columns: 68px 1fr auto; gap: 20px; padding: 22px 0;
+    border-bottom: 1px solid var(--slate-200); align-items: center;
+  }
+  .mod-editorial .mod-row .mn { font-size: 40px; font-weight: 800; letter-spacing: -0.03em; color: var(--slate-300); line-height: 1; font-variant-numeric: tabular-nums; }
+  .mod-editorial .mod-row.done .mn { color: var(--green-600); }
+  .mod-editorial .mod-row.active .mn { color: var(--orange-600); }
+  .mod-editorial .mod-row .mt { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+  .mod-editorial .mod-row.locked .mt { color: var(--slate-400); }
+  .mod-editorial .mod-row .mm { font: 500 11.5px "JetBrains Mono", monospace; color: var(--slate-500); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 6px; }
+  .mod-editorial .mod-row .ms { font: 600 10.5px "JetBrains Mono", monospace; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 10px; border-radius: 999px; white-space: nowrap; }
+  .mod-editorial .mod-row.done .ms { background: var(--slate-900); color: white; }
+  .mod-editorial .mod-row.active .ms { background: var(--orange-600); color: white; }
+  .mod-editorial .mod-row.avail .ms { background: var(--slate-100); color: var(--slate-700); }
+  .mod-editorial .mod-row.locked .ms { background: transparent; color: var(--slate-400); border: 1px dashed var(--slate-300); }
+  .mod-editorial .mod-row.active {
+    background: linear-gradient(90deg, var(--orange-50), transparent 60%);
+    margin: 0 -20px; padding: 22px 20px; border-radius: 4px;
+  }
+  .mod-editorial .mod-row.active .steps {
+    grid-column: 2; margin-top: 14px; display: flex; flex-direction: column; gap: 0;
+  }
+  .mod-editorial .mod-row.active .steps .s {
+    display: grid; grid-template-columns: 22px 1fr auto auto; gap: 16px; align-items: center;
+    font-size: 14px; padding: 10px 0; border-top: 1px dashed var(--orange-200);
+  }
+  .mod-editorial .mod-row.active .steps .s:first-child { border-top: 1px dashed var(--orange-200); }
+  .mod-editorial .mod-row.active .steps .s .t { width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--slate-400); display: grid; place-items: center; font-size: 10px; color: var(--slate-400); }
+  .mod-editorial .mod-row.active .steps .s.done .t { background: var(--slate-900); color: white; border-color: var(--slate-900); }
+  .mod-editorial .mod-row.active .steps .s.current .t { background: var(--orange-600); color: white; border-color: var(--orange-600); }
+  .mod-editorial .mod-row.active .steps .s .kind { font: 600 10px "JetBrains Mono", monospace; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; }
+  .mod-editorial .mod-row.active .steps .s .kind.anim { background: var(--orange-100); color: var(--orange-700); }
+  .mod-editorial .mod-row.active .steps .s .kind.read { background: var(--slate-100); color: var(--slate-700); }
+  .mod-editorial .mod-row.active .steps .s .kind.quiz { background: var(--slate-900); color: white; }
+  .mod-editorial .mod-row.active .steps .s .d { font: 500 11px "JetBrains Mono", monospace; color: var(--slate-500); font-variant-numeric: tabular-nums; }
+
+  /* Big CTA */
+  .cta-big {
+    padding: 140px 0; position: relative;
+    background: radial-gradient(ellipse 70% 50% at 50% 100%, rgba(234,88,12,0.08), transparent 60%);
+    text-align: center;
+  }
+  .cta-big h2 {
+    font-size: clamp(60px, 8vw, 128px); font-weight: 800; line-height: 0.9; letter-spacing: -0.04em;
+    max-width: 22ch; margin: 0 auto;
+  }
+  .cta-big h2 em { font-style: italic; font-weight: 300; color: var(--orange-600); display: block; }
+  .cta-big p { margin: 32px auto 44px; font-size: 18px; color: var(--slate-600); max-width: 52ch; }
+  .cta-big .row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  footer {
+    padding: 52px 0 28px; border-top: 1px solid var(--slate-300);
+  }
+  .foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 36px; }
+  @media (max-width: 760px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
+  .foot-grid h4 { font: 500 11.5px "JetBrains Mono", monospace; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate-500); margin-bottom: 14px; }
+  .foot-grid a { display: block; padding: 4px 0; font-size: 13.5px; color: var(--slate-700); }
+  .foot-grid a:hover { color: var(--orange-600); }
+  .foot-bar { padding-top: 22px; border-top: 1px solid var(--slate-200); display: flex; justify-content: space-between; font: 500 11px "JetBrains Mono", monospace; color: var(--slate-500); letter-spacing: 0.12em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="#"><span class="mark"></span>SNS NDT</a>
+    <nav class="top-nav">
+      <a href="#">Home</a>
+      <a href="#">Courses</a>
+      <a href="#" class="active">E-Learning</a>
+      <a href="#">Schedule</a>
+      <a href="#">Alumni</a>
+      <a href="#">About</a>
+    </nav>
+    <div class="top-right">
+      <button class="btn sm">EN / ID</button>
+      <button class="btn primary sm">Masuk</button>
+    </div>
+  </div>
+</header>
+
+<section class="masthead">
+  <div class="wrap">
+    <div class="top-line">
+      <div class="i">
+        <span>Issue <b>Nº 04</b></span>
+        <span>Vol. <b>2026</b></span>
+        <span>Apr <b>21</b></span>
+      </div>
+      <div class="i">
+        <span>NDT · Certification · Inspection</span>
+      </div>
+    </div>
+
+    <div class="hero-grid">
+      <div class="hero-left">
+        <span class="kicker">— Issue 04 / The Curriculum</span>
+        <h1>Belajar <em>inspeksi</em>,<br/><span class="under">siap</span> sertifikasi.</h1>
+        <div class="byline">
+          <div class="b"><span class="k">Kurator</span><span class="v">Saenal A. Rapi</span></div>
+          <div class="b"><span class="k">Aligned</span><span class="v">ASNT SNT-TC-1A</span></div>
+          <div class="b"><span class="k">Methods</span><span class="v">UT · MT · PT · RT · VT · ET</span></div>
+        </div>
+        <p class="lede">
+          Enam metode inspeksi. Tiga level progresi. Satu kurikulum yang ditulis oleh inspector bersertifikasi ASNT Level III, dikemas sebagai lesson pendek dengan animasi interaktif, artikel referensi, dan penilaian bergaya ujian sertifikasi.
+        </p>
+        <div class="cta-row">
+          <a class="btn orange" href="#">Mulai Level I — Gratis →</a>
+          <a class="btn" href="#">Telusuri kurikulum</a>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="figure">
+          <div class="fig-tag">Fig. 01 — Progress</div>
+          <div class="fig-t">UT Level I · Kurikulum Kamu</div>
+          <div class="fig-b">
+            <div class="n">67<span style="font-size:20px; color: var(--slate-500)">%</span></div>
+            <div class="sub">9 dari 12 modul selesai · Modul 3 in progress</div>
+          </div>
+          <div class="bar"><div class="fill" style="width:67%"></div></div>
+        </div>
+        <div class="quote">
+          A curriculum should be calibrated — not guessed.
+          <span class="who">— Editor's Note</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="bulletin">
+  <div class="track">
+    <span>◉ LIVE · Batch April 2026 <b class="dot">·</b> UT Level I kini terbuka untuk semua <b class="dot">·</b> PT Level I updated Rev B <b class="dot">·</b> Featured: DAC curve masterclass <b class="dot">·</b> 1,247 alumni aktif <b class="dot">·</b> ASNT-aligned curriculum </span>
+    <span>◉ LIVE · Batch April 2026 <b class="dot">·</b> UT Level I kini terbuka untuk semua <b class="dot">·</b> PT Level I updated Rev B <b class="dot">·</b> Featured: DAC curve masterclass <b class="dot">·</b> 1,247 alumni aktif <b class="dot">·</b> ASNT-aligned curriculum </span>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">§ Continue reading · Issue 04</span>
+      <h2>Modul 3 — <em>Couplant, dan mengapa ia penting.</em></h2>
+    </div>
+
+    <div class="continue-article">
+      <div>
+        <div class="meta">UT · Level I · 5 steps · ~1h 04m</div>
+        <h3>Kenapa acoustic impedance <em>memutuskan</em> apakah sinyal UT kamu sampai ke cacat yang sebenarnya.</h3>
+        <p>Step 3.2 adalah kunci pemahaman kalibrasi UT. Kita akan menelusuri fisika transfer gelombang melalui interface dua medium, dan bagaimana pemilihan couplant yang tepat mempengaruhi amplitude echo.</p>
+        <div class="mini">
+          <div class="pct">67%</div>
+          <div style="flex:1">
+            <div class="bar"><div class="fill" style="width:67%"></div></div>
+            <div class="mono" style="font-size: 11.5px; color: var(--slate-500); margin-top: 6px; letter-spacing: 0.1em; text-transform: uppercase;">Kamu sudah di step 3.2 dari 5 · estimasi 38 menit lagi</div>
+          </div>
+          <a class="btn orange" href="#">Resume →</a>
+        </div>
+      </div>
+
+      <div class="card-fig">
+        <div class="lbl">Chapter 3 · Step Index</div>
+        <h4>Couplant &amp; Kalibrasi</h4>
+        <div class="step-list">
+          <div class="s done"><span class="c">✓</span><span>3.1 Why couplant matters</span><span class="d">08:20</span></div>
+          <div class="s current"><span class="c">▶</span><span>3.2 Acoustic impedance &amp; Z-matching</span><span class="d">06:40</span></div>
+          <div class="s"><span class="c">○</span><span>3.3 DAC curve construction</span><span class="d">12:00</span></div>
+          <div class="s"><span class="c">○</span><span>3.4 Block types — IIW V1, V2, step wedge</span><span class="d">09:10</span></div>
+          <div class="s"><span class="c">○</span><span>3.5 Mini-quiz — 8 questions</span><span class="d">10:00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">§ 02 · Learning Paths</span>
+      <h2>Enam metode, <em>satu disiplin.</em></h2>
+      <p>Setiap path disusun sebagai tiga level progresi dengan prerequisite gating. Mulai dari fundamentals — simulasi probe, interpretasi echo, prosedur — hingga capstone assessment yang membuka sertifikat.</p>
+    </div>
+  </div>
+
+  <div class="paths">
+    <article class="path feature">
+      <div>
+        <span class="drw">NDT / UT · In Progress</span>
+        <h3>Ultrasonic<em>Testing</em></h3>
+        <div class="d">Metode inspeksi paling serbaguna. Pulse-echo, karakterisasi cacat, through-thickness, dan PAUT untuk kompleksitas geometri tinggi.</div>
+      </div>
+      <div class="expanded">
+        <div class="ep"><span>Total modul</span><b>12</b></div>
+        <div class="ep"><span>Estimasi</span><b>~14 jam</b></div>
+        <div class="ep"><span>Level aktif</span><b>Level I (67%)</b></div>
+        <div class="ep"><span>Instruktur</span><b>Saenal A. Rapi · ASNT L-III</b></div>
+      </div>
+      <div class="foot">
+        <div class="status-row"><span class="st prog">▶ Continue UT-L1</span><b>67%</b></div>
+        <div class="bar"><div class="fill" style="width:67%"></div></div>
+        <div class="levels"><span class="done">L1 ✓</span><span class="active">L2 ▶</span><span>L3</span></div>
+        <div class="cta-inner">
+          <a href="#" class="btn">Resume learning →</a>
+          <a href="#" class="btn ghost">View path</a>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </article>
+
+    <article class="path">
+      <span class="drw">NDT / MT</span>
+      <h3>Magnetic<em>Particle</em></h3>
+      <div class="d">Inspeksi permukaan material feromagnetik melalui flux leakage.</div>
+      <div class="foot">
+        <div class="status-row"><span class="st avail">◇ Available</span><b>10 modul</b></div>
+        <div class="bar"></div>
+        <div class="levels"><span>L1</span><span>L2</span><span>L3</span></div>
+      </div>
+      <span class="arrow">→</span>
+    </article>
+
+    <article class="path">
+      <span class="drw">NDT / PT · In Progress</span>
+      <h3>Liquid<em>Penetrant</em></h3>
+      <div class="d">Capillary action, developer physics, fluorescent vs visible dye.</div>
+      <div class="foot">
+        <div class="status-row"><span class="st prog">▶ L1 · 38%</span><b>3 / 8</b></div>
+        <div class="bar"><div class="fill" style="width:38%"></div></div>
+        <div class="levels"><span class="active">L1 ▶</span><span>L2</span><span>L3</span></div>
+      </div>
+      <span class="arrow">→</span>
+    </article>
+
+    <article class="path">
+      <span class="drw">NDT / RT</span>
+      <h3>Radiographic<em>Testing</em></h3>
+      <div class="d">X-ray dan gamma-ray imaging, IQI, film density.</div>
+      <div class="foot">
+        <div class="status-row"><span class="st avail">◇ Available</span><b>14 modul</b></div>
+        <div class="bar"></div>
+        <div class="levels"><span>L1</span><span>L2</span><span>L3</span></div>
+      </div>
+      <span class="arrow">→</span>
+    </article>
+
+    <article class="path">
+      <span class="drw">NDT / VT</span>
+      <h3>Visual<em>Testing</em></h3>
+      <div class="d">Direct &amp; remote visual, lighting, AWS D1.1 acceptance.</div>
+      <div class="foot">
+        <div class="status-row"><span class="st avail">◇ Available</span><b>6 modul</b></div>
+        <div class="bar"></div>
+        <div class="levels"><span>L1</span><span>L2</span><span>L3</span></div>
+      </div>
+      <span class="arrow">→</span>
+    </article>
+
+    <article class="path">
+      <span class="drw">NDT / ET · Locked</span>
+      <h3>Eddy<em>Current</em></h3>
+      <div class="d" style="color: var(--slate-500)">Unlock setelah menyelesaikan MT Level I — dasar elektromagnetik diperlukan.</div>
+      <div class="foot">
+        <div class="status-row"><span class="st locked">🔒 Prerequisite</span><b>—</b></div>
+        <div class="bar"></div>
+        <div class="levels"><span>L1</span><span>L2</span><span>L3</span></div>
+      </div>
+      <span class="arrow" style="color: var(--slate-300)">→</span>
+    </article>
+  </div>
+</section>
+
+<section class="mod-editorial">
+  <div class="wrap">
+    <div class="col-2">
+      <div class="col-left">
+        <span class="drw">§ 03 · Path Detail</span>
+        <h2>UT <em>Level I</em></h2>
+        <p style="font-size: 17px; color: var(--slate-600); margin-top: 20px; max-width: 40ch;">
+          12 modul berurutan dari fundamentals fisika hingga capstone assessment. Setiap modul rata-rata 4–6 step pendek — animasi, reading, atau quiz.
+        </p>
+        <div class="kv-list">
+          <div class="r"><span class="k">Total modul</span><span class="v">12</span></div>
+          <div class="r"><span class="k">Step total</span><span class="v">48</span></div>
+          <div class="r"><span class="k">Durasi estimasi</span><span class="v">~14 jam</span></div>
+          <div class="r"><span class="k">Modul selesai</span><span class="v orange">9 / 12 · 67%</span></div>
+          <div class="r"><span class="k">Quiz rata-rata</span><span class="v">88.5 / 100</span></div>
+          <div class="r"><span class="k">Sertifikat</span><span class="v">On final ≥ 75%</span></div>
+        </div>
+        <a class="btn orange" href="#" style="margin-top: 28px;">Enrol sekarang →</a>
+      </div>
+
+      <div class="col-right">
+        <div class="mod-row done">
+          <div class="mn">01</div>
+          <div>
+            <div class="mt">Pengantar Non-Destructive Testing</div>
+            <div class="mm">4 STEP · 32 MIN</div>
+          </div>
+          <span class="ms">Done</span>
+        </div>
+        <div class="mod-row done">
+          <div class="mn">02</div>
+          <div>
+            <div class="mt">Fisika ultrasound — <em style="font-style:italic; color: var(--orange-600)">wave, frequency, velocity.</em></div>
+            <div class="mm">6 STEP · 58 MIN</div>
+          </div>
+          <span class="ms">Done</span>
+        </div>
+        <div class="mod-row active">
+          <div class="mn">03</div>
+          <div>
+            <div class="mt">Couplant &amp; Kalibrasi</div>
+            <div class="mm">5 STEP · 1H 04MIN · STEP 3.2 · IN PROGRESS</div>
+            <div class="steps">
+              <div class="s done"><span class="t">✓</span><span>3.1 &nbsp; Why couplant matters — acoustic coupling</span><span class="kind anim">Animated</span><span class="d">08:20</span></div>
+              <div class="s current"><span class="t">▶</span><span>3.2 &nbsp; Acoustic impedance &amp; Z-matching</span><span class="kind read">Reading</span><span class="d">06:40</span></div>
+              <div class="s"><span class="t">○</span><span>3.3 &nbsp; DAC curve construction walkthrough</span><span class="kind anim">Animated</span><span class="d">12:00</span></div>
+              <div class="s"><span class="t">○</span><span>3.4 &nbsp; Block types — IIW V1, V2, step wedge</span><span class="kind read">Reading</span><span class="d">09:10</span></div>
+              <div class="s"><span class="t">○</span><span>3.5 &nbsp; Mini-quiz — 8 questions</span><span class="kind quiz">Assessment</span><span class="d">10:00</span></div>
+            </div>
+          </div>
+          <span class="ms">In Progress</span>
+        </div>
+        <div class="mod-row avail">
+          <div class="mn">04</div>
+          <div>
+            <div class="mt">Transduser &amp; beam behaviour</div>
+            <div class="mm">5 STEP · 54 MIN</div>
+          </div>
+          <span class="ms">Available</span>
+        </div>
+        <div class="mod-row locked">
+          <div class="mn">05</div>
+          <div>
+            <div class="mt">Defect types &amp; echo interpretation</div>
+            <div class="mm">6 STEP · 1H 12MIN</div>
+          </div>
+          <span class="ms">Locked</span>
+        </div>
+        <div class="mod-row locked">
+          <div class="mn">Σ</div>
+          <div>
+            <div class="mt">Final Assessment — <em style="font-style:italic; color: var(--orange-600)">unlocks certificate.</em></div>
+            <div class="mm">40 QUESTIONS · 90 MIN · MIN. 75%</div>
+          </div>
+          <span class="ms">Locked</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-big">
+  <div class="wrap">
+    <h2>Inspeksi butuh <em>ketelitian.</em> Kurikulum juga.</h2>
+    <p>Enam metode. Tiga level. Satu kurikulum yang ditulis untuk inspector, oleh inspector. Mulai gratis — bayar hanya kalau kamu mau sertifikat resmi.</p>
+    <div class="row">
+      <a class="btn orange" href="#">Mulai UT Level I — Gratis →</a>
+      <a class="btn" href="#">Lihat semua path</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#"><span class="mark"></span>SNS NDT</a>
+        <p style="margin-top: 14px; font-size: 13.5px; color: var(--slate-600); max-width: 40ch;">Kurikulum NDT yang dikalibrasi — ditulis di Indonesia, mengikuti code internasional.</p>
+      </div>
+      <div>
+        <h4>E-Learning</h4>
+        <a href="#">All paths</a><a href="#">My learning</a><a href="#">Certificates</a><a href="#">Knowledge base</a>
+      </div>
+      <div>
+        <h4>Courses</h4>
+        <a href="#">UT · PAUT</a><a href="#">MT · PT</a><a href="#">RT · VT · ET</a><a href="#">Recertification</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="#">About</a><a href="#">Alumni</a><a href="#">Schedule</a><a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="foot-bar">
+      <span>Alt C · Editorial Bold</span>
+      <span>Issue 04 · Vol. 2026 · April 21</span>
+      <span>© 2026 SNS NDT</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

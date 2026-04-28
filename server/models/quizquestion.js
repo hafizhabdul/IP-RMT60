@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
             QuizQuestion.belongsTo(models.Lecture, { foreignKey: 'LectureId' });
             QuizQuestion.hasMany(models.QuizAttempt, { foreignKey: 'questionId' });
             QuizQuestion.hasMany(models.QuizQuestionTranslation, { foreignKey: 'QuizQuestionId', as: 'translations' });
+            QuizQuestion.belongsTo(models.LessonStep, { foreignKey: 'LessonStepId', as: 'lessonStep' });
         }
     }
     QuizQuestion.init(
@@ -62,6 +63,10 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: 'medium',
             },
             LectureId: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
+            LessonStepId: {
                 type: DataTypes.INTEGER,
                 allowNull: true,
             },

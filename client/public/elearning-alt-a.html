@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Alt A — Industrial Pro Extended · SNS NDT E-Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --orange-50:  #FFF7ED;
+    --orange-100: #FFEDD5;
+    --orange-500: #F97316;
+    --orange-600: #EA580C;
+    --orange-700: #C2410C;
+    --amber-400: #FBBF24;
+    --amber-500: #F59E0B;
+    --slate-50:  #F8FAFC;
+    --slate-100: #F1F5F9;
+    --slate-200: #E2E8F0;
+    --slate-300: #CBD5E1;
+    --slate-400: #94A3B8;
+    --slate-500: #64748B;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1E293B;
+    --slate-900: #0F172A;
+    --green-500: #10B981;
+    --green-600: #059669;
+    --red-500:   #EF4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: white; color: var(--slate-900); font-family: "Inter", system-ui, sans-serif; }
+  body { font-size: 15px; line-height: 1.55; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; cursor: pointer; border: 0; background: transparent; }
+  ::selection { background: var(--orange-100); color: var(--orange-700); }
+
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+  /* ——— Top bar ——— */
+  .topbar {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(255,255,255,0.9); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--slate-200);
+  }
+  .top-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: -0.01em; }
+  .brand .mark {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: linear-gradient(135deg, var(--orange-600), var(--amber-500));
+    box-shadow: 0 2px 8px rgba(234,88,12,0.3);
+  }
+  .top-nav { display: flex; gap: 26px; font-size: 14px; color: var(--slate-600); }
+  .top-nav a { padding: 4px 0; position: relative; transition: color 150ms; }
+  .top-nav a:hover { color: var(--slate-900); }
+  .top-nav a.active { color: var(--slate-900); font-weight: 500; }
+  .top-nav a.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -22px; height: 2px; background: var(--orange-600); border-radius: 2px; }
+  .top-right { display: flex; align-items: center; gap: 14px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px;
+    border: 1px solid var(--slate-200); background: white; color: var(--slate-900);
+    border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 150ms ease;
+  }
+  .btn:hover { border-color: var(--slate-300); background: var(--slate-50); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--orange-600), var(--orange-500));
+    color: white; border-color: transparent;
+    box-shadow: 0 2px 8px rgba(234,88,12,0.25);
+  }
+  .btn-primary:hover { box-shadow: 0 4px 14px rgba(234,88,12,0.4); transform: translateY(-1px); background: linear-gradient(135deg, var(--orange-700), var(--orange-600)); }
+  .btn-sm { padding: 7px 12px; font-size: 13px; }
+  .avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--orange-500), var(--amber-500));
+    color: white; font-weight: 600; font-size: 13px;
+    display: grid; place-items: center;
+  }
+
+  /* ——— Hero ——— */
+  .hero {
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(ellipse 60% 80% at 85% 0%, rgba(249,115,22,0.12), transparent 60%),
+      radial-gradient(ellipse 60% 80% at 10% 100%, rgba(251,191,36,0.08), transparent 60%),
+      linear-gradient(180deg, #FFF8F1 0%, #FFFFFF 100%);
+    border-bottom: 1px solid var(--slate-200);
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--slate-200) 1px, transparent 1px),
+      linear-gradient(90deg, var(--slate-200) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.35;
+    mask-image: radial-gradient(ellipse 80% 80% at center, black 0%, transparent 80%);
+  }
+  .hero-inner { position: relative; padding: 80px 0 72px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: center; }
+  @media (max-width: 960px) { .hero-inner { grid-template-columns: 1fr; padding: 56px 0 48px; } }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px; border-radius: 999px;
+    background: white; border: 1px solid var(--orange-100);
+    color: var(--orange-700); font-size: 12px; font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--orange-500); box-shadow: 0 0 0 3px rgba(249,115,22,0.2); animation: pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.4); opacity: .6; } }
+  .hero h1 {
+    margin-top: 20px;
+    font-size: clamp(40px, 6vw, 64px); line-height: 1.04; letter-spacing: -0.028em;
+    font-weight: 700; color: var(--slate-900);
+  }
+  .hero h1 .grad {
+    background: linear-gradient(135deg, var(--orange-600), var(--amber-500));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p {
+    margin-top: 22px; font-size: 17px; color: var(--slate-600);
+    font-weight: 400; max-width: 50ch;
+  }
+  .hero-cta { margin-top: 32px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-stats { margin-top: 48px; display: grid; grid-template-columns: repeat(3, auto); gap: 40px; }
+  .hero-stats .s .n { font-size: 28px; font-weight: 700; color: var(--slate-900); letter-spacing: -0.02em; }
+  .hero-stats .s .l { font-size: 13px; color: var(--slate-500); margin-top: 2px; }
+
+  /* Hero illustration card */
+  .hero-card {
+    background: white; border: 1px solid var(--slate-200); border-radius: 16px;
+    box-shadow: 0 20px 50px -20px rgba(15,23,42,0.2), 0 6px 18px -8px rgba(234,88,12,0.12);
+    padding: 8px; position: relative; overflow: hidden;
+  }
+  .hero-card::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(249,115,22,0.05), transparent);
+    pointer-events: none;
+  }
+  .hero-card-inner { background: var(--slate-50); border-radius: 10px; padding: 22px; position: relative; }
+  .hero-card .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .hero-card .head .lbl { font-size: 11px; font-weight: 700; color: var(--slate-500); text-transform: uppercase; letter-spacing: 0.08em; }
+  .hero-card .head .t { display: flex; gap: 4px; }
+  .hero-card .head .t span { width: 8px; height: 8px; border-radius: 50%; background: var(--slate-300); }
+  .hero-card .head .t span:first-child { background: var(--orange-500); }
+  .hero-card .cur-course {
+    background: white; border: 1px solid var(--slate-200); border-radius: 8px; padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+  .hero-card .cur-course .code { font-size: 11px; font-weight: 600; color: var(--orange-600); letter-spacing: 0.08em; }
+  .hero-card .cur-course .t { font-weight: 600; font-size: 15px; margin-top: 4px; }
+  .hero-card .cur-course .meta { font-size: 12px; color: var(--slate-500); margin-top: 4px; }
+  .bar { height: 6px; background: var(--slate-200); border-radius: 999px; overflow: hidden; margin-top: 12px; }
+  .bar .fill { height: 100%; background: linear-gradient(90deg, var(--orange-600), var(--amber-500)); border-radius: 999px; }
+  .mini-list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  .mini-item { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 10px 12px; background: white; border: 1px solid var(--slate-200); border-radius: 8px; font-size: 13px; }
+  .mini-item .check { width: 18px; height: 18px; border-radius: 50%; background: var(--green-500); color: white; display: grid; place-items: center; font-size: 10px; }
+  .mini-item .check.pending { background: var(--slate-100); color: var(--slate-400); border: 1px dashed var(--slate-300); }
+  .mini-item .check.current { background: var(--orange-100); color: var(--orange-600); }
+  .mini-item .dur { font-size: 11px; color: var(--slate-400); }
+  .mini-item.current { border-color: var(--orange-200, #FED7AA); background: var(--orange-50); }
+
+  /* ——— Sections ——— */
+  section { padding: 80px 0; }
+  .sec-head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 36px; flex-wrap: wrap; gap: 20px; }
+  .sec-head h2 { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; color: var(--slate-900); }
+  .sec-head .eyebrow { font-size: 12px; font-weight: 700; color: var(--orange-600); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; display: block; }
+  .sec-head p { color: var(--slate-600); max-width: 44ch; margin-top: 8px; }
+  .sec-head .r { display: flex; gap: 10px; }
+
+  /* ——— Continue band ——— */
+  .continue-band {
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+    color: white; border-radius: 16px; padding: 36px 40px; position: relative; overflow: hidden;
+    display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center;
+  }
+  .continue-band::before {
+    content: ""; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='7' cy='7' r='7'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.5;
+  }
+  .continue-band::after {
+    content: ""; position: absolute; top: -40%; right: -10%; width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(249,115,22,0.25), transparent 70%);
+    pointer-events: none;
+  }
+  .continue-band > * { position: relative; z-index: 1; }
+  .continue-band .eyebrow { font-size: 12px; color: var(--amber-400); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  .continue-band h3 { font-size: 26px; font-weight: 700; margin-top: 6px; letter-spacing: -0.015em; }
+  .continue-band .sub { color: var(--slate-300); margin-top: 6px; max-width: 60ch; }
+  .continue-band .progress-row { display: flex; align-items: center; gap: 14px; margin-top: 18px; }
+  .continue-band .progress-row .bar { flex: 1; background: rgba(255,255,255,0.1); }
+  .continue-band .progress-row .pct { font-weight: 700; font-size: 14px; }
+  .continue-band .right { display: flex; flex-direction: column; gap: 10px; align-items: end; }
+
+  /* ——— Paths grid ——— */
+  .paths { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 980px) { .paths { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .paths { grid-template-columns: 1fr; } }
+  .path-card {
+    background: white; border: 1px solid var(--slate-200); border-radius: 12px;
+    overflow: hidden; transition: all 200ms ease; position: relative;
+    display: flex; flex-direction: column;
+  }
+  .path-card:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -20px rgba(15,23,42,0.25); border-color: var(--slate-300); }
+  .path-card .top-bar { height: 4px; background: linear-gradient(90deg, var(--orange-600), var(--amber-400)); }
+  .path-card.locked .top-bar { background: var(--slate-200); }
+  .path-card.available .top-bar { background: linear-gradient(90deg, var(--amber-500), var(--amber-400)); }
+  .path-card .inner { padding: 22px 22px 18px; display: flex; flex-direction: column; gap: 14px; min-height: 280px; }
+  .path-card .head-row { display: flex; justify-content: space-between; align-items: center; }
+  .path-card .code {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--slate-500);
+    text-transform: uppercase; font-family: "Inter", sans-serif; font-variant-numeric: tabular-nums;
+  }
+  .path-card .status {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+  }
+  .path-card .status.prog { background: var(--orange-50); color: var(--orange-700); }
+  .path-card .status.avail { background: var(--slate-100); color: var(--slate-700); }
+  .path-card .status.locked { background: var(--slate-100); color: var(--slate-400); }
+  .path-card h3 { font-size: 22px; font-weight: 700; letter-spacing: -0.015em; color: var(--slate-900); }
+  .path-card .desc { font-size: 13.5px; color: var(--slate-600); }
+  .path-card .levels { display: flex; gap: 6px; margin-top: auto; }
+  .path-card .lv {
+    flex: 1; padding: 8px 10px; font-size: 11px; font-weight: 600; text-align: center;
+    border-radius: 6px; border: 1px solid var(--slate-200); color: var(--slate-500);
+    letter-spacing: 0.04em;
+  }
+  .path-card .lv.done { background: var(--green-500); color: white; border-color: var(--green-500); }
+  .path-card .lv.active { background: var(--orange-50); color: var(--orange-700); border-color: var(--orange-100); }
+  .path-card .lv.locked { background: repeating-linear-gradient(135deg, transparent, transparent 5px, var(--slate-100) 5px, var(--slate-100) 6px); color: var(--slate-400); }
+  .path-card .progress { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--slate-500); }
+  .path-card .progress b { color: var(--slate-900); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .path-card .cta-row { padding: 14px 22px; border-top: 1px solid var(--slate-100); display: flex; justify-content: space-between; align-items: center; background: var(--slate-50); }
+  .path-card .cta-row .dur { font-size: 12px; color: var(--slate-500); }
+  .path-card .cta-row .go { color: var(--orange-600); font-weight: 600; font-size: 13px; display: inline-flex; align-items: center; gap: 4px; }
+  .path-card .cta-row .go:hover { color: var(--orange-700); }
+
+  /* Path detail */
+  .detail { display: grid; grid-template-columns: 1fr 340px; gap: 32px; }
+  @media (max-width: 960px) { .detail { grid-template-columns: 1fr; } }
+  .module {
+    background: white; border: 1px solid var(--slate-200); border-radius: 10px;
+    margin-bottom: 10px; overflow: hidden; transition: all 150ms;
+  }
+  .module:hover { border-color: var(--slate-300); }
+  .module .mhead { display: grid; grid-template-columns: 44px 1fr auto auto; gap: 14px; align-items: center; padding: 16px 20px; cursor: pointer; }
+  .module .num {
+    width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+    font-weight: 700; font-size: 13px; color: var(--slate-500);
+    background: var(--slate-100);
+  }
+  .module.done .num { background: var(--green-500); color: white; }
+  .module.active .num { background: linear-gradient(135deg, var(--orange-600), var(--amber-500)); color: white; }
+  .module .mtitle { font-weight: 600; font-size: 15px; }
+  .module.locked .mtitle { color: var(--slate-400); }
+  .module .mmeta { font-size: 12px; color: var(--slate-500); }
+  .module .mstate {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+  }
+  .module.done .mstate { background: #DCFCE7; color: var(--green-600); }
+  .module.active .mstate { background: var(--orange-50); color: var(--orange-700); }
+  .module.locked .mstate { background: var(--slate-100); color: var(--slate-400); }
+  .module.avail .mstate { background: var(--slate-100); color: var(--slate-700); }
+  .module .msteps { display: none; padding: 6px 20px 20px 78px; border-top: 1px solid var(--slate-100); }
+  .module.active .msteps { display: block; }
+  .msteps .step { display: grid; grid-template-columns: 20px 1fr auto auto; gap: 14px; padding: 10px 0; font-size: 13.5px; align-items: center; border-bottom: 1px solid var(--slate-100); }
+  .msteps .step:last-child { border-bottom: 0; }
+  .msteps .step .t { width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; background: var(--slate-100); color: var(--slate-400); }
+  .msteps .step.done .t { background: var(--green-500); color: white; }
+  .msteps .step.current .t { background: var(--orange-500); color: white; }
+  .msteps .step .kind { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; }
+  .msteps .step .kind.anim { background: var(--orange-50); color: var(--orange-700); }
+  .msteps .step .kind.read { background: #EFF6FF; color: #1D4ED8; }
+  .msteps .step .kind.quiz { background: #FEF3C7; color: #B45309; }
+  .msteps .step .dur { font-size: 11px; color: var(--slate-400); font-variant-numeric: tabular-nums; }
+
+  .side .card-s { background: white; border: 1px solid var(--slate-200); border-radius: 12px; padding: 22px; margin-bottom: 14px; }
+  .card-s h4 { font-size: 12px; font-weight: 700; color: var(--slate-500); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+  .instr { display: flex; align-items: center; gap: 12px; }
+  .instr .ava { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, var(--orange-500), var(--amber-500)); color: white; font-weight: 700; display: grid; place-items: center; }
+  .instr .n { font-weight: 600; }
+  .instr .c { font-size: 11.5px; color: var(--slate-500); letter-spacing: 0.02em; }
+  .kvrow { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--slate-200); font-size: 13px; }
+  .kvrow:last-child { border-bottom: 0; }
+  .kvrow .k { color: var(--slate-500); }
+  .kvrow .v { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .kvrow .v.good { color: var(--green-600); }
+  .kvrow .v.warn { color: var(--orange-600); }
+
+  /* Certificate card */
+  .cert-panel {
+    background: linear-gradient(135deg, var(--orange-50) 0%, #FFF7ED 100%);
+    border: 1px solid var(--orange-100) !important;
+    position: relative; overflow: hidden;
+  }
+  .cert-panel::after {
+    content: ""; position: absolute; right: -50px; top: -50px; width: 150px; height: 150px;
+    background: radial-gradient(circle, rgba(249,115,22,0.12), transparent 70%);
+  }
+  .cert-preview {
+    background: white; border: 1px solid var(--orange-100); border-radius: 8px; padding: 16px; margin-top: 10px;
+    position: relative;
+  }
+  .cert-preview .c-ttl { font-weight: 700; font-size: 15px; color: var(--slate-900); }
+  .cert-preview .c-sub { font-size: 12px; color: var(--slate-500); margin-top: 2px; }
+  .cert-preview .c-ribbon {
+    display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px;
+    background: linear-gradient(135deg, var(--orange-600), var(--amber-500));
+    color: white; border-radius: 999px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 10px;
+  }
+
+  /* CTA strip */
+  .cta-strip {
+    background: linear-gradient(135deg, var(--orange-600) 0%, var(--amber-500) 100%);
+    color: white; border-radius: 20px; padding: 56px; text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-strip::before {
+    content: ""; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Ccircle cx='7' cy='7' r='7'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .cta-strip > * { position: relative; }
+  .cta-strip h2 { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; }
+  .cta-strip p { margin: 14px auto 28px; max-width: 56ch; color: rgba(255,255,255,0.9); }
+  .cta-strip .btn { background: white; color: var(--orange-700); border-color: white; }
+  .cta-strip .btn:hover { background: rgba(255,255,255,0.92); }
+  .cta-strip .btn.ghost { background: transparent; color: white; border-color: rgba(255,255,255,0.5); }
+  .cta-strip .btn.ghost:hover { background: rgba(255,255,255,0.1); }
+
+  footer { background: var(--slate-900); color: var(--slate-400); padding: 48px 0 28px; }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  footer .brand { color: white; }
+  footer .mini { font-size: 12px; letter-spacing: 0.02em; }
+
+  .banner-alt {
+    margin-top: 10px;
+    padding: 6px 10px; background: var(--slate-100);
+    border-radius: 6px; font-size: 11.5px; color: var(--slate-600); display: inline-flex; gap: 8px;
+  }
+  .banner-alt b { color: var(--slate-900); }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap top-inner">
+    <a href="#" class="brand"><span class="mark"></span>SNS NDT</a>
+    <nav class="top-nav">
+      <a href="#">Home</a>
+      <a href="#">Courses</a>
+      <a href="#" class="active">E-Learning</a>
+      <a href="#">Schedule</a>
+      <a href="#">Alumni</a>
+      <a href="#">About</a>
+    </nav>
+    <div class="top-right">
+      <button class="btn btn-sm">EN / ID</button>
+      <button class="btn btn-sm">My Learning</button>
+      <div class="avatar">HZ</div>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <span class="pill"><span class="dot"></span> E-Learning · NDT Curriculum</span>
+      <h1>Belajar NDT dengan jalur <span class="grad">terstruktur</span>, siap sertifikasi ASNT.</h1>
+      <p>Enam metode inspeksi (UT, MT, PT, RT, VT, ET), tiga level (I → II → III), modul-modul pendek dengan animasi interaktif, artikel teknis, dan latihan soal bergaya ASNT.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#">Mulai belajar gratis →</a>
+        <a class="btn" href="#">Lihat kurikulum</a>
+      </div>
+      <div class="hero-stats">
+        <div class="s"><div class="n">6</div><div class="l">Learning paths</div></div>
+        <div class="s"><div class="n">60+</div><div class="l">Modul interaktif</div></div>
+        <div class="s"><div class="n">1,200+</div><div class="l">Alumni aktif</div></div>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="hero-card-inner">
+        <div class="head">
+          <span class="lbl">My Learning · Resume</span>
+          <span class="t"><span></span><span></span><span></span></span>
+        </div>
+        <div class="cur-course">
+          <div class="code">UT · LEVEL I</div>
+          <div class="t">Couplant &amp; Kalibrasi Dasar</div>
+          <div class="meta">Modul 3 dari 12 · Estimasi 4 jam 37 menit tersisa</div>
+          <div class="bar"><div class="fill" style="width:67%"></div></div>
+        </div>
+        <div class="mini-list">
+          <div class="mini-item"><span class="check">✓</span><span>3.1 Why couplant matters — animasi</span><span class="dur">8:20</span></div>
+          <div class="mini-item current"><span class="check current">▶</span><span>3.2 Acoustic impedance &amp; Z-matching</span><span class="dur">6:40</span></div>
+          <div class="mini-item"><span class="check pending">○</span><span>3.3 DAC curve walkthrough</span><span class="dur">12:00</span></div>
+          <div class="mini-item"><span class="check pending">○</span><span>3.4 Block types — IIW V1, V2, step wedge</span><span class="dur">9:10</span></div>
+          <div class="mini-item"><span class="check pending">○</span><span>3.5 Mini-quiz · 8 soal</span><span class="dur">10:00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="continue-band">
+      <div>
+        <span class="eyebrow">Continue where you left off</span>
+        <h3>UT Level I — Modul 3 : Couplant &amp; Kalibrasi</h3>
+        <p class="sub">Lanjutkan dari Step 3.2 — Acoustic impedance &amp; Z-matching. Kurikulum akan otomatis melanjutkan dari titik terakhir, tersimpan di akun lo.</p>
+        <div class="progress-row">
+          <div class="bar"><div class="fill" style="width:67%"></div></div>
+          <div class="pct">67%</div>
+        </div>
+      </div>
+      <div class="right">
+        <a class="btn btn-primary" href="#">Lanjutkan belajar →</a>
+        <a href="#" style="color: var(--amber-400); font-size: 13px;">Lihat semua enrolment</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">§ 02 · Curriculum</span>
+        <h2>Enam metode, satu disiplin.</h2>
+        <p>Semua path disusun mengikuti struktur ASNT SNT-TC-1A dengan progresi fundamentals → instrumentasi → prosedur → assessment.</p>
+      </div>
+      <div class="r">
+        <button class="btn btn-sm">Semua path</button>
+        <button class="btn btn-sm">Filter Level</button>
+      </div>
+    </div>
+
+    <div class="paths">
+      <article class="path-card">
+        <div class="top-bar"></div>
+        <div class="inner">
+          <div class="head-row"><span class="code">NDT / UT</span><span class="status prog">● In Progress</span></div>
+          <h3>Ultrasonic Testing</h3>
+          <div class="desc">Gelombang suara, pulse-echo, karakterisasi cacat. Metode volumetrik paling serbaguna.</div>
+          <div class="progress"><span>12 modul · 9 selesai</span><b>67%</b></div>
+          <div class="bar"><div class="fill" style="width:67%"></div></div>
+          <div class="levels"><div class="lv done">L1 ✓</div><div class="lv active">L2 ▶</div><div class="lv locked">L3</div></div>
+        </div>
+        <div class="cta-row"><span class="dur">~14 jam</span><a class="go" href="#">Lanjutkan →</a></div>
+      </article>
+
+      <article class="path-card available">
+        <div class="top-bar"></div>
+        <div class="inner">
+          <div class="head-row"><span class="code">NDT / MT</span><span class="status avail">◇ Available</span></div>
+          <h3>Magnetic Particle</h3>
+          <div class="desc">Inspeksi material feromagnetik melalui magnetic flux leakage — wet &amp; dry techniques.</div>
+          <div class="progress"><span>10 modul · belum mulai</span><b>0%</b></div>
+          <div class="bar"></div>
+          <div class="levels"><div class="lv">L1</div><div class="lv locked">L2</div><div class="lv locked">L3</div></div>
+        </div>
+        <div class="cta-row"><span class="dur">~10 jam</span><a class="go" href="#">Mulai →</a></div>
+      </article>
+
+      <article class="path-card">
+        <div class="top-bar"></div>
+        <div class="inner">
+          <div class="head-row"><span class="code">NDT / PT</span><span class="status prog">● In Progress</span></div>
+          <h3>Liquid Penetrant</h3>
+          <div class="desc">Capillary action, developer physics, fluorescent vs visible dye — rendering diskontinuitas.</div>
+          <div class="progress"><span>8 modul · 3 selesai</span><b>38%</b></div>
+          <div class="bar"><div class="fill" style="width:38%"></div></div>
+          <div class="levels"><div class="lv active">L1 ▶</div><div class="lv locked">L2</div><div class="lv locked">L3</div></div>
+        </div>
+        <div class="cta-row"><span class="dur">~8 jam</span><a class="go" href="#">Lanjutkan →</a></div>
+      </article>
+
+      <article class="path-card available">
+        <div class="top-bar"></div>
+        <div class="inner">
+          <div class="head-row"><span class="code">NDT / RT</span><span class="status avail">◇ Available</span></div>
+          <h3>Radiographic Testing</h3>
+          <div class="desc">X-ray dan gamma-ray imaging, film density, IQI — inspeksi internal volumetrik.</div>
+          <div class="progress"><span>14 modul · belum mulai</span><b>0%</b></div>
+          <div class="bar"></div>
+          <div class="levels"><div class="lv">L1</div><div class="lv locked">L2</div><div class="lv locked">L3</div></div>
+        </div>
+        <div class="cta-row"><span class="dur">~16 jam</span><a class="go" href="#">Mulai →</a></div>
+      </article>
+
+      <article class="path-card available">
+        <div class="top-bar"></div>
+        <div class="inner">
+          <div class="head-row"><span class="code">NDT / VT</span><span class="status avail">◇ Available</span></div>
+          <h3>Visual Testing</h3>
+          <div class="desc">Direct dan remote visual inspection, lighting, optical aids, AWS D1.1 acceptance criteria.</div>
+          <div class="progress"><span>6 modul · belum mulai</span><b>0%</b></div>
+          <div class="bar"></div>
+          <div class="levels"><div class="lv">L1</div><div class="lv locked">L2</div><div class="lv locked">L3</div></div>
+        </div>
+        <div class="cta-row"><span class="dur">~6 jam</span><a class="go" href="#">Mulai →</a></div>
+      </article>
+
+      <article class="path-card locked">
+        <div class="top-bar"></div>
+        <div class="inner">
+          <div class="head-row"><span class="code">NDT / ET</span><span class="status locked">🔒 Locked</span></div>
+          <h3>Eddy Current</h3>
+          <div class="desc">Induksi elektromagnetik untuk material konduktif — scan permukaan dan near-surface cepat.</div>
+          <div class="progress"><span>Unlock setelah MT-L1</span><b>—</b></div>
+          <div class="bar"></div>
+          <div class="levels"><div class="lv locked">L1</div><div class="lv locked">L2</div><div class="lv locked">L3</div></div>
+        </div>
+        <div class="cta-row"><span class="dur">~9 jam</span><span style="color:var(--slate-400); font-size:12px;">Unlock prerequisite</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section style="background: var(--slate-50); border-top: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">§ 03 · Path Detail</span>
+        <h2>UT Level I — preview modul</h2>
+        <p>Contoh struktur kurikulum: 12 modul berurutan, tiap modul terdiri dari step-step pendek (animasi, reading, quiz).</p>
+      </div>
+      <div class="r">
+        <button class="btn btn-sm">Ganti path</button>
+        <button class="btn btn-primary btn-sm">Enrol sekarang</button>
+      </div>
+    </div>
+
+    <div class="detail">
+      <div>
+        <div class="module done">
+          <div class="mhead">
+            <div class="num">1</div>
+            <div class="mtitle">Pengantar Non-Destructive Testing</div>
+            <div class="mmeta">4 step · 32 min</div>
+            <div class="mstate">Complete</div>
+          </div>
+        </div>
+        <div class="module done">
+          <div class="mhead">
+            <div class="num">2</div>
+            <div class="mtitle">Fisika ultrasound — wave, frequency, velocity</div>
+            <div class="mmeta">6 step · 58 min</div>
+            <div class="mstate">Complete</div>
+          </div>
+        </div>
+        <div class="module active">
+          <div class="mhead">
+            <div class="num">3</div>
+            <div class="mtitle">Couplant &amp; Kalibrasi</div>
+            <div class="mmeta">5 step · 1h 04min</div>
+            <div class="mstate">In Progress</div>
+          </div>
+          <div class="msteps">
+            <div class="step done"><span class="t">✓</span><span>3.1 &nbsp; Why couplant — acoustic coupling basics</span><span class="kind anim">Animated</span><span class="dur">08:20</span></div>
+            <div class="step current"><span class="t">▶</span><span>3.2 &nbsp; Acoustic impedance &amp; Z-matching</span><span class="kind read">Reading</span><span class="dur">06:40</span></div>
+            <div class="step"><span class="t">○</span><span>3.3 &nbsp; DAC curve construction walkthrough</span><span class="kind anim">Animated</span><span class="dur">12:00</span></div>
+            <div class="step"><span class="t">○</span><span>3.4 &nbsp; Block types — IIW V1, V2, step wedge</span><span class="kind read">Reading</span><span class="dur">09:10</span></div>
+            <div class="step"><span class="t">○</span><span>3.5 &nbsp; Mini-quiz · 8 questions</span><span class="kind quiz">Assessment</span><span class="dur">10:00</span></div>
+          </div>
+        </div>
+        <div class="module avail">
+          <div class="mhead">
+            <div class="num">4</div>
+            <div class="mtitle">Transduser &amp; beam behaviour</div>
+            <div class="mmeta">5 step · 54 min</div>
+            <div class="mstate">Available</div>
+          </div>
+        </div>
+        <div class="module locked">
+          <div class="mhead">
+            <div class="num">5</div>
+            <div class="mtitle">Defect types &amp; echo interpretation</div>
+            <div class="mmeta">6 step · 1h 12min</div>
+            <div class="mstate">Locked</div>
+          </div>
+        </div>
+        <div class="module locked">
+          <div class="mhead">
+            <div class="num">Σ</div>
+            <div class="mtitle">Final Assessment — unlock certificate</div>
+            <div class="mmeta">40 soal · 90 menit</div>
+            <div class="mstate">Locked</div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="side">
+        <div class="card-s">
+          <h4>Instruktur</h4>
+          <div class="instr">
+            <div class="ava">SA</div>
+            <div><div class="n">Saenal Aladin Rapi</div><div class="c">ASNT L-III · 20 yrs · UT/PAUT</div></div>
+          </div>
+          <hr style="border:0; border-top: 1px dashed var(--slate-200); margin: 14px 0"/>
+          <div class="kvrow"><span class="k">Pengalaman</span><span class="v">20 tahun</span></div>
+          <div class="kvrow"><span class="k">Sertifikasi</span><span class="v">ASNT · API 510</span></div>
+          <div class="kvrow"><span class="k">Student aktif</span><span class="v">1,247</span></div>
+        </div>
+
+        <div class="card-s cert-panel">
+          <span class="c-ribbon">🏆 On Completion</span>
+          <h4 style="color: var(--orange-700); margin-top: 4px;">Sertifikat</h4>
+          <div class="cert-preview">
+            <div class="c-ttl">UT Level I — Certificate of Proficiency</div>
+            <div class="c-sub">Digital signed, PDF export, QR verifiable</div>
+          </div>
+          <p style="font-size: 12.5px; color: var(--slate-600); margin-top: 10px;">Diberikan jika final assessment ≥ 75%. Terdaftar di Alumni Registry.</p>
+        </div>
+
+        <div class="card-s">
+          <h4>Path Telemetry</h4>
+          <div class="kvrow"><span class="k">Completion</span><span class="v good">67%</span></div>
+          <div class="kvrow"><span class="k">Avg. quiz score</span><span class="v warn">88.5</span></div>
+          <div class="kvrow"><span class="k">Time on task</span><span class="v">9 h 23 m</span></div>
+          <div class="kvrow"><span class="k">Est. remaining</span><span class="v">4 h 37 m</span></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cta-strip">
+      <h2>Mulai belajar NDT hari ini — gratis Level I UT &amp; PT.</h2>
+      <p>Daftar sekali, akses semua learning path. Upgrade ke premium untuk unlock Level II &amp; III plus sertifikat.</p>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <a class="btn" href="#">Mulai Level I gratis</a>
+        <a class="btn ghost" href="#">Lihat semua path</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="#" class="brand"><span class="mark"></span>SNS NDT · E-Learning</a>
+    <div class="mini">Alt A · Industrial Pro Extended · © 2026</div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.module .mhead').forEach(h => {
+    h.addEventListener('click', () => {
+      const m = h.parentElement;
+      document.querySelectorAll('.module.active').forEach(x => { if (x !== m) x.classList.remove('active'); });
+      m.classList.toggle('active');
+    });
+  });
+</script>
+</body>
+</html>

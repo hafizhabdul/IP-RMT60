@@ -12,6 +12,7 @@ import { lazy, Suspense } from 'react';
 // Layouts
 import MinimalLayout from "./layouts/MinimalLayout";
 import ModernAdminLayout from "./layouts/ModernAdminLayout";
+const ELearningLayout = lazy(() => import("./layouts/ELearningLayout"));
 
 // Lazy Load Pages
 const MinimalHome = lazy(() => import("./pages/MinimalHome"));
@@ -28,7 +29,10 @@ const MinimalCourseDetail = lazy(() => import("./pages/MinimalCourseDetail"));
 const ModernLogin = lazy(() => import("./pages/ModernLogin"));
 
 // E-Learning Pages (public, no auth needed)
-const ELearningHub = lazy(() => import("./pages/ELearningHub"));
+const LearningHub = lazy(() => import("./pages/elearning/LearningHub"));
+const LearningPathDetail = lazy(() => import("./pages/elearning/LearningPathDetail"));
+const LessonPlayer = lazy(() => import("./pages/elearning/LessonPlayer"));
+const CertificatesPage = lazy(() => import("./pages/elearning/CertificatesPage"));
 const SimulationsHub = lazy(() => import("./pages/simulations/SimulationsHub"));
 const UTSimulationPage = lazy(() => import("./pages/simulations/UTSimulationPage"));
 const MTSimulationPage = lazy(() => import("./pages/simulations/MTSimulationPage"));
@@ -106,20 +110,27 @@ function AppRoutes() {
           <Route path="courses" element={<MinimalCourses />} />
           <Route path="courses/:id" element={<MinimalCourseDetail />} />
 
-          {/* E-Learning Platform Routes (public) */}
-          <Route path="e-learning" element={<ELearningHub />} />
-          <Route path="e-learning/simulations" element={<SimulationsHub />} />
-          <Route path="e-learning/simulations/ut" element={<UTSimulationPage />} />
-          <Route path="e-learning/simulations/mt" element={<MTSimulationPage />} />
-          <Route path="e-learning/simulations/pt" element={<PTSimulationPage />} />
-          <Route path="e-learning/simulations/rt" element={<RTSimulationPage />} />
-          <Route path="e-learning/quizzes" element={<QuizHub />} />
-          <Route path="e-learning/quizzes/take" element={<QuizPage />} />
-          <Route path="e-learning/content" element={<ContentHub />} />
-          <Route path="e-learning/content/:slug" element={<ArticlePage />} />
-
           <Route path="*" element={<NotFound />} />
         </Route>
+
+        {/* E-Learning — all routes under one layout for design consistency */}
+        <Route path="/e-learning" element={<ELearningLayout />}>
+          <Route index element={<LearningHub />} />
+          <Route path="paths/:code" element={<LearningPathDetail />} />
+          <Route path="certificates" element={<CertificatesPage />} />
+          <Route path="content" element={<ContentHub />} />
+          <Route path="content/:slug" element={<ArticlePage />} />
+          <Route path="simulations" element={<SimulationsHub />} />
+          <Route path="simulations/ut" element={<UTSimulationPage />} />
+          <Route path="simulations/mt" element={<MTSimulationPage />} />
+          <Route path="simulations/pt" element={<PTSimulationPage />} />
+          <Route path="simulations/rt" element={<RTSimulationPage />} />
+          <Route path="quizzes" element={<QuizHub />} />
+          <Route path="quizzes/take" element={<QuizPage />} />
+        </Route>
+
+        {/* Lesson Player — full-screen, no layout */}
+        <Route path="/e-learning/paths/:code/modules/:number/steps/:stepId" element={<LessonPlayer />} />
       </Routes>
     </Suspense>
   );

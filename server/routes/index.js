@@ -9,6 +9,9 @@ const chatbotRoutes = require("./chatbotRoutes");
 const lessonRoutes = require("./lessonRoutes");
 const quizRoutes = require("./quizRoutes");
 const articleRoutes = require("./articleRoutes");
+const learningPathRoutes = require("./learningPathRoutes");
+const progressRoutes = require("./progressRoutes");
+const certificateRoutes = require("./certificateRoutes");
 
 // Public routes
 router.use("/public", publicRoutes);
@@ -24,5 +27,10 @@ router.use("/chatbot", chatbotRoutes);
 router.use("/lessons", lessonRoutes);
 router.use("/quiz", quizRoutes);
 router.use("/articles", articleRoutes);
+
+// E-Learning routes (Phase 2)
+router.use("/learning-paths", learningPathRoutes);
+router.use("/progress", progressRoutes);
+router.use("/certificates", certificateRoutes);
 
 module.exports = router;

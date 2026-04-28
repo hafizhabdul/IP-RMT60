@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Alt D — IBM SkillsBuild style · SNS NDT Lesson Player</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --orange-500: #F97316;
+    --orange-600: #EA580C;
+    --orange-700: #C2410C;
+    --amber-400: #FBBF24;
+    --amber-500: #F59E0B;
+    --navy-900: #0B1F3D;
+    --navy-800: #132A4F;
+    --navy-700: #1D3A68;
+    --slate-900: #0F172A;
+    --slate-800: #1E293B;
+    --slate-600: #475569;
+    --slate-500: #64748B;
+    --slate-400: #94A3B8;
+    --slate-300: #CBD5E1;
+    --slate-200: #E2E8F0;
+    --slate-100: #F1F5F9;
+    --slate-50:  #F8FAFC;
+    --green-500: #10B981;
+    --purple-400: #A78BFA;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: white; color: var(--slate-900);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 15px; line-height: 1.55;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; cursor: pointer; border: 0; background: transparent; color: inherit; }
+  .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+  ::selection { background: var(--orange-600); color: white; }
+
+  /* Top progress bar — thin strip like IBM */
+  .top-progress {
+    position: fixed; top: 0; left: 0; right: 0; height: 4px;
+    background: var(--slate-800); z-index: 100;
+  }
+  .top-progress .fill {
+    height: 100%; width: 45%;
+    background: linear-gradient(90deg, var(--orange-600), var(--amber-500));
+    transition: width 400ms ease;
+  }
+
+  /* Outer: course bar at top (thin), then shell with sidebar + content */
+  .course-titlebar {
+    position: fixed; top: 4px; left: 0; right: 0; height: 44px;
+    background: var(--slate-900); color: white; z-index: 90;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; font-size: 14px;
+  }
+  .course-titlebar .ct-title { font-weight: 600; letter-spacing: -0.01em; }
+  .course-titlebar .ct-close {
+    width: 28px; height: 28px; border-radius: 4px; display: grid; place-items: center;
+    color: var(--slate-400); transition: all 150ms;
+  }
+  .course-titlebar .ct-close:hover { color: white; background: rgba(255,255,255,0.08); }
+
+  .shell {
+    display: grid; grid-template-columns: 340px 1fr; min-height: 100vh;
+    padding-top: 48px;
+  }
+  @media (max-width: 980px) {
+    .shell { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+
+  /* ——— Sidebar (orange branded like IBM blue sidebar) ——— */
+  .sidebar {
+    background: linear-gradient(180deg, var(--orange-600) 0%, var(--orange-700) 100%);
+    color: white; position: sticky; top: 48px; height: calc(100vh - 48px);
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .sidebar .search-row {
+    padding: 14px 22px 6px; display: flex; justify-content: flex-end;
+  }
+  .sidebar .search-btn {
+    width: 36px; height: 36px; border-radius: 50%; color: white;
+    display: grid; place-items: center; transition: background 150ms;
+  }
+  .sidebar .search-btn:hover { background: rgba(255,255,255,0.12); }
+  .sidebar .course-title {
+    padding: 4px 22px 18px;
+  }
+  .sidebar .course-title h1 {
+    font-size: 30px; line-height: 1.12; font-weight: 700; letter-spacing: -0.015em;
+    color: white;
+  }
+  .sidebar .progress-block {
+    padding: 16px 22px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+  .sidebar .progress-block .bar {
+    height: 4px; background: rgba(255,255,255,0.25); border-radius: 0; overflow: hidden;
+  }
+  .sidebar .progress-block .bar .fill {
+    height: 100%; background: white; width: 45%;
+  }
+  .sidebar .progress-block .pct {
+    margin-top: 10px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .sidebar .scroll { overflow-y: auto; flex: 1; }
+  .sidebar .scroll::-webkit-scrollbar { width: 6px; }
+  .sidebar .scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+  .sidebar .scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); }
+
+  .section {
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .section .sec-header {
+    display: grid; grid-template-columns: 20px 1fr; gap: 8px; align-items: center;
+    padding: 18px 22px; cursor: pointer;
+    font-size: 12.5px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: white;
+    transition: background 120ms;
+  }
+  .section .sec-header:hover { background: rgba(0,0,0,0.08); }
+  .section .sec-header .chev {
+    display: inline-block; width: 12px; height: 12px; font-size: 14px;
+    transition: transform 200ms ease; transform-origin: center;
+  }
+  .section.open .sec-header .chev { transform: rotate(0deg); }
+  .section:not(.open) .sec-header .chev { transform: rotate(-90deg); }
+  .section .sec-body {
+    max-height: 1000px; overflow: hidden; transition: max-height 300ms ease;
+  }
+  .section:not(.open) .sec-body { max-height: 0; }
+
+  .item {
+    display: grid; grid-template-columns: 20px 1fr 28px; gap: 14px;
+    padding: 11px 22px 11px 34px; align-items: center;
+    color: rgba(255,255,255,0.92); font-size: 14px; font-weight: 400;
+    border-left: 3px solid transparent;
+    transition: background 120ms;
+  }
+  .item:hover { background: rgba(0,0,0,0.08); }
+  .item.active {
+    background: rgba(0,0,0,0.18);
+    border-left-color: white;
+    font-weight: 600;
+  }
+  .item .i-icon {
+    font-size: 14px; color: rgba(255,255,255,0.7); width: 18px; display: inline-block;
+  }
+  .item .i-status {
+    width: 22px; height: 22px; border-radius: 50%;
+    display: grid; place-items: center; font-size: 11px;
+    background: rgba(255,255,255,0.1); color: transparent;
+    border: 2px solid rgba(255,255,255,0.35);
+  }
+  .item.done .i-status {
+    background: white; color: var(--orange-700); border-color: white; font-weight: 700;
+  }
+  .item.current .i-status {
+    background: transparent; border: 2px solid white;
+    position: relative;
+  }
+  .item.current .i-status::after {
+    content: ""; position: absolute; inset: 3px; border-radius: 50%;
+    border: 2px solid white; border-right-color: transparent;
+    animation: spin 1.6s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .item.locked { color: rgba(255,255,255,0.55); }
+  .item.locked .i-status { border-style: dashed; }
+
+  /* ——— Main content ——— */
+  .main { background: white; min-width: 0; }
+
+  .lesson-hero {
+    position: relative;
+    background:
+      radial-gradient(ellipse 50% 80% at 100% 50%, rgba(167,139,250,0.22), transparent 55%),
+      linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 50%, var(--navy-900) 100%);
+    color: white;
+    padding: 40px 56px 56px;
+    min-height: 280px;
+    overflow: hidden;
+  }
+  .lesson-hero .topline {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .lesson-hero .hamburger {
+    width: 40px; height: 40px; border-radius: 4px; display: grid; place-items: center;
+    color: white; transition: background 150ms;
+  }
+  .lesson-hero .hamburger:hover { background: rgba(255,255,255,0.08); }
+  .lesson-hero .hamburger svg { width: 24px; height: 24px; }
+  .lesson-hero .exit-btn {
+    padding: 8px 16px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; border: 2px solid white; color: white;
+    transition: all 150ms;
+  }
+  .lesson-hero .exit-btn:hover { background: white; color: var(--navy-900); }
+
+  .lesson-hero .stripe { width: 80px; height: 2px; background: white; margin: 30px 0 12px; }
+  .lesson-hero .mod-label {
+    font-size: 22px; font-weight: 400; letter-spacing: -0.005em;
+    color: rgba(255,255,255,0.95);
+  }
+  .lesson-hero h2 {
+    font-size: clamp(32px, 4.5vw, 52px); line-height: 1.08; font-weight: 700;
+    letter-spacing: -0.02em; margin-top: 8px; color: white;
+    max-width: 22ch;
+  }
+
+  /* SNS brand mark — mimicking IBM SkillsBuild geometric motif */
+  .brand-mark {
+    position: absolute; top: 40px; right: 56px; display: flex; align-items: center; gap: 20px;
+  }
+  .brand-mark .brand-text {
+    font-size: 24px; font-weight: 700; letter-spacing: -0.01em; color: white;
+  }
+  .brand-mark .brand-text em { font-style: italic; font-weight: 300; color: var(--amber-400); }
+  .brand-geo {
+    position: relative; width: 120px; height: 120px;
+  }
+  .brand-geo svg { width: 100%; height: 100%; }
+  /* Decorative offset circle behind title (like IBM SkillsBuild purple circle) */
+  .brand-decor {
+    position: absolute; top: -40px; right: -80px; width: 380px; height: 380px;
+    opacity: 0.9; pointer-events: none;
+  }
+  .brand-decor svg { width: 100%; height: 100%; }
+
+  /* Body content */
+  .lesson-body {
+    padding: 56px 56px 80px; max-width: 880px;
+  }
+  .lesson-body .step-crumb {
+    display: flex; align-items: center; gap: 10px;
+    font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate-500);
+    margin-bottom: 30px;
+  }
+  .lesson-body .step-crumb .orange { color: var(--orange-600); }
+  .lesson-body .step-crumb .sep { opacity: 0.4; }
+  .lesson-body .kind-badge {
+    display: inline-block; padding: 4px 10px; font-family: "IBM Plex Mono", monospace;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--orange-700); background: rgba(234,88,12,0.1); border-radius: 2px;
+  }
+
+  .lesson-body h1 {
+    font-size: clamp(32px, 3.4vw, 42px); line-height: 1.12; font-weight: 700;
+    letter-spacing: -0.018em; margin-bottom: 22px; color: var(--slate-900);
+  }
+  .lesson-body .section-h {
+    font-size: 26px; font-weight: 700; margin-top: 44px; margin-bottom: 16px;
+    letter-spacing: -0.015em; color: var(--slate-900);
+  }
+  .lesson-body p {
+    font-size: 17px; line-height: 1.65; color: var(--slate-800); margin-bottom: 20px;
+    max-width: 68ch;
+  }
+  .lesson-body ul, .lesson-body ol {
+    padding-left: 26px; margin-bottom: 22px; color: var(--slate-800);
+  }
+  .lesson-body li {
+    font-size: 17px; line-height: 1.7; margin-bottom: 6px;
+  }
+  .lesson-body li b { font-weight: 600; color: var(--slate-900); }
+
+  .callout {
+    background: #FEF3E7; border-left: 4px solid var(--orange-600);
+    padding: 18px 22px; margin: 30px 0; font-size: 15.5px; color: var(--slate-900);
+  }
+  .callout .c-tag {
+    display: block; font-family: "IBM Plex Mono", monospace; font-size: 11px;
+    font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--orange-700); margin-bottom: 6px;
+  }
+
+  .fig {
+    margin: 36px 0; background: var(--slate-50); border: 1px solid var(--slate-200);
+    padding: 24px; position: relative;
+  }
+  .fig .f-tag {
+    font-family: "IBM Plex Mono", monospace; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate-500);
+    margin-bottom: 14px;
+  }
+  .fig svg { width: 100%; max-width: 760px; height: auto; display: block; }
+  .fig .f-caption {
+    font-size: 13.5px; color: var(--slate-500); margin-top: 14px; font-style: italic;
+  }
+
+  /* Footer navigation */
+  .lesson-foot {
+    border-top: 1px solid var(--slate-200);
+    padding: 28px 56px; display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px;
+    align-items: center; background: var(--slate-50);
+  }
+  .lesson-foot .nav-btn {
+    display: inline-flex; align-items: center; gap: 12px; padding: 14px 20px;
+    font-size: 14px; font-weight: 600; color: var(--slate-700);
+    transition: all 150ms;
+  }
+  .lesson-foot .nav-btn:hover { color: var(--orange-600); }
+  .lesson-foot .nav-btn .arr { color: var(--slate-400); }
+  .lesson-foot .nav-btn:hover .arr { color: var(--orange-600); }
+  .lesson-foot .nav-btn .meta { font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: 0.12em; color: var(--slate-400); text-transform: uppercase; display: block; margin-bottom: 2px; }
+  .lesson-foot .nav-btn .title { font-weight: 600; font-size: 14px; color: var(--slate-900); }
+  .lesson-foot .nav-btn:last-child { justify-self: end; text-align: right; flex-direction: row-reverse; }
+  .lesson-foot .progress-meter {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    font-family: "IBM Plex Mono", monospace; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate-500);
+  }
+  .lesson-foot .progress-meter .dots { display: flex; gap: 6px; }
+  .lesson-foot .progress-meter .dot {
+    width: 26px; height: 4px; background: var(--slate-200);
+  }
+  .lesson-foot .progress-meter .dot.done { background: var(--orange-600); }
+  .lesson-foot .progress-meter .dot.active { background: var(--orange-500); box-shadow: 0 0 0 2px rgba(234,88,12,0.2); }
+
+  .cta-btn {
+    background: var(--slate-900); color: white; padding: 14px 28px; font-weight: 600;
+    font-size: 14px; display: inline-flex; align-items: center; gap: 10px;
+    transition: all 150ms;
+  }
+  .cta-btn:hover { background: var(--orange-600); }
+  .cta-btn.primary { background: var(--orange-600); }
+  .cta-btn.primary:hover { background: var(--orange-700); }
+
+  /* Sidebar toggle for mobile */
+  .mobile-hint {
+    display: none; padding: 10px 20px; background: var(--slate-100); color: var(--slate-600);
+    font-size: 12px; text-align: center;
+  }
+  @media (max-width: 980px) {
+    .mobile-hint { display: block; }
+    .lesson-hero { padding: 30px 24px 40px; min-height: 220px; }
+    .lesson-body { padding: 40px 24px 60px; }
+    .lesson-foot { padding: 20px 24px; grid-template-columns: 1fr; gap: 14px; }
+    .lesson-foot .nav-btn:last-child { justify-self: start; text-align: left; flex-direction: row; }
+    .brand-mark { position: relative; top: auto; right: auto; margin-top: 24px; }
+    .brand-decor { right: -160px; top: -120px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-progress"><div class="fill"></div></div>
+<div class="course-titlebar">
+  <div class="ct-title">UT Level I — Ultrasonic Testing</div>
+  <a class="ct-close" href="#" aria-label="Close course">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 1l12 12M13 1L1 13"/></svg>
+  </a>
+</div>
+
+<div class="shell">
+  <!-- ——— SIDEBAR ——— -->
+  <aside class="sidebar">
+    <div class="search-row">
+      <button class="search-btn" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="8" cy="8" r="6"/><path d="M12.5 12.5L16 16"/>
+        </svg>
+      </button>
+    </div>
+    <div class="course-title">
+      <h1>Ultrasonic Testing — Level I</h1>
+    </div>
+    <div class="progress-block">
+      <div class="bar"><div class="fill"></div></div>
+      <div class="pct">45% COMPLETE</div>
+    </div>
+
+    <div class="scroll">
+      <div class="section open">
+        <div class="sec-header" onclick="toggleSection(this)">
+          <span class="chev">▾</span><span>COURSE OVERVIEW</span>
+        </div>
+        <div class="sec-body">
+          <div class="item done">
+            <span class="i-icon">≡</span>
+            <span>About this course</span>
+            <span class="i-status">✓</span>
+          </div>
+          <div class="item done">
+            <span class="i-icon">≡</span>
+            <span>Syllabus &amp; objectives</span>
+            <span class="i-status">✓</span>
+          </div>
+          <div class="item done">
+            <span class="i-icon">≡</span>
+            <span>Instructor introduction</span>
+            <span class="i-status">✓</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-header" onclick="toggleSection(this)">
+          <span class="chev">▾</span><span>Module 1: Introduction to NDT</span>
+        </div>
+        <div class="sec-body">
+          <div class="item done"><span class="i-icon">≡</span><span>What is NDT?</span><span class="i-status">✓</span></div>
+          <div class="item done"><span class="i-icon">≡</span><span>Methods overview</span><span class="i-status">✓</span></div>
+          <div class="item done"><span class="i-icon">≡</span><span>Industry applications</span><span class="i-status">✓</span></div>
+          <div class="item done"><span class="i-icon">≡</span><span>Module 1 quiz</span><span class="i-status">✓</span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-header" onclick="toggleSection(this)">
+          <span class="chev">▾</span><span>Module 2: Physics of Ultrasound</span>
+        </div>
+        <div class="sec-body">
+          <div class="item done"><span class="i-icon">≡</span><span>Sound waves fundamentals</span><span class="i-status">✓</span></div>
+          <div class="item done"><span class="i-icon">≡</span><span>Frequency &amp; wavelength</span><span class="i-status">✓</span></div>
+          <div class="item done"><span class="i-icon">≡</span><span>Velocity in materials</span><span class="i-status">✓</span></div>
+          <div class="item done"><span class="i-icon">≡</span><span>Module 2 quiz</span><span class="i-status">✓</span></div>
+        </div>
+      </div>
+
+      <div class="section open">
+        <div class="sec-header" onclick="toggleSection(this)">
+          <span class="chev">▾</span><span>Module 3: Couplant &amp; Calibration</span>
+        </div>
+        <div class="sec-body">
+          <div class="item done"><span class="i-icon">≡</span><span>About this module</span><span class="i-status">✓</span></div>
+          <div class="item done"><span class="i-icon">≡</span><span>3.1 &nbsp;Why couplant matters</span><span class="i-status">✓</span></div>
+          <div class="item current active"><span class="i-icon">≡</span><span>3.2 &nbsp;Acoustic impedance &amp; Z-matching</span><span class="i-status"></span></div>
+          <div class="item"><span class="i-icon">≡</span><span>3.3 &nbsp;DAC curve construction</span><span class="i-status"></span></div>
+          <div class="item"><span class="i-icon">≡</span><span>3.4 &nbsp;Block types — IIW V1, V2, step wedge</span><span class="i-status"></span></div>
+          <div class="item"><span class="i-icon">≡</span><span>3.5 &nbsp;Mini-quiz — 8 questions</span><span class="i-status"></span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-header" onclick="toggleSection(this)">
+          <span class="chev">▾</span><span>Module 4: Transducers &amp; beam behaviour</span>
+        </div>
+        <div class="sec-body">
+          <div class="item locked"><span class="i-icon">≡</span><span>Complete Module 3 to unlock</span><span class="i-status">🔒</span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-header" onclick="toggleSection(this)">
+          <span class="chev">▾</span><span>Module 5: Defect types &amp; echo interpretation</span>
+        </div>
+        <div class="sec-body">
+          <div class="item locked"><span class="i-icon">≡</span><span>Complete Module 4 to unlock</span><span class="i-status">🔒</span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-header" onclick="toggleSection(this)">
+          <span class="chev">▾</span><span>Module 6: Procedures &amp; code compliance</span>
+        </div>
+        <div class="sec-body">
+          <div class="item locked"><span class="i-icon">≡</span><span>Locked</span><span class="i-status">🔒</span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-header" onclick="toggleSection(this)">
+          <span class="chev">▾</span><span>Σ &nbsp; Final Assessment</span>
+        </div>
+        <div class="sec-body">
+          <div class="item locked"><span class="i-icon">≡</span><span>40 questions · 90 minutes · 75% to pass</span><span class="i-status">🔒</span></div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ——— MAIN CONTENT ——— -->
+  <main class="main">
+    <div class="mobile-hint">☰ Tap course title to open module menu</div>
+
+    <section class="lesson-hero">
+      <!-- Decorative geometric — mimics IBM SkillsBuild purple circles -->
+      <div class="brand-decor">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="gA" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="gB" x1="0%" x2="100%" y1="0%" y2="100%">
+              <stop offset="0%" stop-color="#A78BFA" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="#7C3AED" stop-opacity="0.3"/>
+            </linearGradient>
+          </defs>
+          <!-- Dark outer circle -->
+          <circle cx="260" cy="180" r="160" fill="#0F172A"/>
+          <!-- Purple slice -->
+          <path d="M260,20 A160,160 0 0,1 420,180 L260,180 Z" fill="url(#gB)" opacity="0.85"/>
+          <!-- Amber slice -->
+          <path d="M260,180 L420,180 A160,160 0 0,1 380,280 Z" fill="url(#gA)"/>
+          <!-- Orange accent slice -->
+          <path d="M260,180 L380,280 A160,160 0 0,1 260,340 Z" fill="#EA580C" opacity="0.55"/>
+          <!-- Center dark cutout -->
+          <circle cx="260" cy="180" r="52" fill="#0B1F3D"/>
+          <circle cx="260" cy="180" r="28" fill="#EA580C" opacity="0.85"/>
+        </svg>
+      </div>
+
+      <div class="topline">
+        <button class="hamburger" aria-label="Toggle menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 7h18M3 12h18M3 17h18"/>
+          </svg>
+        </button>
+        <a class="exit-btn" href="#">EXIT COURSE</a>
+      </div>
+
+      <div class="stripe"></div>
+      <div class="mod-label">Module 3</div>
+      <h2>Couplant &amp; Calibration</h2>
+
+      <div class="brand-mark">
+        <span class="brand-text">SNS <em>NDT</em></span>
+      </div>
+    </section>
+
+    <section class="lesson-body">
+      <div class="step-crumb">
+        <span>Step <span class="orange">3.2 / 5</span></span>
+        <span class="sep">·</span>
+        <span>Est. 6 min</span>
+        <span class="sep">·</span>
+        <span class="kind-badge">Reading</span>
+      </div>
+
+      <h1>Acoustic impedance &amp; Z-matching</h1>
+
+      <h3 class="section-h">Introduction</h3>
+      <p>
+        In this step, you'll learn how the physical property called <b>acoustic impedance</b> decides whether ultrasonic energy makes it across the interface between your probe and the test piece — or gets reflected at the surface before it ever reaches a defect.
+      </p>
+      <p>Acoustic impedance governs three observable outcomes in a UT inspection:</p>
+      <ul>
+        <li><b>Energy transfer</b> — how much of the emitted sound actually enters the material.</li>
+        <li><b>Reflection amplitude</b> — how strongly echoes return from discontinuities.</li>
+        <li><b>Couplant selection</b> — which fluid bridges the probe and the surface without losing signal.</li>
+      </ul>
+
+      <h3 class="section-h">What is acoustic impedance?</h3>
+      <p>
+        Acoustic impedance (<span class="mono">Z</span>) is a material property equal to the product of density (<span class="mono">ρ</span>) and ultrasonic velocity (<span class="mono">c</span>):
+      </p>
+
+      <div class="callout">
+        <span class="c-tag">◉ Definition · Formula</span>
+        <b>Z = ρ × c</b> &nbsp; where <span class="mono">ρ</span> = density (kg/m³) and <span class="mono">c</span> = longitudinal velocity (m/s). Unit: <span class="mono">kg/(m²·s)</span> or Rayl.
+      </div>
+
+      <p>
+        When an ultrasonic wave meets a boundary between two materials with very different Z values, most of its energy reflects back — this is why air gaps between the probe and the specimen are catastrophic for inspection, and why a couplant is required.
+      </p>
+
+      <div class="fig">
+        <div class="f-tag">Fig. 3.2a · Energy transfer vs. impedance mismatch</div>
+        <svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="probe" x1="0%" x2="0%" y1="0%" y2="100%">
+              <stop offset="0%" stop-color="#475569"/>
+              <stop offset="100%" stop-color="#1E293B"/>
+            </linearGradient>
+            <linearGradient id="specimen" x1="0%" x2="0%" y1="0%" y2="100%">
+              <stop offset="0%" stop-color="#CBD5E1"/>
+              <stop offset="100%" stop-color="#94A3B8"/>
+            </linearGradient>
+          </defs>
+          <!-- Left case: no couplant (air gap) -->
+          <text x="100" y="24" font-family="IBM Plex Mono" font-size="11" font-weight="600" fill="#64748B" letter-spacing="1.2">WITHOUT COUPLANT · AIR GAP</text>
+          <rect x="50" y="48" width="120" height="64" fill="url(#probe)" rx="4"/>
+          <text x="110" y="88" text-anchor="middle" font-family="IBM Plex Sans" font-size="12" fill="white" font-weight="500">Probe</text>
+          <!-- air gap line -->
+          <line x1="50" y1="118" x2="170" y2="118" stroke="#EA580C" stroke-width="2" stroke-dasharray="3 2"/>
+          <text x="180" y="122" font-family="IBM Plex Mono" font-size="10" fill="#EA580C" font-weight="600">AIR GAP</text>
+          <rect x="20" y="130" width="220" height="100" fill="url(#specimen)" rx="2"/>
+          <!-- waves reflecting back -->
+          <path d="M110 114 L110 82 M110 82 L104 88 M110 82 L116 88" stroke="#EA580C" stroke-width="2" fill="none"/>
+          <text x="260" y="140" font-family="IBM Plex Sans" font-size="13" fill="#EA580C" font-weight="600">~ 99.9% reflected</text>
+          <text x="260" y="158" font-family="IBM Plex Sans" font-size="12" fill="#64748B">Signal never reaches the material</text>
+          <text x="260" y="176" font-family="IBM Plex Mono" font-size="11" fill="#64748B">Z_air ≈ 0.0004 · Z_steel ≈ 45</text>
+
+          <!-- Right case: with couplant -->
+          <text x="460" y="24" font-family="IBM Plex Mono" font-size="11" font-weight="600" fill="#64748B" letter-spacing="1.2">WITH COUPLANT · Z-MATCHED</text>
+          <rect x="420" y="48" width="120" height="64" fill="url(#probe)" rx="4"/>
+          <text x="480" y="88" text-anchor="middle" font-family="IBM Plex Sans" font-size="12" fill="white" font-weight="500">Probe</text>
+          <!-- couplant layer -->
+          <rect x="400" y="112" width="160" height="8" fill="#10B981" opacity="0.55"/>
+          <text x="570" y="120" font-family="IBM Plex Mono" font-size="10" fill="#10B981" font-weight="600">COUPLANT</text>
+          <rect x="380" y="122" width="220" height="108" fill="url(#specimen)" rx="2"/>
+          <!-- wave transmitted -->
+          <path d="M480 112 L480 220" stroke="#10B981" stroke-width="2" fill="none"/>
+          <path d="M480 220 L474 210 M480 220 L486 210" stroke="#10B981" stroke-width="2" fill="none"/>
+          <text x="620" y="170" font-family="IBM Plex Sans" font-size="13" fill="#10B981" font-weight="600">~ 88% transmitted</text>
+          <text x="620" y="188" font-family="IBM Plex Sans" font-size="12" fill="#64748B">Signal reaches defects</text>
+          <text x="620" y="206" font-family="IBM Plex Mono" font-size="11" fill="#64748B">Z_gel ≈ 1.5 bridges the gap</text>
+        </svg>
+        <div class="f-caption">
+          Without a couplant, the impedance mismatch between air and steel reflects nearly all ultrasonic energy back before it can reach a flaw. A couplant with an intermediate Z value dramatically improves transfer.
+        </div>
+      </div>
+
+      <h3 class="section-h">Choosing the right couplant</h3>
+      <p>In field inspection, couplant choice depends on three variables: surface condition, temperature, and orientation. The rule of thumb is to match the couplant's acoustic impedance to a value roughly halfway between probe and specimen.</p>
+      <ol>
+        <li><b>Glycerin-based gel</b> — most common for general steel inspection at room temperature.</li>
+        <li><b>Cellulose paste</b> — for vertical and overhead surfaces where gels would run.</li>
+        <li><b>Water</b> — in immersion setups; cheap and clean but requires a tank.</li>
+        <li><b>High-temperature couplant</b> — special formulations above 100 °C for weld inspection on hot pipes.</li>
+      </ol>
+
+      <div class="callout">
+        <span class="c-tag">◉ Remember · Before the next step</span>
+        The DAC curve you'll build in Step 3.3 is only valid if the <b>same couplant</b> is used during both calibration and inspection. Switching couplants mid-inspection invalidates your reference.
+      </div>
+    </section>
+
+    <footer class="lesson-foot">
+      <a class="nav-btn" href="#">
+        <span class="arr">←</span>
+        <span>
+          <span class="meta">Previous · Step 3.1</span>
+          <span class="title">Why couplant matters</span>
+        </span>
+      </a>
+
+      <div class="progress-meter">
+        <div class="dots">
+          <span class="dot done"></span>
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <span>STEP 2 / 5 · MODULE 3</span>
+      </div>
+
+      <a class="nav-btn cta-btn primary" href="#" style="padding: 14px 24px;">
+        <span>
+          <span class="meta" style="color: rgba(255,255,255,0.7)">Next · Step 3.3</span>
+          <span class="title" style="color: white;">DAC curve construction</span>
+        </span>
+        <span class="arr" style="color: white;">→</span>
+      </a>
+    </footer>
+  </main>
+</div>
+
+<script>
+  function toggleSection(el) {
+    el.parentElement.classList.toggle('open');
+  }
+
+  // Mobile hamburger — just a visual toggle for demo
+  document.querySelector('.hamburger').addEventListener('click', () => {
+    const sb = document.querySelector('.sidebar');
+    sb.style.display = sb.style.display === 'flex' ? '' : 'flex';
+  });
+</script>
+
+</body>
+</html>

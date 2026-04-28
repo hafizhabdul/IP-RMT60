@@ -1,0 +1,94 @@
+/* =========================================================================
+   E-Learning Surface — scoped design tokens
+   ========================================================================
+   All e-learning pages wrap their root in a div.elearning-surface so these
+   styles never leak into the marketing pages (MinimalHome, MinimalCourses,
+   etc.) which use Inter as their body font.
+   ========================================================================= */
+
+.elearning-surface {
+  /* Tokens */
+  --el-orange-50:  #FFF7ED;
+  --el-orange-100: #FFEDD5;
+  --el-orange-500: #F97316;
+  --el-orange-600: #EA580C;
+  --el-orange-700: #C2410C;
+  --el-amber-400: #FBBF24;
+  --el-amber-500: #F59E0B;
+  --el-slate-50:  #F8FAFC;
+  --el-slate-100: #F1F5F9;
+  --el-slate-200: #E2E8F0;
+  --el-slate-300: #CBD5E1;
+  --el-slate-400: #94A3B8;
+  --el-slate-500: #64748B;
+  --el-slate-600: #475569;
+  --el-slate-700: #334155;
+  --el-slate-800: #1E293B;
+  --el-slate-900: #0F172A;
+  --el-slate-950: #020617;
+  --el-emerald-500: #10B981;
+
+  /* Typography */
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  color: var(--el-slate-900);
+}
+
+.elearning-surface .el-mono {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.08em;
+}
+.elearning-surface .el-label {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Selection */
+.elearning-surface ::selection { background: var(--el-orange-100); color: var(--el-orange-700); }
+
+/* Reading body — for ReadingSlide content */
+.elearning-surface .el-prose h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.018em; line-height: 1.12; margin-bottom: 1rem; }
+.elearning-surface .el-prose h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.015em; line-height: 1.16; margin: 2.25rem 0 0.75rem; }
+.elearning-surface .el-prose h3 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; margin: 1.5rem 0 0.5rem; }
+.elearning-surface .el-prose p  { font-size: 1.05rem; line-height: 1.65; color: var(--el-slate-800); margin-bottom: 1rem; max-width: 68ch; }
+.elearning-surface .el-prose ul, .elearning-surface .el-prose ol { padding-left: 1.5rem; margin-bottom: 1.25rem; }
+.elearning-surface .el-prose li { font-size: 1.05rem; line-height: 1.7; margin-bottom: 0.25rem; }
+
+/* Locked stripes pattern */
+.elearning-surface .el-locked-stripes {
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0,
+    transparent 5px,
+    rgba(148, 163, 184, 0.12) 5px,
+    rgba(148, 163, 184, 0.12) 6px
+  );
+}
+
+/* Sidebar scroll */
+.elearning-surface .el-scroll::-webkit-scrollbar { width: 6px; }
+.elearning-surface .el-scroll::-webkit-scrollbar-track { background: transparent; }
+.elearning-surface .el-scroll::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.25); border-radius: 4px; }
+.elearning-surface .el-scroll::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.45); }
+
+/* Player surface — sharp edges */
+.elearning-surface.el-player { border-radius: 0; }
+.elearning-surface.el-player * { --el-radius: 0; }
+
+/* Pulse dot used in status chips */
+@keyframes el-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+}
+.elearning-surface .el-pulse { animation: el-pulse 1.6s ease-in-out infinite; }
+
+/* Reveal stagger */
+.elearning-surface [data-el-reveal] { opacity: 0; transform: translateY(8px); animation: el-reveal-up 500ms ease-out forwards; }
+.elearning-surface [data-el-reveal="1"] { animation-delay: 60ms; }
+.elearning-surface [data-el-reveal="2"] { animation-delay: 120ms; }
+.elearning-surface [data-el-reveal="3"] { animation-delay: 180ms; }
+.elearning-surface [data-el-reveal="4"] { animation-delay: 240ms; }
+.elearning-surface [data-el-reveal="5"] { animation-delay: 300ms; }
+@keyframes el-reveal-up { to { opacity: 1; transform: none; } }
