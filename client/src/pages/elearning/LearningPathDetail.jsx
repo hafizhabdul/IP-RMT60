@@ -3,8 +3,16 @@ import { ArrowLeft, ArrowRight, GraduationCap, Clock, Award } from 'lucide-react
 import { usePathDetail, useEnroll } from '@/hooks/useLearningPaths';
 import { useAuth } from '@/hooks/useAuth';
 import { ModuleAccordion, CertificatePreviewCard } from '@/components/elearning/domain';
+import { DownloadModuleSummaryButton } from '@/components/elearning/domain/ModuleSummaryPDF';
 import { isPathInDevelopment } from '@/components/elearning/domain/PathRow';
 import { MethodIcon, ELProgressBar } from '@/components/elearning/primitives';
+
+// A module is summarisable when it has at least one reading step with slides.
+function moduleHasReadingContent(mod) {
+  return (mod?.steps || []).some(
+    (s) => s?.kind === 'reading' && Array.isArray(s?.contentJson?.slides) && s.contentJson.slides.length > 0
+  );
+}
 
 export default function LearningPathDetail() {
   const { code } = useParams();
@@ -153,7 +161,19 @@ export default function LearningPathDetail() {
             </div>
           </div>
           {(path.modules || []).map((mod) => (
-            <ModuleAccordion key={mod.id} module={mod} pathCode={path.code} />
+            <div key={mod.id}>
+              <ModuleAccordion module={mod} pathCode={path.code} />
+              {moduleHasReadingContent(mod) && (
+                <div className="mt-1 flex justify-end px-1">
+                  <DownloadModuleSummaryButton
+                    module={mod}
+                    pathCode={path.code}
+                    pathTitle={path.title}
+                    methodLabel={`${path.method} · ${path.level}`}
+                  />
+                </div>
+              )}
+            </div>
           ))}
           {(!path.modules || path.modules.length === 0) && (
             <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-10 text-center">

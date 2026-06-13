@@ -39,6 +39,8 @@ const UTSimulationPage = lazy(() => import("./pages/simulations/UTSimulationPage
 const MTSimulationPage = lazy(() => import("./pages/simulations/MTSimulationPage"));
 const PTSimulationPage = lazy(() => import("./pages/simulations/PTSimulationPage"));
 const RTSimulationPage = lazy(() => import("./pages/simulations/RTSimulationPage"));
+const ETSimulationPage = lazy(() => import("./pages/simulations/ETSimulationPage"));
+const VTSimulationPage = lazy(() => import("./pages/simulations/VTSimulationPage"));
 const QuizHub = lazy(() => import("./pages/quiz/QuizHub"));
 const QuizPage = lazy(() => import("./pages/quiz/QuizPage"));
 const ContentHub = lazy(() => import("./pages/content/ContentHub"));
@@ -128,6 +130,8 @@ function AppRoutes() {
           <Route path="simulations/mt" element={<MTSimulationPage />} />
           <Route path="simulations/pt" element={<PTSimulationPage />} />
           <Route path="simulations/rt" element={<RTSimulationPage />} />
+          <Route path="simulations/et" element={<ETSimulationPage />} />
+          <Route path="simulations/vt" element={<VTSimulationPage />} />
           <Route path="quizzes" element={<QuizHub />} />
           <Route path="quizzes/take" element={<QuizPage />} />
         </Route>

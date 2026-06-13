@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronDown, Check, Lock } from 'lucide-react';
+import { ChevronDown, Check, Lock, BookmarkCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { isBookmarked } from '@/utils/elearningNotes';
 
 export default function CourseSidebar({ pathDetail, currentStepId, className }) {
   const navigate = useNavigate();
@@ -73,6 +74,7 @@ function SidebarSection({ module, pathCode, currentStepId, onNavigate }) {
             module.steps.map((step) => {
               const done = step.progressStatus === 'done';
               const current = String(step.id) === String(currentStepId);
+              const marked = isBookmarked(step.id);
 
               return (
                 <button
@@ -85,9 +87,17 @@ function SidebarSection({ module, pathCode, currentStepId, onNavigate }) {
                   )}
                 >
                   <span className="font-plexMono text-[10px] uppercase tracking-[0.04em] opacity-70">≡</span>
-                  <span className="truncate">
-                    <span className="opacity-70 mr-1">{module.orderIndex}.{step.orderIndex}</span>
-                    {step.title}
+                  <span className="flex min-w-0 items-center gap-1.5">
+                    <span className="truncate">
+                      <span className="opacity-70 mr-1">{module.orderIndex}.{step.orderIndex}</span>
+                      {step.title}
+                    </span>
+                    {marked && (
+                      <BookmarkCheck
+                        className="h-3.5 w-3.5 shrink-0 text-white/90"
+                        aria-label="Ditandai"
+                      />
+                    )}
                   </span>
                   <span className={cn(
                     'inline-grid h-[22px] w-[22px] place-items-center rounded-full text-[10.5px] font-bold',

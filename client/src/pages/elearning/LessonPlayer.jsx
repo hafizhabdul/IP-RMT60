@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { X, Menu, Info, Award, Beaker } from 'lucide-react';
+import { X, Menu, Info, Award, Beaker, Bookmark, BookmarkCheck, StickyNote, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 import { usePathDetail } from '@/hooks/useLearningPaths';
 import { useStartStep, useCompleteStep, useGradeQuiz } from '@/hooks/useProgress';
+import { useStepNotes } from '@/hooks/useStepNotes';
 import { SIM_AVAILABLE_METHODS } from '@/config/elearning';
 import {
   CourseSidebar,
@@ -24,6 +25,7 @@ export default function LessonPlayer() {
   const [quizScore, setQuizScore] = useState(null);
   const [quizPassed, setQuizPassed] = useState(false);
   const [earnedCertificate, setEarnedCertificate] = useState(null);
+  const [notesOpen, setNotesOpen] = useState(false);
 
   const { data: path, isLoading, refetch } = usePathDetail(code);
   const startStep = useStartStep();
@@ -37,6 +39,10 @@ export default function LessonPlayer() {
   const step = steps[currentIndex] || steps[0];
   const prevStep = currentIndex > 0 ? steps[currentIndex - 1] : null;
   const nextStep = currentIndex >= 0 && currentIndex < steps.length - 1 ? steps[currentIndex + 1] : null;
+
+  // Per-step notes & bookmark (localStorage, no backend). Hook must run on every
+  // render (before the early returns), so it is keyed on the resolved step id.
+  const { note, setNote, bookmarked, toggleBookmark } = useStepNotes(step?.id);
 
   const overallProgress = useMemo(() => {
     if (!path?.modules) return 0;
@@ -234,9 +240,68 @@ export default function LessonPlayer() {
               )}
             </div>
 
-            <h1 className="text-[28px] sm:text-[38px] font-bold leading-[1.12] tracking-[-0.018em] mb-7">
-              {step.title}
-            </h1>
+            <div className="mb-7 flex items-start justify-between gap-4">
+              <h1 className="text-[28px] sm:text-[38px] font-bold leading-[1.12] tracking-[-0.018em]">
+                {step.title}
+              </h1>
+              <button
+                type="button"
+                onClick={toggleBookmark}
+                aria-pressed={bookmarked}
+                aria-label={bookmarked ? 'Hapus penanda langkah ini' : 'Tandai langkah ini'}
+                title={bookmarked ? 'Hapus penanda' : 'Tandai langkah ini'}
+                className={cn(
+                  'mt-1 inline-grid h-9 w-9 shrink-0 place-items-center rounded-lg border transition-colors',
+                  bookmarked
+                    ? 'border-orange-300 bg-orange-50 text-orange-600 hover:bg-orange-100'
+                    : 'border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600'
+                )}
+              >
+                {bookmarked
+                  ? <BookmarkCheck className="h-[18px] w-[18px]" aria-hidden="true" />
+                  : <Bookmark className="h-[18px] w-[18px]" aria-hidden="true" />}
+              </button>
+            </div>
+
+            {/* Collapsible per-step notes panel — autosaves to localStorage. */}
+            <div className="mb-7 rounded-lg border border-slate-200 bg-slate-50/60">
+              <button
+                type="button"
+                onClick={() => setNotesOpen((o) => !o)}
+                aria-expanded={notesOpen}
+                aria-controls="el-step-notes-panel"
+                className="flex w-full items-center gap-2 px-4 py-2.5 text-left font-plexMono text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-600 transition-colors hover:text-slate-900"
+              >
+                <StickyNote className="h-4 w-4 text-orange-500" aria-hidden="true" />
+                <span>Catatan</span>
+                {!notesOpen && note.trim().length > 0 && (
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-orange-500" aria-hidden="true" />
+                )}
+                <ChevronDown
+                  className={cn('ml-auto h-4 w-4 transition-transform', notesOpen ? 'rotate-0' : '-rotate-90')}
+                  aria-hidden="true"
+                />
+              </button>
+              {notesOpen && (
+                <div id="el-step-notes-panel" className="px-4 pb-4">
+                  <label htmlFor="el-step-note-input" className="sr-only">
+                    Catatan untuk langkah {step.title}
+                  </label>
+                  <textarea
+                    id="el-step-note-input"
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
+                    rows={4}
+                    placeholder="Tulis catatan pribadi untuk langkah ini… (tersimpan otomatis di perangkat Anda)"
+                    aria-label={`Catatan untuk langkah ${step.title}`}
+                    className="w-full resize-y rounded-md border border-slate-200 bg-white px-3 py-2 text-[14px] leading-relaxed text-slate-800 placeholder:text-slate-400 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-100"
+                  />
+                  <p className="mt-1.5 font-plexMono text-[10.5px] uppercase tracking-[0.08em] text-slate-400">
+                    Tersimpan otomatis di perangkat ini
+                  </p>
+                </div>
+              )}
+            </div>
 
             {step.kind === 'reading' && <ReadingSlide content={step.contentJson} />}
             {step.kind === 'animated' && (

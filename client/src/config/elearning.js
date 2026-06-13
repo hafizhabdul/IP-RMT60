@@ -6,7 +6,7 @@ export const PASSING_SCORE = 75;
 
 // Methods that currently ship a built, interactive simulation.
 // Everything else should be presented honestly as "coming soon".
-export const SIM_AVAILABLE_METHODS = ['UT', 'MT', 'PT', 'RT'];
+export const SIM_AVAILABLE_METHODS = ['UT', 'MT', 'PT', 'RT', 'ET', 'VT'];
 
 // Axios request config flag: progress/grading calls set this so the global
 // response interceptor stays silent (no error toast, no localStorage wipe,

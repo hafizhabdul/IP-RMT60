@@ -9,8 +9,8 @@ import { lazy, Suspense } from 'react';
  * are method-prefixed in the seeds, e.g. 'ut-couplant-intro', 'mt-flux-leakage',
  * 'pt-capillary', 'rt-geometric-unsharpness', 'vt-...', 'et-...'.
  *
- * Methods with a real simulator (UT/MT/PT/RT) render it; methods without one yet
- * (VT/ET, or any unknown ref) render an honest "being prepared" placeholder
+ * All six methods (UT/MT/PT/RT/ET/VT) now have a real simulator and render it;
+ * any unknown/unprefixed ref renders an honest "being prepared" placeholder
  * instead of a wrong, hardcoded scene.
  */
 
@@ -20,6 +20,8 @@ const SIM_REGISTRY = {
   mt: lazy(() => import('@/components/ndt-sims/MT/MagneticLab')),
   pt: lazy(() => import('@/components/ndt-sims/PT/PenetrantLab')),
   rt: lazy(() => import('@/components/ndt-sims/RT/RadiographyLab')),
+  et: lazy(() => import('@/components/ndt-sims/ET/ImpedanceLab')),
+  vt: lazy(() => import('@/components/ndt-sims/VT/VisualLab')),
 };
 
 function methodOf(simulationRef) {
