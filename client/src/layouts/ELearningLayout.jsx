@@ -14,13 +14,88 @@ const NAV_ITEMS = [
   { to: '/e-learning/quizzes', label: 'Quiz Practice', icon: BookOpen },
 ];
 
+const ONBOARDING_DISMISSED_KEY = 'el-onboarding-dismissed';
+
+// First-visit flow explainer. Each stage maps a step in the learning journey.
+const ONBOARDING_STEPS = [
+  { icon: BookOpen, label: 'Belajar', desc: 'Pelajari materi per modul.' },
+  { icon: LayoutGrid, label: 'Kuis', desc: 'Uji pemahaman tiap modul.' },
+  { icon: Beaker, label: 'Simulasi', desc: 'Praktik metode secara interaktif.' },
+  { icon: Award, label: 'Sertifikat', desc: 'Lulus asesmen, raih sertifikat.' },
+];
+
+function OnboardingPanel({ onDismiss }) {
+  return (
+    <section
+      aria-labelledby="el-onboarding-title"
+      className="mb-6 rounded-xl border border-orange-200 bg-gradient-to-br from-orange-50 to-white p-5 sm:p-6 shadow-sm"
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h2 id="el-onboarding-title" className="text-[16px] font-bold text-slate-900">
+            Cara kerja e-learning ini
+          </h2>
+          <p className="mt-1 text-[13.5px] text-slate-600">
+            Ikuti alur berikut untuk menyelesaikan setiap jalur belajar.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onDismiss}
+          className="shrink-0 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
+          aria-label="Tutup panduan"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+
+      <ol className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {ONBOARDING_STEPS.map(({ icon: Icon, label, desc }, idx) => (
+          <li
+            key={label}
+            className="flex items-start gap-3 rounded-lg border border-slate-200 bg-white px-3.5 py-3"
+          >
+            <span className="inline-grid h-8 w-8 shrink-0 place-items-center rounded-full bg-orange-100 text-orange-700">
+              <Icon className="h-4 w-4" aria-hidden="true" />
+            </span>
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 text-[13.5px] font-semibold text-slate-900">
+                <span className="font-plexMono text-[11px] text-orange-600">{idx + 1}.</span>
+                {label}
+              </div>
+              <p className="mt-0.5 text-[12.5px] leading-snug text-slate-500">{desc}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
 export default function ELearningLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  // Show the first-visit flow explainer until the user dismisses it.
+  const [showOnboarding, setShowOnboarding] = useState(() => {
+    try {
+      return localStorage.getItem(ONBOARDING_DISMISSED_KEY) !== '1';
+    } catch {
+      return true;
+    }
+  });
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { data: progress } = useMyProgress({ enabled: !!user });
   const { data: paths } = useLearningPaths();
+
+  const dismissOnboarding = () => {
+    setShowOnboarding(false);
+    try {
+      localStorage.setItem(ONBOARDING_DISMISSED_KEY, '1');
+    } catch {
+      // localStorage unavailable (private mode) — dismissal is session-only.
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -187,6 +262,7 @@ export default function ELearningLayout() {
 
         {/* Content */}
         <main className="px-5 sm:px-8 py-6 sm:py-8 max-w-full overflow-x-hidden">
+          {showOnboarding && <OnboardingPanel onDismiss={dismissOnboarding} />}
           <Outlet />
         </main>
       </div>

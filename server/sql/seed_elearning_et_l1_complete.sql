@@ -13,7 +13,7 @@ CROSS JOIN (VALUES
    '{"slides":[{"heading":"Hukum Faraday","body":"Perubahan medan magnet menginduksi tegangan listrik di konduktor. Inilah dasar semua eddy current testing."},{"heading":"Coil sebagai generator","body":"AC current di coil → AC magnetic field → induced current di material konduktif (eddy currents)."},{"heading":"Lenz law","body":"Eddy current mengalir berlawanan untuk menentang perubahan field. Inilah yang detect oleh probe — opposition field menambah/mengurangi impedance coil."}]}',
    400, NULL),
   (2, 'reading', 'Skin depth & frequency',
-   '{"slides":[{"heading":"Skin effect","body":"Eddy current konsentrasinya tertinggi dekat permukaan, decay exponentially ke dalam material."},{"heading":"Skin depth formula","body":"δ ≈ 50 / √(f × σ × μᵣ) mm. f dalam Hz, σ dalam %IACS, μᵣ relative permeability. HAFALKAN."},{"heading":"Praktik","body":"100 kHz aluminum: δ ~0.3 mm. 100 kHz steel: δ ~0.1 mm. Frekuensi rendah → penetrasi dalam, sensitivitas rendah."}]}',
+   '{"slides":[{"heading":"Skin effect","body":"Eddy current konsentrasinya tertinggi dekat permukaan, decay exponentially ke dalam material."},{"heading":"Skin depth formula","body":"δ ≈ 21 / √(f × σ × μᵣ) mm. f dalam kHz, σ dalam %IACS, μᵣ relative permeability. HAFALKAN."},{"heading":"Praktik","body":"100 kHz aluminum (σ=40%IACS, μᵣ=1): δ ≈ 21/√(100×40×1) ≈ 0.33 mm. 100 kHz steel (σ=10%IACS, μᵣ=100): δ ≈ 21/√(100×10×100) ≈ 0.07 mm. Frekuensi rendah → penetrasi dalam, sensitivitas rendah."}]}',
    460, NULL),
   (3, 'reading', 'Trade-off frequency selection',
    '{"slides":[{"heading":"Frekuensi tinggi (>1 MHz)","body":"Cocok deteksi crack permukaan. Sensitivitas tinggi, tapi penetrasi <0.5 mm."},{"heading":"Frekuensi medium (10-100 kHz)","body":"Standard untuk inspeksi tubing dan permukaan. Compromise sensitivity vs penetration."},{"heading":"Frekuensi rendah (<10 kHz)","body":"Penetrasi dalam (sampai 5+ mm), tapi sensitivitas turun. Pakai untuk near-surface defect detection."}]}',
@@ -145,7 +145,7 @@ SELECT m.id, s."orderIndex", s.kind::lesson_step_kind, s.title, s."contentJson":
 FROM "Modules" m JOIN "LearningPaths" lp ON m."LearningPathId" = lp.id
 CROSS JOIN (VALUES
   (1, 'reading', 'Comprehensive review',
-   '{"slides":[{"heading":"Konsep kunci","body":"Faraday law, skin depth δ = 50/√(fσμᵣ), frequency selection."},{"heading":"Probe","body":"Surface vs encircling vs bobbin vs array. Differential vs absolute."},{"heading":"Impedance plane","body":"X-Y reading, lift-off vs defect phase angle."},{"heading":"Heat exchanger","body":"Bobbin technique, pull speed, signal interpretation."}]}',
+   '{"slides":[{"heading":"Konsep kunci","body":"Faraday law, skin depth δ = 21/√(fσμᵣ), frequency selection."},{"heading":"Probe","body":"Surface vs encircling vs bobbin vs array. Differential vs absolute."},{"heading":"Impedance plane","body":"X-Y reading, lift-off vs defect phase angle."},{"heading":"Heat exchanger","body":"Bobbin technique, pull speed, signal interpretation."}]}',
    480, NULL),
   (2, 'quiz', 'Practice exam — 20 soal mixed',
    '{"description":"Latihan komprehensif ET-L1.","questionCount":20,"passingScore":75}',

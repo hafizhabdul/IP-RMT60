@@ -92,3 +92,48 @@
 .elearning-surface [data-el-reveal="4"] { animation-delay: 240ms; }
 .elearning-surface [data-el-reveal="5"] { animation-delay: 300ms; }
 @keyframes el-reveal-up { to { opacity: 1; transform: none; } }
+
+/* =========================================================================
+   Keyboard focus visibility (a11y)
+   -------------------------------------------------------------------------
+   A clear, consistent focus ring for keyboard users on every interactive
+   element inside the e-learning surface. Mouse clicks (:focus without
+   :focus-visible) stay clean; keyboard focus is always visible. Any
+   `outline: none` that would kill keyboard focus is overridden here.
+   ========================================================================= */
+.elearning-surface a:focus-visible,
+.elearning-surface button:focus-visible,
+.elearning-surface input:focus-visible,
+.elearning-surface select:focus-visible,
+.elearning-surface textarea:focus-visible,
+.elearning-surface [role="radio"]:focus-visible,
+.elearning-surface [role="radiogroup"]:focus-visible,
+.elearning-surface [tabindex]:focus-visible {
+  outline: 2px solid var(--el-orange-600);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Override any outline:none that would otherwise suppress keyboard focus. */
+.elearning-surface a:focus-visible,
+.elearning-surface button:focus-visible,
+.elearning-surface input:focus-visible,
+.elearning-surface select:focus-visible,
+.elearning-surface textarea:focus-visible,
+.elearning-surface [role="radio"]:focus-visible {
+  outline-style: solid;
+}
+
+/* =========================================================================
+   Reduced motion — honour the OS "reduce motion" preference for the
+   CSS-driven animations defined above (framer-motion is handled in JS via
+   useReducedMotion). Render the resolved/static state instead of looping.
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .elearning-surface .el-pulse { animation: none; }
+  .elearning-surface [data-el-reveal] {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}

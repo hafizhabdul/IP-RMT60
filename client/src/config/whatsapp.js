@@ -3,7 +3,7 @@
 export const WHATSAPP_CONFIG = {
   // Format: 62 + nomor HP tanpa 0/prefix
   // Contoh: 6281234567890 (untuk nomor 081234567890)
-  phone: '6281292584460',
+  phone: '628129258446',
 
   // Nama bisnis Anda
   businessName: 'SNS - SAR NDT Services',

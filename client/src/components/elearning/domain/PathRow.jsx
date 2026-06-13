@@ -3,10 +3,23 @@ import { ArrowRight, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MethodIcon, StatusBadge, ELProgressBar } from '../primitives';
 
+// A path is "in development" when its level is II/III (advanced tiers not yet
+// authored) OR it ships no content. totalModules is returned for all viewers
+// (auth or guest); stepsTotal is only populated for authenticated users, so we
+// fall back to totalModules to avoid wrongly flagging real paths for guests.
+export function isPathInDevelopment(path) {
+  if (!path) return false;
+  const lvl = String(path.level ?? '').toUpperCase();
+  const advanced = /\bII\b|\bIII\b|LEVEL\s*2|LEVEL\s*3/.test(lvl) || path.level === 2 || path.level === 3;
+  const noContent = (path.totalModules ?? 0) === 0 || (path.stepsTotal != null && path.stepsTotal === 0 && (path.totalModules ?? 0) === 0);
+  return advanced || noContent;
+}
+
 export default function PathRow({ path, className, active = false }) {
   const enrollment = path.enrollment;
   const livePercent = path.progressPercent ?? enrollment?.completionPercent ?? 0;
   const hasProgress = livePercent > 0 || (path.stepsDone ?? 0) > 0;
+  const inDevelopment = isPathInDevelopment(path);
   const isLocked = !!path.prerequisite && !path.isEnrolled && !hasProgress;
   const isCompleted = (enrollment && enrollment.status === 'completed') || livePercent >= 100;
   const isInProgress = !isCompleted && (hasProgress || (enrollment && enrollment.status === 'active'));
@@ -19,6 +32,62 @@ export default function PathRow({ path, className, active = false }) {
 
   // Extract level number for L1/L2/L3 display
   const levelNumber = path.level === 'Level I' ? 1 : path.level === 'Level II' ? 2 : 3;
+
+  // In-development paths advertise honestly: neutral badge, non-clickable "Segera hadir" CTA.
+  if (inDevelopment) {
+    return (
+      <div
+        className={cn(
+          'grid grid-cols-[60px_1fr_auto] sm:grid-cols-[80px_1.3fr_100px_1fr_120px_140px] items-center gap-3 sm:gap-4 px-4 sm:px-5 py-4 border-b border-slate-100 last:border-b-0 opacity-90',
+          className
+        )}
+      >
+        <MethodIcon method={path.method} size="md" className="rounded-lg sm:h-[60px] sm:w-[60px] sm:text-lg opacity-70" />
+
+        <div className="min-w-0">
+          <div className="font-plexMono text-[10.5px] font-medium uppercase tracking-[0.08em] text-slate-500">
+            NDT / {path.method} · {path.level}
+          </div>
+          <div className="mt-0.5 truncate text-[15px] font-semibold text-slate-700">
+            {path.title.replace(/ — .*$/, '')}
+          </div>
+          <div className="mt-0.5 truncate text-[12.5px] text-slate-500 line-clamp-1 hidden sm:block">{path.description}</div>
+        </div>
+
+        <div className="hidden sm:flex justify-center">
+          <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 font-plexMono text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+            Dalam pengembangan
+          </span>
+        </div>
+
+        <div className="hidden sm:block min-w-0">
+          <div className="flex justify-between font-plexMono text-[11px] text-slate-400">
+            <span>{path.totalModules} modul</span>
+            <span>—</span>
+          </div>
+          <ELProgressBar value={0} className="mt-1.5" />
+        </div>
+
+        <div className="hidden sm:flex gap-1">
+          {[1, 2, 3].map((lv) => (
+            <div
+              key={lv}
+              className={cn(
+                'flex-1 rounded px-2 py-1 text-center font-plexMono text-[10px] font-semibold',
+                lv === levelNumber ? 'bg-slate-100 text-slate-500' : 'bg-slate-100 text-slate-400 el-locked-stripes'
+              )}
+            >
+              L{lv}
+            </div>
+          ))}
+        </div>
+
+        <div className="flex items-center justify-center gap-1.5 rounded-md border border-dashed border-slate-300 px-3 py-2 text-[12.5px] font-semibold text-slate-400">
+          Segera hadir
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Link

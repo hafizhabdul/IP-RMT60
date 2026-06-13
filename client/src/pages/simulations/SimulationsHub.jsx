@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Beaker } from 'lucide-react';
+import { SIM_AVAILABLE_METHODS } from '@/config/elearning';
 import { MethodIcon } from '@/components/elearning/primitives';
 
 const SIMS = [
@@ -31,7 +32,23 @@ const SIMS = [
         path: '/e-learning/simulations/rt',
         topics: ['Ug calc', 'IQI', 'Density'],
     },
+    {
+        method: 'VT',
+        title: 'Visual Testing',
+        description: 'Simulasi inspeksi visual: lighting, magnification, dan acceptance criteria.',
+        path: '/e-learning/simulations/vt',
+        topics: ['Lighting', 'Magnification', 'Acceptance'],
+    },
+    {
+        method: 'ET',
+        title: 'Eddy Current',
+        description: 'Impedance plane, skin depth, dan tube inspection dengan probe eddy current.',
+        path: '/e-learning/simulations/et',
+        topics: ['Impedance', 'Skin depth', 'Lift-off'],
+    },
 ];
+
+const availableSims = SIMS.filter((s) => SIM_AVAILABLE_METHODS.includes(s.method));
 
 export default function SimulationsHub() {
     return (
@@ -59,11 +76,11 @@ export default function SimulationsHub() {
                         Hands-on physics
                     </div>
                     <div className="text-[16px] sm:text-[18px] font-bold tracking-tight mt-0.5">
-                        4 simulasi siap pakai · belajar lewat pengalaman
+                        {availableSims.length} simulasi siap pakai · belajar lewat pengalaman
                     </div>
                 </div>
                 <span className="font-plexMono text-[11px] uppercase tracking-[0.08em] text-slate-400 tabular-nums">
-                    UT · MT · PT · RT
+                    {SIM_AVAILABLE_METHODS.join(' · ')}
                 </span>
             </div>
 
@@ -74,45 +91,90 @@ export default function SimulationsHub() {
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-4">
-                    {SIMS.map((sim) => (
-                        <Link
-                            key={sim.method}
-                            to={sim.path}
-                            className="group relative overflow-hidden bg-white rounded-xl border border-slate-200 p-6 hover:border-orange-300 hover:shadow-el-card-hover transition-all"
-                        >
-                            <div className="flex items-start justify-between mb-4">
-                                <MethodIcon method={sim.method} size="md" />
-                                <span className="rounded-full bg-emerald-100 text-emerald-700 px-2.5 py-1 font-plexMono text-[10.5px] font-bold uppercase tracking-[0.08em]">
-                                    Available
-                                </span>
-                            </div>
-                            <div className="font-plexMono text-[10.5px] uppercase tracking-[0.1em] text-slate-500 mb-1">
-                                NDT / {sim.method}
-                            </div>
-                            <h3 className="text-[20px] font-bold tracking-tight leading-snug mb-2 group-hover:text-orange-700 transition-colors">
-                                {sim.title}
-                            </h3>
-                            <p className="text-[13.5px] text-slate-600 mb-4 line-clamp-3">{sim.description}</p>
+                    {SIMS.map((sim) => {
+                        const available = SIM_AVAILABLE_METHODS.includes(sim.method);
 
-                            <div className="flex flex-wrap gap-1.5 mb-5">
-                                {sim.topics.map((t) => (
-                                    <span
-                                        key={t}
-                                        className="rounded-full border border-slate-200 px-2.5 py-0.5 font-plexMono text-[10px] uppercase tracking-[0.06em] text-slate-600"
-                                    >
-                                        {t}
+                        if (!available) {
+                            return (
+                                <div
+                                    key={sim.method}
+                                    className="relative overflow-hidden bg-white rounded-xl border border-dashed border-slate-200 p-6 opacity-90"
+                                    aria-disabled="true"
+                                >
+                                    <div className="flex items-start justify-between mb-4">
+                                        <MethodIcon method={sim.method} size="md" className="opacity-70" />
+                                        <span className="rounded-full bg-slate-100 text-slate-500 px-2.5 py-1 font-plexMono text-[10.5px] font-bold uppercase tracking-[0.08em]">
+                                            Segera hadir
+                                        </span>
+                                    </div>
+                                    <div className="font-plexMono text-[10.5px] uppercase tracking-[0.1em] text-slate-500 mb-1">
+                                        NDT / {sim.method}
+                                    </div>
+                                    <h3 className="text-[20px] font-bold tracking-tight leading-snug mb-2 text-slate-700">
+                                        {sim.title}
+                                    </h3>
+                                    <p className="text-[13.5px] text-slate-500 mb-4 line-clamp-3">{sim.description}</p>
+
+                                    <div className="flex flex-wrap gap-1.5 mb-5">
+                                        {sim.topics.map((t) => (
+                                            <span
+                                                key={t}
+                                                className="rounded-full border border-slate-200 px-2.5 py-0.5 font-plexMono text-[10px] uppercase tracking-[0.06em] text-slate-400"
+                                            >
+                                                {t}
+                                            </span>
+                                        ))}
+                                    </div>
+
+                                    <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                                        <span className="text-[13px] font-semibold text-slate-400">
+                                            Segera hadir
+                                        </span>
+                                    </div>
+                                </div>
+                            );
+                        }
+
+                        return (
+                            <Link
+                                key={sim.method}
+                                to={sim.path}
+                                className="group relative overflow-hidden bg-white rounded-xl border border-slate-200 p-6 hover:border-orange-300 hover:shadow-el-card-hover transition-all"
+                            >
+                                <div className="flex items-start justify-between mb-4">
+                                    <MethodIcon method={sim.method} size="md" />
+                                    <span className="rounded-full bg-emerald-100 text-emerald-700 px-2.5 py-1 font-plexMono text-[10.5px] font-bold uppercase tracking-[0.08em]">
+                                        Available
                                     </span>
-                                ))}
-                            </div>
+                                </div>
+                                <div className="font-plexMono text-[10.5px] uppercase tracking-[0.1em] text-slate-500 mb-1">
+                                    NDT / {sim.method}
+                                </div>
+                                <h3 className="text-[20px] font-bold tracking-tight leading-snug mb-2 group-hover:text-orange-700 transition-colors">
+                                    {sim.title}
+                                </h3>
+                                <p className="text-[13.5px] text-slate-600 mb-4 line-clamp-3">{sim.description}</p>
 
-                            <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                                <span className="text-[13px] font-semibold text-slate-700 group-hover:text-orange-700 transition-colors">
-                                    Launch simulation
-                                </span>
-                                <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-orange-600 group-hover:translate-x-0.5 transition-all" />
-                            </div>
-                        </Link>
-                    ))}
+                                <div className="flex flex-wrap gap-1.5 mb-5">
+                                    {sim.topics.map((t) => (
+                                        <span
+                                            key={t}
+                                            className="rounded-full border border-slate-200 px-2.5 py-0.5 font-plexMono text-[10px] uppercase tracking-[0.06em] text-slate-600"
+                                        >
+                                            {t}
+                                        </span>
+                                    ))}
+                                </div>
+
+                                <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                                    <span className="text-[13px] font-semibold text-slate-700 group-hover:text-orange-700 transition-colors">
+                                        Launch simulation
+                                    </span>
+                                    <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-orange-600 group-hover:translate-x-0.5 transition-all" />
+                                </div>
+                            </Link>
+                        );
+                    })}
                 </div>
             </section>
 
@@ -122,7 +184,7 @@ export default function SimulationsHub() {
                     Coming soon
                 </div>
                 <div className="text-[14px] text-slate-700">
-                    VT (Visual) · ET (Eddy Current) · PAUT · TOFD simulations
+                    PAUT (Phased Array) · TOFD simulations
                 </div>
             </div>
         </div>

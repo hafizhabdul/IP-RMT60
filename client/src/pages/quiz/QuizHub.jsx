@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle, Clock, BookOpen, ChevronRight } from 'lucide-react';
+import { ArrowRight, CheckCircle, Clock, BookOpen, ChevronRight, History } from 'lucide-react';
 import { getQuizFilters } from '../../services/quizService';
 import { MethodIcon } from '@/components/elearning/primitives';
+import { useAuth } from '@/hooks/useAuth';
+import QuizHistory from '@/components/quiz/QuizHistory';
 
 const METHOD_INFO = {
     UT: { name: 'Ultrasonic Testing', desc: 'Pulse-echo, defect characterization, calibration.' },
@@ -14,8 +16,10 @@ const METHOD_INFO = {
 };
 
 export default function QuizHub() {
+    const { isAuthenticated } = useAuth();
     const [filters, setFilters] = useState({ methods: [], levels: [] });
     const [loading, setLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState('practice');
 
     useEffect(() => {
         loadFilters();
@@ -47,16 +51,38 @@ export default function QuizHub() {
                     Quiz Practice
                 </h1>
                 <p className="text-[14px] text-slate-600 mt-1 max-w-[60ch]">
-                    Latihan soal bergaya ASNT untuk persiapan sertifikasi. Lulus 70% buat masuk grade pass.
+                    Latihan soal bergaya ASNT untuk persiapan sertifikasi. Lulus 75% untuk masuk grade pass.
                 </p>
             </div>
 
+            {/* Tabs */}
+            <div className="flex items-center gap-1 border-b border-slate-200" data-el-reveal="2">
+                <TabButton
+                    active={activeTab === 'practice'}
+                    onClick={() => setActiveTab('practice')}
+                    icon={<BookOpen className="h-3.5 w-3.5" />}
+                    label="Latihan"
+                />
+                <TabButton
+                    active={activeTab === 'history'}
+                    onClick={() => setActiveTab('history')}
+                    icon={<History className="h-3.5 w-3.5" />}
+                    label="Riwayat & Analisis"
+                />
+            </div>
+
+            {activeTab === 'history' ? (
+                <section data-el-reveal="3">
+                    <QuizHistory isAuthenticated={isAuthenticated} />
+                </section>
+            ) : (
+                <>
             {/* Stats strip */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4" data-el-reveal="2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4" data-el-reveal="3">
                 <StatCard
                     icon={<CheckCircle className="h-4 w-4" />}
                     title="Pass Threshold"
-                    desc="Minimum 70% untuk lolos mock exam"
+                    desc="Minimum 75% untuk lolos mock exam"
                 />
                 <StatCard
                     icon={<Clock className="h-4 w-4" />}
@@ -85,7 +111,26 @@ export default function QuizHub() {
                     ))}
                 </div>
             </section>
+                </>
+            )}
         </div>
+    );
+}
+
+function TabButton({ active, onClick, icon, label }) {
+    return (
+        <button
+            type="button"
+            onClick={onClick}
+            className={`inline-flex items-center gap-1.5 px-4 py-2.5 text-[13px] font-semibold tracking-tight border-b-2 -mb-px transition-colors ${
+                active
+                    ? 'border-orange-500 text-slate-900'
+                    : 'border-transparent text-slate-500 hover:text-slate-800'
+            }`}
+        >
+            {icon}
+            {label}
+        </button>
     );
 }
 

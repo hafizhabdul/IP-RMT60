@@ -1,0 +1,3160 @@
+{
+  "methods": [
+    {
+      "code": "UT-L1",
+      "method": "UT",
+      "questions": [
+        {
+          "question": "UT (Ultrasonic Testing) mendeteksi diskontinuitas terutama menggunakan:",
+          "options": [
+            "Gelombang suara frekuensi tinggi",
+            "Sinar-X / gamma",
+            "Medan magnet",
+            "Cairan penetran"
+          ],
+          "correctAnswer": 0,
+          "explanation": "UT memakai gelombang ultrasonik (suara frekuensi tinggi) yang dipantulkan oleh diskontinuitas. Sinar-X (RT), medan magnet (MT), dan penetran (PT) adalah metode lain.",
+          "category": "basics",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Rentang frekuensi yang umum dipakai pada UT industri adalah:",
+          "options": [
+            "1–10 kHz",
+            "100–500 GHz",
+            "0.5–25 MHz",
+            "50–100 Hz"
+          ],
+          "correctAnswer": 2,
+          "explanation": "UT umumnya bekerja pada 0.5–25 MHz. Frekuensi lebih tinggi memberi resolusi lebih baik tetapi penetrasi lebih rendah.",
+          "category": "physics",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Hubungan antara kecepatan (c), frekuensi (f), dan panjang gelombang (λ):",
+          "options": [
+            "c = f × λ",
+            "c = f / λ",
+            "c = f + λ",
+            "f = c × λ"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Kecepatan = frekuensi × panjang gelombang (c = fλ). Ini hubungan fundamental gelombang.",
+          "category": "physics",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Bila frekuensi dinaikkan (kecepatan tetap), panjang gelombang akan:",
+          "options": [
+            "Meningkat",
+            "Menurun",
+            "Tetap",
+            "Menjadi nol"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Karena λ = c/f, menaikkan f menurunkan λ (hubungan terbalik). Panjang gelombang lebih pendek = resolusi lebih baik.",
+          "category": "physics",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Kecepatan gelombang longitudinal pada baja kira-kira:",
+          "options": [
+            "1480 m/s",
+            "340 m/s",
+            "3230 m/s",
+            "5900 m/s"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Baja: longitudinal ≈5900 m/s, shear ≈3230 m/s. 1480 m/s adalah air, 340 m/s udara.",
+          "category": "materials",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Jenis gelombang yang membutuhkan medium padat (tidak merambat dalam cairan/gas) adalah:",
+          "options": [
+            "Shear (transversal)",
+            "Longitudinal",
+            "Gelombang suara di udara",
+            "Gelombang tekan"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Shear wave butuh modulus geser yang tidak dimiliki cairan/gas, sehingga hanya merambat di padatan. Longitudinal bisa merambat di semua medium.",
+          "category": "physics",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Kecepatan suara dalam air kira-kira:",
+          "options": [
+            "340 m/s",
+            "1480 m/s",
+            "5900 m/s",
+            "6320 m/s"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Air ≈1480 m/s (penting pada immersion testing). 340 m/s udara, 5900 m/s baja, 6320 m/s aluminum.",
+          "category": "materials",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Hukum Snell pada UT digunakan untuk:",
+          "options": [
+            "Mengukur kekerasan material",
+            "Mengukur suhu benda uji",
+            "Menghitung sudut refraksi pada interface",
+            "Menghitung densitas"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Hukum Snell menghubungkan sudut datang dan sudut bias saat gelombang melewati interface dua medium dengan kecepatan berbeda.",
+          "category": "physics",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Pada first critical angle (sudut kritis pertama):",
+          "options": [
+            "Semua gelombang dipantulkan total",
+            "Gelombang longitudinal terbias 90° dan hanya shear yang masuk material",
+            "Kecepatan suara berlipat ganda",
+            "Probe berhenti bekerja"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Di sudut kritis pertama, gelombang longitudinal terbias ke 90° (sepanjang permukaan) sehingga hanya gelombang shear yang merambat ke dalam material — dasar angle beam.",
+          "category": "physics",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Mode conversion paling mungkin terjadi pada:",
+          "options": [
+            "Material homogen tanpa batas",
+            "Ruang hampa",
+            "Normal beam pada permukaan datar",
+            "Interface dengan sudut datang miring"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Pada interface dengan sudut, energi dapat berpindah antara gelombang longitudinal dan shear (mode conversion) sesuai hukum Snell.",
+          "category": "physics",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Near field (zona Fresnel) adalah:",
+          "options": [
+            "Daerah dekat transducer di mana intensitas beam berfluktuasi",
+            "Daerah tepat di belakang cacat",
+            "Ujung terjauh benda uji",
+            "Lapisan couplant"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Near field adalah daerah dekat transducer di mana interferensi gelombang membuat intensitas berfluktuasi; sizing cacat sulit akurat di zona ini.",
+          "category": "physics",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Atenuasi suara paling besar terjadi pada material dengan:",
+          "options": [
+            "Permukaan halus",
+            "Densitas rendah",
+            "Butir (grain) kasar",
+            "Butir halus"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Material grain kasar (mis. cast iron, austenitic stainless) memiliki banyak batas butir yang menyebarkan (scatter) suara → atenuasi tinggi.",
+          "category": "physics",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Tampilan A-scan menunjukkan:",
+          "options": [
+            "Amplitudo vs waktu tempuh (time of flight)",
+            "Peta tampak atas",
+            "Penampang melintang",
+            "Citra 3D volumetrik"
+          ],
+          "correctAnswer": 0,
+          "explanation": "A-scan menampilkan amplitudo (sumbu vertikal) terhadap waktu tempuh (sumbu horizontal), memperlihatkan echo dari reflektor.",
+          "category": "equipment",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Fungsi couplant pada contact testing adalah:",
+          "options": [
+            "Mendinginkan transducer",
+            "Menghilangkan celah udara antara probe dan benda uji",
+            "Mewarnai permukaan",
+            "Menambah atenuasi"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Couplant (air, oli, gel) mengisi celah udara antara probe dan permukaan agar transmisi ultrasonik efisien (impedansi lebih cocok).",
+          "category": "techniques",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Elemen transducer UT menghasilkan ultrasound melalui efek:",
+          "options": [
+            "Fotolistrik",
+            "Termoelektrik",
+            "Efek Hall",
+            "Piezoelektrik"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Kristal piezoelektrik mengubah tegangan listrik menjadi getaran mekanik (dan sebaliknya), menghasilkan & menerima ultrasound.",
+          "category": "equipment",
+          "difficulty": "medium"
+        },
+        {
+          "question": "C-scan menampilkan:",
+          "options": [
+            "Peta tampak-atas (plan view) lokasi reflektor",
+            "Amplitudo vs waktu",
+            "Spektrum frekuensi",
+            "Hanya backwall echo"
+          ],
+          "correctAnswer": 0,
+          "explanation": "C-scan menyajikan peta tampak-atas posisi reflektor pada bidang scan, berguna untuk memetakan luasan cacat seperti laminasi.",
+          "category": "equipment",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Material backing/damping pada probe berfungsi:",
+          "options": [
+            "Menambah dead zone",
+            "Menaikkan tegangan tanpa batas",
+            "Meredam getaran kristal sehingga pulsa lebih pendek dan resolusi lebih baik",
+            "Mengubah kecepatan suara material"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Backing meredam ring-down kristal sehingga pulsa lebih pendek → resolusi aksial lebih baik (meski sedikit menurunkan sensitivitas).",
+          "category": "equipment",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Probe dual-element (TR) sering dipakai untuk:",
+          "options": [
+            "Inspeksi sangat dalam",
+            "Mengurangi dead zone pada material tipis / near-surface",
+            "Mengukur suhu",
+            "Menggantikan couplant"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Probe TR memisahkan elemen transmit dan receive sehingga dead zone berkurang — cocok untuk material tipis, pengukuran ketebalan, dan deteksi near-surface.",
+          "category": "equipment",
+          "difficulty": "medium"
+        },
+        {
+          "question": "PRF (Pulse Repetition Frequency) yang terlalu tinggi dapat menyebabkan:",
+          "options": [
+            "Wrap-around / ghost echo dari pulsa sebelumnya",
+            "Couplant cepat mengering",
+            "Kristal pecah",
+            "Kecepatan suara berubah"
+          ],
+          "correctAnswer": 0,
+          "explanation": "PRF terlalu tinggi membuat echo dari pulsa sebelumnya muncul pada siklus berikut (wrap-around/ghost), menyesatkan interpretasi.",
+          "category": "equipment",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Untuk inspeksi sambungan las (weld) baja, teknik utama yang umum dipakai:",
+          "options": [
+            "Immersion saja",
+            "Through-transmission saja",
+            "Straight beam saja",
+            "Angle beam (shear wave)"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Geometri las dan orientasi cacat (mis. lack of fusion, crack) menuntut angle beam shear wave agar beam mengenai cacat secara efektif.",
+          "category": "techniques",
+          "difficulty": "medium"
+        },
+        {
+          "question": "DAC singkatan dari:",
+          "options": [
+            "Distance Amplitude Correction",
+            "Digital Amplitude Control",
+            "Defect Analysis Chart",
+            "Dual Axis Calibration"
+          ],
+          "correctAnswer": 0,
+          "explanation": "DAC (Distance Amplitude Correction) mengompensasi penurunan amplitudo akibat beam spread dan atenuasi seiring bertambahnya jarak.",
+          "category": "calibration",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Blok kalibrasi yang umum untuk angle beam adalah:",
+          "options": [
+            "Pelat datar polos",
+            "Silinder kosong",
+            "Blok IIW",
+            "Koin referensi"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Blok IIW (International Institute of Welding) lazim untuk kalibrasi angle beam: cek exit point, refracted angle, dan range.",
+          "category": "calibration",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Tujuan utama reference/calibration block adalah:",
+          "options": [
+            "Menyimpan alat",
+            "Mengkalibrasi alat dan menetapkan sensitivitas",
+            "Membersihkan probe",
+            "Mengukur suhu"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Blok referensi dipakai untuk mengkalibrasi peralatan, memverifikasi kinerja, dan menetapkan level sensitivitas yang tepat.",
+          "category": "calibration",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Mengatur range (skala layar) pada straight beam biasanya memakai:",
+          "options": [
+            "Multiple back-wall echo dari tebal yang diketahui",
+            "Warna permukaan",
+            "Berat benda uji",
+            "Suhu ruangan"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Echo back-wall berulang dari ketebalan diketahui dipakai untuk mengatur range/velocity agar posisi reflektor terbaca akurat.",
+          "category": "calibration",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Exit point (titik keluar beam) probe angle beam diverifikasi pada blok IIW menggunakan:",
+          "options": [
+            "Lubang 1.5 mm",
+            "Skala desibel",
+            "Backing material",
+            "Radius lengkung 100 mm"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Puncak echo dari radius 100 mm blok IIW menandai posisi exit point pada wedge probe.",
+          "category": "calibration",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Refracted angle (sudut bias) aktual probe angle beam diverifikasi dengan:",
+          "options": [
+            "Menimbang probe",
+            "Menandai posisi puncak echo pada blok IIW lalu mencocokkan ke skala sudut",
+            "Mengukur frekuensi",
+            "Melihat warna couplant"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Posisi puncak echo dari reflektor referensi pada blok IIW dibandingkan dengan skala sudut untuk memastikan sudut bias sebenarnya (bisa berbeda dari nominal).",
+          "category": "calibration",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Kalibrasi alat UT sebaiknya dilakukan:",
+          "options": [
+            "Hanya sekali seumur alat",
+            "Hanya setelah alat rusak",
+            "Sebelum dan sesudah inspeksi serta pada interval yang ditentukan",
+            "Tidak perlu sama sekali"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Kalibrasi diverifikasi sebelum & sesudah pekerjaan (dan pada interval per prosedur) untuk memastikan hasil tetap valid; jika drift, inspeksi diulang.",
+          "category": "calibration",
+          "difficulty": "easy"
+        },
+        {
+          "question": "SDH (side-drilled hole) dan FBH (flat-bottom hole) digunakan sebagai:",
+          "options": [
+            "Reflektor referensi untuk menyusun kurva DAC / sensitivitas",
+            "Sumber radiasi",
+            "Jenis couplant",
+            "Sumber panas"
+          ],
+          "correctAnswer": 0,
+          "explanation": "SDH dan FBH adalah reflektor buatan dengan ukuran/kedalaman diketahui untuk menyusun DAC dan menetapkan level sensitivitas referensi.",
+          "category": "calibration",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Perbedaan pulse-echo dan through-transmission:",
+          "options": [
+            "Keduanya selalu memakai 2 probe",
+            "Through-transmission mengukur waktu pantul",
+            "Pulse-echo butuh 3 probe",
+            "Pulse-echo 1 probe (kirim+terima); through-transmission 2 probe berhadapan"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Pulse-echo memakai satu probe yang mengirim & menerima pantulan; through-transmission memakai dua probe berhadapan dan menilai energi yang menembus.",
+          "category": "techniques",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Pada immersion testing, media kopling utamanya adalah:",
+          "options": [
+            "Air",
+            "Gel kental",
+            "Udara",
+            "Gemuk (grease)"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Pada immersion, benda uji dan probe terendam air yang menjadi media kopling, memberi scanning konsisten tanpa kontak langsung.",
+          "category": "techniques",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Dead zone pada pulse-echo disebabkan oleh:",
+          "options": [
+            "Couplant berlebih",
+            "Lebar pulsa awal dan ring-down transducer",
+            "Material terlalu tipis",
+            "Frekuensi terlalu rendah"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Dead zone muncul akibat lebar pulsa awal dan ring-down transducer; echo near-surface tidak dapat dibedakan dari pulsa awal di zona ini.",
+          "category": "techniques",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Cacat laminasi (paralel terhadap permukaan) paling baik dideteksi dengan:",
+          "options": [
+            "Angle beam 70°",
+            "Surface wave",
+            "Straight beam (normal)",
+            "Hanya VT"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Laminasi paralel permukaan memantulkan beam normal dengan baik; straight beam memperlihatkan loss back-wall dan echo laminasi.",
+          "category": "techniques",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Surface preparation sebelum contact UT bertujuan:",
+          "options": [
+            "Menghilangkan karat/scale agar kopling baik",
+            "Menambah atenuasi",
+            "Mengubah kecepatan suara",
+            "Mewarnai cacat"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Permukaan kasar/berkarat menghalangi kopling dan menyebabkan loss sinyal; permukaan bersih & rata memastikan transmisi ultrasonik yang andal.",
+          "category": "techniques",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Reflektor yang memberikan echo paling kuat adalah:",
+          "options": [
+            "Void bulat kecil",
+            "Permukaan datar tegak lurus terhadap beam",
+            "Porositas tersebar",
+            "Inklusi miring"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Reflektor datar yang tegak lurus beam memantulkan suara langsung kembali ke probe sehingga menghasilkan echo terkuat.",
+          "category": "defects",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Lack of fusion pada sidewall las paling efektif dideteksi dengan:",
+          "options": [
+            "Angle beam dengan sudut sesuai geometri bevel",
+            "Straight beam dari atas",
+            "Surface (Rayleigh) wave",
+            "Hanya immersion C-scan"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Lack of fusion sidewall berorientasi sesuai bevel; angle beam dengan sudut yang tepat membuat beam mengenai bidang cacat secara tegak lurus.",
+          "category": "defects",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Porositas (banyak pori kecil) pada A-scan biasanya tampak sebagai:",
+          "options": [
+            "Satu echo besar tunggal",
+            "Tidak ada echo sama sekali",
+            "Banyak echo kecil tak beraturan disertai penurunan backwall sebagian",
+            "Backwall yang menguat"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Pori-pori kecil menyebarkan suara ke berbagai arah → banyak echo kecil acak dan backwall sebagian menurun karena scattering.",
+          "category": "defects",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Penurunan/ hilangnya backwall echo disertai munculnya indikasi baru menandakan:",
+          "options": [
+            "Couplant berlebih",
+            "Frekuensi salah",
+            "Probe rusak",
+            "Adanya reflektor/diskontinuitas yang menghalangi atau menyebarkan beam"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Reflektor internal memantulkan/menyebarkan sebagian energi sehingga backwall melemah sementara muncul echo cacat — indikasi klasik adanya diskontinuitas.",
+          "category": "interpretation",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Untuk membedakan sinyal geometri (mis. fillet, undercut) dari sinyal cacat, inspector sebaiknya:",
+          "options": [
+            "Scan dari beberapa arah dan korelasikan dengan geometri benda uji",
+            "Menaikkan gain hingga maksimum",
+            "Mengabaikan semua sinyal kecil",
+            "Langsung mengganti probe"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Sinyal geometri berperilaku konsisten dengan bentuk benda; scanning multi-arah dan korelasi geometri membantu memastikan apakah indikasi nyata atau pantulan geometri.",
+          "category": "interpretation",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Resolusi aksial (memisahkan dua reflektor berdekatan dalam arah kedalaman) membaik dengan:",
+          "options": [
+            "Pulsa panjang",
+            "Pulsa pendek / frekuensi lebih tinggi",
+            "Frekuensi sangat rendah",
+            "Couplant lebih tebal"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Pulsa pendek (sering dari frekuensi lebih tinggi dan damping baik) meningkatkan resolusi aksial sehingga dua reflektor berdekatan dapat dibedakan.",
+          "category": "physics",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Wedge (sepatu) pada probe angle beam berfungsi:",
+          "options": [
+            "Mendinginkan probe",
+            "Sebagai sumber suara utama",
+            "Membiaskan beam ke sudut tertentu melalui mode conversion",
+            "Menyimpan data hasil inspeksi"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Wedge memiringkan beam sehingga terjadi refraksi/mode conversion menghasilkan gelombang shear pada sudut bias tertentu (mis. 45°/60°/70°) di dalam material.",
+          "category": "equipment",
+          "difficulty": "medium"
+        }
+      ]
+    },
+    {
+      "code": "MT-L1",
+      "method": "MT",
+      "questions": [
+        {
+          "question": "Magnetic Particle Testing (MT) hanya dapat diterapkan pada jenis material apa?",
+          "options": [
+            "Semua logam termasuk aluminum dan copper",
+            "Material ferromagnetik seperti baja karbon dan besi cor",
+            "Material non-logam seperti keramik dan plastik",
+            "Stainless steel austenitic"
+          ],
+          "correctAnswer": 1,
+          "explanation": "MT mengandalkan kemampuan material mengonsentrasikan flux magnet, sehingga hanya material ferromagnetik (baja karbon, baja paduan rendah, besi cor) yang bisa diinspeksi. Aluminum, copper, dan austenitic stainless steel memiliki permeabilitas relatif ~1 sehingga tidak cocok.",
+          "category": "Prinsip MT",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Seberapa kecil lebar crack permukaan yang masih mampu dideteksi oleh MT yang sensitif?",
+          "options": [
+            "Sekitar 1 mikron",
+            "Minimum 1 mm",
+            "Minimum 5 mm",
+            "Hanya crack yang terlihat mata telanjang"
+          ],
+          "correctAnswer": 0,
+          "explanation": "MT (khususnya wet fluorescent) sangat sensitif terhadap retak halus permukaan dan mampu mendeteksi crack selebar sekitar 1 mikron — jauh lebih halus daripada yang bisa dilihat mata telanjang. Inilah keunggulan utama MT untuk material ferromagnetik.",
+          "category": "Prinsip MT",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Jenis cacat apa yang paling utama dapat dideteksi oleh MT?",
+          "options": [
+            "Cacat di tengah penampang material yang tebal",
+            "Cacat permukaan dan near-surface",
+            "Hanya cacat internal volumetric",
+            "Penipisan dinding akibat korosi internal"
+          ],
+          "correctAnswer": 1,
+          "explanation": "MT efektif untuk cacat permukaan (surface) dan near-surface hingga sekitar 6 mm. Cacat yang lebih dalam membutuhkan metode lain seperti UT atau RT karena flux leakage dari cacat dalam tidak cukup kuat mencapai permukaan.",
+          "category": "Prinsip MT",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Berapa konversi antara Tesla (T) dan Gauss (G) untuk satuan medan magnet?",
+          "options": [
+            "1 T = 100 G",
+            "1 T = 1000 G",
+            "1 T = 10000 G",
+            "1 T = 1000000 G"
+          ],
+          "correctAnswer": 2,
+          "explanation": "1 Tesla setara dengan 10000 Gauss. Konversi ini penting karena gaussmeter lapangan umumnya membaca dalam Gauss sementara spesifikasi teknis kadang dinyatakan dalam Tesla.",
+          "category": "Fisika MT",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Bagaimana mekanisme terbentuknya flux leakage pada cacat permukaan?",
+          "options": [
+            "Partikel besi memanaskan material di lokasi cacat",
+            "Saat material dimagnetisasi, diskontinuitas memaksa flux keluar dari permukaan di lokasi cacat",
+            "Cacat menyerap medan magnet sepenuhnya",
+            "Arus listrik mengalir langsung melalui cacat"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Ketika material ferromagnetik dimagnetisasi dan terdapat diskontinuitas, garis flux tidak bisa melewati celah cacat sehingga 'bocor' keluar dari permukaan. Kebocoran flux inilah yang menarik partikel besi membentuk indikasi.",
+          "category": "Fisika MT",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Orientasi cacat manakah yang memberikan deteksi flux leakage paling kuat?",
+          "options": [
+            "Cacat paralel terhadap flux line",
+            "Cacat tegak lurus terhadap flux line",
+            "Cacat membentuk sudut 10° terhadap flux line",
+            "Orientasi cacat tidak berpengaruh"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Cacat yang tegak lurus terhadap flux line memberikan flux leakage maksimum dan paling kuat terdeteksi. Cacat yang paralel terhadap flux praktis tidak terdeteksi karena flux mengalir mengelilinginya tanpa bocor keluar.",
+          "category": "Fisika MT",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Pada curve hysteresis, apa yang dimaksud dengan residual magnetism (Br)?",
+          "options": [
+            "Medan magnet maksimum yang bisa dicapai material",
+            "Sisa magnetisasi (B) saat gaya magnetisasi (H) dikembalikan ke nol",
+            "Gaya yang dibutuhkan untuk memagnetisasi material",
+            "Suhu di mana material kehilangan sifat magnet"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Residual magnetism (Br) adalah sisa kerapatan flux (B) yang tertinggal di material saat gaya magnetisasi (H) dikembalikan ke nol. Pada curve hysteresis, B tidak kembali ke nol meskipun H sudah nol.",
+          "category": "Fisika MT",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Apa yang dimaksud dengan coercive force pada material ferromagnetik?",
+          "options": [
+            "Gaya H yang dibutuhkan untuk mengurangi B kembali ke nol",
+            "Medan magnet saturasi material",
+            "Kemampuan material menarik partikel",
+            "Suhu Curie material"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Coercive force adalah gaya magnetisasi (H) yang dibutuhkan untuk mengurangi kerapatan flux (B) kembali ke nol. Nilai ini menjadi kunci dalam proses demagnetisasi karena menentukan seberapa sulit residual magnetism dihilangkan.",
+          "category": "Fisika MT",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Material dengan high retentivity paling cocok diinspeksi dengan teknik apa?",
+          "options": [
+            "Continuous technique dengan arus selalu ON",
+            "Residual technique",
+            "Hanya dengan dry powder",
+            "Hanya pada suhu tinggi"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Material dengan high retentivity menyimpan residual magnetism cukup kuat sehingga dapat memakai residual technique — partikel diaplikasikan setelah arus dimatikan. Material low retentivity membutuhkan continuous technique dengan arus ON saat inspeksi.",
+          "category": "Fisika MT",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Apa keunggulan utama yoke sebagai alat magnetisasi di lapangan?",
+          "options": [
+            "Menghasilkan circular field yang sangat kuat",
+            "Portable dan praktis untuk inspeksi spot pada las",
+            "Dapat menginspeksi cacat sangat dalam",
+            "Tidak memerlukan listrik sama sekali"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Yoke berbentuk U sangat populer di lapangan karena portable dan praktis untuk inspeksi spot pada las dan komponen kecil-medium. Yoke menghasilkan longitudinal field di antara kedua kakinya, bukan circular field.",
+          "category": "Magnetisasi",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Berapa lifting power minimum untuk AC yoke yang harus diverifikasi sebelum shift?",
+          "options": [
+            "18 kg (40 lb)",
+            "4.5 kg (10 lb)",
+            "10 kg (22 lb)",
+            "2 kg (4.4 lb)"
+          ],
+          "correctAnswer": 1,
+          "explanation": "AC yoke harus memiliki lifting power minimum 4.5 kg (10 lb), diverifikasi sebelum setiap shift. DC yoke memiliki syarat lebih tinggi yaitu minimum 18 kg (40 lb).",
+          "category": "Magnetisasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Berapa lifting power minimum untuk DC yoke?",
+          "options": [
+            "4.5 kg (10 lb)",
+            "18 kg (40 lb)",
+            "9 kg (20 lb)",
+            "45 kg (100 lb)"
+          ],
+          "correctAnswer": 1,
+          "explanation": "DC yoke harus memiliki lifting power minimum 18 kg (40 lb), lebih tinggi dari AC yoke (4.5 kg). Verifikasi lifting power dilakukan sebelum setiap shift.",
+          "category": "Magnetisasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Apa risiko utama penggunaan prod dalam magnetisasi MT?",
+          "options": [
+            "Demagnetisasi yang terlalu cepat",
+            "Arc strike — bekas terbakar akibat electrical arc",
+            "Field yang terlalu lemah",
+            "Korosi pada permukaan"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Risiko utama prod adalah arc strike, yaitu bekas terbakar pada material akibat electrical arc. Untuk mencegahnya, gunakan tip bersih, arus tidak terlalu tinggi, dan tekanan kontak yang baik. Karena risiko ini, prod tidak boleh dipakai untuk material aerospace.",
+          "category": "Magnetisasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Menurut 5-step rule pada coil, sampai jarak berapa komponen efektif diinspeksi dari pusat coil?",
+          "options": [
+            "5× diameter coil",
+            "5× radius coil",
+            "5× panjang komponen",
+            "5 cm dari coil"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Menurut 5-step rule, komponen efektif diinspeksi sampai jarak 5× radius coil dari pusat. Di luar jarak tersebut, field longitudinal menjadi terlalu lemah untuk membentuk indikasi yang andal.",
+          "category": "Magnetisasi",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Mengapa inspeksi MT selalu harus dilakukan dalam DUA arah magnetisasi yang saling tegak lurus?",
+          "options": [
+            "Untuk mempercepat inspeksi",
+            "Agar setiap orientasi cacat dapat tertangkap karena cacat hanya terdeteksi bila tegak lurus terhadap flux",
+            "Untuk menghemat partikel",
+            "Agar residual magnetism lebih kecil"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Cacat hanya terdeteksi dengan baik bila orientasinya tegak lurus terhadap flux line. Karena cacat bisa berorientasi ke segala arah, inspeksi dilakukan dalam dua arah magnetisasi yang saling tegak lurus untuk menangkap semua orientasi.",
+          "category": "Magnetisasi",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Circular field (dihasilkan head shot atau prod) paling efektif mendeteksi cacat dengan orientasi apa?",
+          "options": [
+            "Cacat transversal (melingkar terhadap sumbu)",
+            "Cacat longitudinal (sepanjang sumbu komponen)",
+            "Cacat pada sudut 0° terhadap sumbu saja",
+            "Cacat internal volumetric"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Circular field mengalir melingkar di sekitar komponen sehingga mendeteksi cacat longitudinal (sepanjang sumbu). Sebaliknya, longitudinal field (yoke/coil) mendeteksi cacat transversal. Inilah dasar mengapa kedua arah diperlukan.",
+          "category": "Magnetisasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Pada suhu tinggi hingga sekitar 315°C, teknik partikel mana yang paling cocok digunakan?",
+          "options": [
+            "Wet fluorescent",
+            "Wet visible",
+            "Dry powder",
+            "Tidak ada teknik MT yang cocok"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Dry powder cocok untuk suhu tinggi (sampai sekitar 315°C dengan partikel khusus) karena tidak menggunakan carrier cair yang akan menguap. Dry technique juga cocok untuk permukaan kasar dan inspeksi lapangan.",
+          "category": "Particle & Carrier",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Teknik partikel mana yang memberikan sensitivitas tertinggi untuk crack halus?",
+          "options": [
+            "Dry visible",
+            "Wet fluorescent",
+            "Dry powder pada suhu tinggi",
+            "Prod dengan dry powder"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Wet fluorescent adalah teknik partikel paling sensitif, mampu mendeteksi crack selebar di bawah 1 mikron. Partikel berfluoresensi di bawah UV-A memberikan kontras tinggi, tetapi membutuhkan booth gelap.",
+          "category": "Particle & Carrier",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Berapa intensitas UV-A minimum pada permukaan inspeksi untuk MT fluorescent?",
+          "options": [
+            "100 µW/cm²",
+            "500 µW/cm²",
+            "1000 µW/cm²",
+            "5000 µW/cm²"
+          ],
+          "correctAnswer": 2,
+          "explanation": "MT fluorescent membutuhkan UV-A minimum 1000 µW/cm² pada permukaan inspeksi, diverifikasi dengan UV meter. Selain itu, ambient white light harus ≤20 lux dalam booth gelap.",
+          "category": "Particle & Carrier",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Berapa intensitas cahaya putih minimum untuk inspeksi dengan partikel visible?",
+          "options": [
+            "100 lux",
+            "500 lux",
+            "1000 lux",
+            "2000 lux"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Inspeksi dengan partikel visible (warna kontras seperti red, black, gray) membutuhkan cahaya putih minimum 1000 lux pada permukaan inspeksi, diverifikasi dengan lux meter.",
+          "category": "Particle & Carrier",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Carrier oil untuk wet MT harus memiliki flash point berapa untuk keamanan?",
+          "options": [
+            "Lebih dari 38°C",
+            "Lebih dari 60°C",
+            "Lebih dari 93°C",
+            "Lebih dari 200°C"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Carrier oil (petroleum distillate) harus memiliki flash point lebih dari 93°C untuk mengurangi risiko kebakaran. Oil carrier tidak korosif dan lebih sensitif, tetapi lebih mahal dan memiliki risiko flammable dibanding water carrier.",
+          "category": "Particle & Carrier",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Pada settling test, berapa volume sediment yang benar untuk wet fluorescent (per 100 mL bath)?",
+          "options": [
+            "1.2-2.4 mL",
+            "0.1-0.4 mL",
+            "5-10 mL",
+            "0.5-1.0 mL"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Untuk wet fluorescent, volume sediment pada settling test adalah 0.1-0.4 mL per 100 mL bath. Untuk visible lebih tinggi yaitu 1.2-2.4 mL. Test dilakukan dengan mendiamkan bath dalam centrifuge tube selama 30 menit.",
+          "category": "Particle & Carrier",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Mengapa settling test perlu dilakukan secara rutin pada wet bath MT?",
+          "options": [
+            "Untuk mengukur suhu carrier",
+            "Untuk memverifikasi konsentrasi partikel sesuai spec",
+            "Untuk membersihkan tangki",
+            "Untuk menghitung lifting power"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Settling test memverifikasi konsentrasi partikel dalam carrier sesuai spec. Jika terlalu encer sensitivitas turun; jika terlalu pekat dapat menimbulkan false indication. Dilakukan awal shift atau setiap 8 jam dan dicatat di logbook.",
+          "category": "Particle & Carrier",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Kontaminan apa saja yang harus dihilangkan dari permukaan sebelum inspeksi MT?",
+          "options": [
+            "Hanya cat saja",
+            "Oil, grease, paint tebal, rust, scale, dan dirt",
+            "Hanya partikel besi sisa",
+            "Tidak perlu pembersihan apa pun"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Oil, grease, paint tebal (>50 µm), rust, scale, dan dirt harus dihilangkan karena menutupi atau menahan partikel sehingga indikasi tidak terbentuk dengan baik. Pembersihan dapat dilakukan dengan solvent wipe, vapor degrease, atau wire brush.",
+          "category": "Surface & Lighting",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Menurut ASME V Article 7, ketebalan coating maksimum yang umumnya diizinkan untuk MT (jika sudah didemonstrasikan)?",
+          "options": [
+            "10 µm (0.4 mil)",
+            "50 µm (2 mil)",
+            "200 µm (8 mil)",
+            "500 µm (20 mil)"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Per ASME V Article 7, coating hingga 50 µm (2 mil) umumnya diizinkan asalkan telah didemonstrasikan tidak menutupi indikasi. Demonstrasi dilakukan dengan test pada specimen identik dengan dan tanpa coating.",
+          "category": "Surface & Lighting",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Berapa ambient white light maksimum yang diizinkan dalam booth fluorescent MT?",
+          "options": [
+            "≤ 20 lux",
+            "≤ 100 lux",
+            "≤ 500 lux",
+            "≤ 1000 lux"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Dalam booth fluorescent, ambient white light harus ≤20 lux agar fluoresensi partikel terlihat jelas. Selain itu UV-A harus ≥1000 µW/cm² pada permukaan inspeksi.",
+          "category": "Surface & Lighting",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Berapa lama inspector harus melakukan adaptasi mata sebelum inspeksi fluorescent di booth gelap?",
+          "options": [
+            "10 detik",
+            "1 menit",
+            "15 menit",
+            "30 menit"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Inspector wajib melakukan adaptasi mata selama 1 menit di booth gelap sebelum inspeksi fluorescent agar mata dapat melihat indikasi dengan baik. UV blocking glasses juga digunakan untuk keselamatan.",
+          "category": "Surface & Lighting",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Bagaimana cara membedakan indikasi linear dari round?",
+          "options": [
+            "Linear berwarna merah, round berwarna hitam",
+            "Linear: panjang ≥ 3× lebar; round: panjang < 3× lebar",
+            "Linear selalu lebih besar dari round",
+            "Linear hanya di las, round hanya di casting"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Indikasi diklasifikasikan linear jika panjangnya ≥ 3× lebar, dan round jika panjangnya < 3× lebar. Klasifikasi ini penting karena acceptance criteria berbeda untuk linear dan round.",
+          "category": "Indikasi",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Karakteristik indikasi apa yang khas untuk crack?",
+          "options": [
+            "Round, scattered, dan multiple kecil",
+            "Linear, sharp, sering branched dengan akumulasi partikel padat",
+            "Selalu berbentuk lingkaran sempurna",
+            "Indikasi yang loose dan mudah hilang"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Crack memberikan indikasi linear, sharp (tajam), sering branched (bercabang), dengan akumulasi partikel yang padat. Sebaliknya, porosity memberikan indikasi round dan scattered.",
+          "category": "Indikasi",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Apa yang dimaksud dengan 'magnetic writing' sebagai false indication?",
+          "options": [
+            "Tulisan yang dibuat inspector pada laporan",
+            "Partikel terkumpul di lokasi yang pernah disentuh material magnetik lain",
+            "Cacat asli berbentuk huruf",
+            "Indikasi porosity yang berderet"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Magnetic writing adalah false indication di mana partikel terkumpul di lokasi yang pernah bersentuhan dengan material magnetik lain (misalnya yoke atau palu). Indikasi ini hilang setelah demag dan re-test, sedangkan indikasi cacat asli akan muncul lagi.",
+          "category": "Indikasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Bagaimana cara memverifikasi apakah suatu indikasi adalah cacat asli?",
+          "options": [
+            "Mengabaikannya jika kecil",
+            "Bersihkan permukaan, re-magnetize, dan re-apply particles — indikasi asli muncul lagi di lokasi yang sama",
+            "Menambah arus magnetisasi hingga indikasi hilang",
+            "Hanya berdasarkan warna partikel"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Verifikasi dilakukan dengan membersihkan permukaan, re-magnetize, dan re-apply particles. Indikasi cacat asli akan muncul kembali di lokasi yang sama, sedangkan false indication seperti magnetic writing tidak. Konfirmasi tambahan dapat memakai PT atau magnifier 10×.",
+          "category": "Indikasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Lack of fusion pada inspeksi las MT umumnya memberikan indikasi seperti apa dan di mana?",
+          "options": [
+            "Round dan scattered di tengah pelat",
+            "Linear di area las, lokasi tipikal weld toe atau sidewall",
+            "Hanya terlihat sebagai porosity",
+            "Tidak pernah terdeteksi oleh MT"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Lack of fusion memberikan indikasi linear di area las, dengan lokasi tipikal di weld toe atau sidewall. Karena bersifat linear dan terbuka ke permukaan atau near-surface, indikasi ini terdeteksi oleh MT.",
+          "category": "Indikasi",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Mengapa residual magnetism perlu dihilangkan (demagnetisasi) setelah inspeksi MT?",
+          "options": [
+            "Agar partikel lebih mudah dibersihkan",
+            "Karena mengganggu welding, menarik chip ke moving parts, dan menimbulkan interferensi instrumen",
+            "Agar komponen lebih ringan",
+            "Untuk menambah kekuatan material"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Residual magnetism perlu dihilangkan karena dapat mengganggu welding (arc deflection), menarik chip metal ke moving parts (bearing, gear), dan menyebabkan interferensi dengan instrumen di sekitar. Demag bukan untuk mempermudah pembersihan partikel.",
+          "category": "Demagnetisasi",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Menurut ASTM E709, berapa batas residual magnetism untuk komponen umum?",
+          "options": [
+            "≤ 3 G",
+            "≤ 20 G",
+            "≤ 50 G",
+            "≤ 100 G"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Per ASTM E709, residual magnetism untuk komponen umum dibatasi ≤ 3 G, sedangkan komponen aerospace lebih ketat yaitu ≤ 2 G. Verifikasi dilakukan dengan field indicator (gaussmeter) pada beberapa titik komponen.",
+          "category": "Demagnetisasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Teknik demagnetisasi apa yang paling efektif untuk material thin dan medium?",
+          "options": [
+            "Heating above Curie temperature",
+            "AC decay — amplitudo AC field diturunkan gradual ke nol",
+            "Menambah arus DC maksimum",
+            "Mengubah orientasi komponen"
+          ],
+          "correctAnswer": 1,
+          "explanation": "AC decay, di mana komponen ditaruh dalam AC field yang amplitudonya diturunkan gradual ke nol, paling efektif untuk material thin dan medium. Untuk material tebal yang AC tidak penetrasi dengan baik, digunakan reverse DC.",
+          "category": "Demagnetisasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Teknik demag mana yang paling cocok untuk komponen panjang?",
+          "options": [
+            "Walking through — komponen ditarik perlahan keluar dari coil AC",
+            "Heating above Curie temperature",
+            "Single shot DC",
+            "Hanya mengandalkan AC decay tanpa pergerakan"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Walking through, yaitu komponen dilewatkan melalui coil AC sambil ditarik perlahan menjauh, cocok untuk komponen panjang. Heating above Curie (~770°C untuk baja) bersifat ekstrim dan jarang dipakai.",
+          "category": "Demagnetisasi",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Code utama yang mengatur MT pada pressure equipment adalah?",
+          "options": [
+            "ASME V Article 6",
+            "ASME V Article 7",
+            "ASME V Article 2",
+            "AWS D1.1 saja"
+          ],
+          "correctAnswer": 1,
+          "explanation": "ASME V Article 7 adalah code utama untuk MT pada pressure equipment, mengatur magnetisasi, lighting, particles, dan acceptance criteria. ASME V Article 6 untuk PT dan Article 2 untuk RT.",
+          "category": "Code & Procedures",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Pada inspeksi yoke continuous technique, kapan partikel diaplikasikan?",
+          "options": [
+            "Setelah arus magnetisasi dimatikan",
+            "Selama magnetisasi berlangsung (arus ON)",
+            "Sebelum pembersihan permukaan",
+            "Setelah demagnetisasi"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Pada continuous technique, partikel diaplikasikan selama magnetisasi berlangsung (arus ON). Ini berbeda dengan residual technique di mana partikel diaplikasikan setelah arus dimatikan, yang hanya cocok untuk material high-retentivity.",
+          "category": "Field Practice",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Apa urutan langkah yang benar saat inspeksi weld dua arah dengan yoke?",
+          "options": [
+            "Magnetize → demag → clean → inspect",
+            "Clean → magnetize arah 1 → apply particles → inspect → demag → magnetize arah 2 → ulangi",
+            "Apply particles → magnetize → clean → inspect",
+            "Inspect → clean → magnetize → demag"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Urutan yang benar: clean permukaan, magnetize arah pertama, apply particles, inspect dan tandai indikasi, demag, lalu magnetize arah kedua (tegak lurus) dan ulangi. Demag di antara dua arah mencegah magnetic writing.",
+          "category": "Field Practice",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Informasi temuan apa yang wajib dicantumkan dalam MT report?",
+          "options": [
+            "Hanya nama inspector",
+            "Lokasi indikasi, tipe (linear/round), panjang, dan klasifikasi accept/reject",
+            "Hanya jumlah total indikasi",
+            "Hanya foto tanpa keterangan"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Bagian findings dalam MT report harus mencakup lokasi indikasi, tipe (linear/round), panjang, dan klasifikasi (accept/reject) sesuai applicable code. Report juga memuat header, equipment & kalibrasi, detail magnetisasi, dan sign-off inspector.",
+          "category": "Reporting",
+          "difficulty": "easy"
+        }
+      ]
+    },
+    {
+      "code": "PT-L1",
+      "method": "PT",
+      "questions": [
+        {
+          "question": "Apa prinsip fisika utama yang memungkinkan penetran masuk ke dalam celah retak permukaan pada metode Liquid Penetrant Testing (PT)?",
+          "options": [
+            "Induksi elektromagnetik",
+            "Aksi kapiler (capillary action)",
+            "Kebocoran fluks magnet",
+            "Atenuasi radiasi"
+          ],
+          "correctAnswer": 1,
+          "explanation": "PT bekerja berdasarkan aksi kapiler, di mana cairan ber-viskositas rendah dan wetting baik meresap ke celah halus. Induksi elektromagnetik (ET), kebocoran fluks magnet (MT), dan atenuasi radiasi (RT) adalah prinsip metode NDT lain.",
+          "category": "physics",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Jenis cacat apa yang dapat dideteksi oleh metode PT?",
+          "options": [
+            "Cacat internal di tengah material",
+            "Hanya cacat pada material ferromagnetik",
+            "Variasi ketebalan dinding pipa",
+            "Cacat yang terbuka ke permukaan (surface-breaking)"
+          ],
+          "correctAnswer": 3,
+          "explanation": "PT hanya mendeteksi cacat yang terbuka ke permukaan karena penetran harus dapat masuk ke celah dari permukaan. Cacat internal butuh RT/UT, dan PT tidak terbatas pada material ferromagnetik (itu MT).",
+          "category": "principles",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Manakah keunggulan utama metode PT untuk inspeksi lapangan?",
+          "options": [
+            "Murah, cepat, dan portable",
+            "Dapat mengukur kedalaman cacat secara presisi",
+            "Tidak memerlukan persiapan permukaan",
+            "Dapat mendeteksi cacat internal"
+          ],
+          "correctAnswer": 0,
+          "explanation": "PT unggul karena murah, cepat, dan portable sehingga cocok untuk inspeksi lapangan dan pre-weld. PT tidak mengukur kedalaman cacat, tetap butuh permukaan bersih, dan tidak mendeteksi cacat internal.",
+          "category": "principles",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Mengapa PT dapat dipakai pada material non-ferromagnetik seperti aluminum, stainless steel austenitic, dan keramik, sedangkan MT tidak bisa?",
+          "options": [
+            "PT memakai partikel magnetik yang lebih halus",
+            "PT memakai radiasi yang menembus semua material",
+            "PT tidak bergantung pada sifat magnetik material, hanya pada permukaan non-porous",
+            "PT hanya bekerja pada material konduktif"
+          ],
+          "correctAnswer": 2,
+          "explanation": "PT bekerja lewat aksi kapiler pada permukaan non-porous apa pun tanpa memerlukan sifat ferromagnetik. MT membutuhkan material yang dapat dimagnetisasi sehingga tidak cocok untuk aluminum atau austenitic stainless.",
+          "category": "principles",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Apa perbedaan utama antara Penetrant Type I dan Type II?",
+          "options": [
+            "Type I water washable, Type II solvent removable",
+            "Type I untuk logam, Type II untuk plastik",
+            "Type I berwarna merah, Type II hijau",
+            "Type I fluorescent (dilihat di UV-A), Type II visible (dilihat di cahaya putih)"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Type I adalah penetran fluorescent yang berfluoresensi di bawah UV-A dengan sensitivitas tertinggi, sedangkan Type II adalah penetran visible (umumnya merah) yang dilihat di cahaya putih. Pembagian removal (Method A/B/C/D) adalah klasifikasi terpisah dari Type.",
+          "category": "equipment",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Untuk inspeksi komponen kritis seperti turbine blade aerospace dengan crack sangat halus, jenis penetran apa yang paling sesuai?",
+          "options": [
+            "Type II visible karena lebih praktis",
+            "Type I fluorescent karena sensitivitas tertinggi",
+            "Penetran apa pun memberi hasil sama",
+            "Type II karena tidak butuh booth gelap"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Type I fluorescent memiliki sensitivitas tertinggi sehingga paling cocok untuk crack halus dan komponen kritis seperti aerospace dan nuclear. Type II memiliki sensitivitas lebih rendah dan dipakai untuk inspeksi cepat lapangan.",
+          "category": "equipment",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Berapa penetrant dwell time minimum yang ditetapkan ASME V Article 6 untuk crack normal?",
+          "options": [
+            "1 menit",
+            "5 menit",
+            "30 menit",
+            "60 menit"
+          ],
+          "correctAnswer": 1,
+          "explanation": "ASME V Article 6 menetapkan minimum 5 menit untuk crack normal, sedangkan ASTM E165 menetapkan 10 menit sebagai standar industri umum. Crack sangat halus dapat membutuhkan dwell sampai 30 menit.",
+          "category": "technique",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Mengapa langkah excess removal disebut langkah paling kritis dalam PT?",
+          "options": [
+            "Karena memakan waktu paling lama",
+            "Karena jika salah dapat menimbulkan false indication atau malah mengeluarkan penetran dari crack",
+            "Karena memerlukan alat paling mahal",
+            "Karena harus dilakukan dua kali"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Excess removal yang berlebihan dapat menarik penetran keluar dari crack (indikasi hilang), sedangkan yang kurang menyebabkan background dan false indication. Inilah langkah yang paling sering membuat trainee Level I gagal.",
+          "category": "technique",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Manakah pernyataan yang benar tentang aturan dasar excess removal?",
+          "options": [
+            "Hapus penetran dari permukaan, BUKAN dari celah cacat",
+            "Hapus penetran dari celah cacat sebanyak mungkin",
+            "Wipe sekuat dan seagresif mungkin",
+            "Selalu gunakan air panas untuk mempercepat"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Aturan dasarnya adalah menghapus penetran dari permukaan saja dan tidak dari celah cacat. Wipe harus seminimal dan selembut mungkin agar penetran di dalam crack tetap utuh untuk membentuk indikasi.",
+          "category": "technique",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Berapa intensitas cahaya putih minimum yang disyaratkan pada permukaan untuk inspeksi PT visible (Type II)?",
+          "options": [
+            "100 lux",
+            "500 lux",
+            "2000 lux",
+            "1000 lux"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Inspeksi visible PT mensyaratkan minimum 1000 lux pada permukaan, diverifikasi dengan lux meter setiap awal shift. Intensitas yang kurang dapat menyebabkan indikasi terlewat.",
+          "category": "calibration",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Bagaimana sebuah indikasi diklasifikasikan sebagai LINEAR?",
+          "options": [
+            "Panjang kurang dari 3x lebar",
+            "Panjang sama dengan lebar",
+            "Berbentuk lingkaran sempurna",
+            "Panjang lebih besar atau sama dengan 3x lebar"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Indikasi linear memiliki panjang >= 3x lebarnya dan biasanya menandakan crack, lack of fusion, atau lap. Indikasi round (panjang <3x lebar) umumnya menandakan porosity yang relatif kurang kritis.",
+          "category": "interpretation",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Indikasi berbentuk bulat dengan panjang kurang dari 3x lebar (round indication) paling mungkin disebabkan oleh apa?",
+          "options": [
+            "Porosity atau gas pocket",
+            "Crack",
+            "Lack of fusion",
+            "Lap memanjang"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Round indication (panjang <3x lebar) umumnya menunjukkan porosity, gas pocket, atau foreign material yang umumnya kurang severe dibanding indikasi linear. Crack, lack of fusion, dan lap menghasilkan indikasi linear.",
+          "category": "interpretation",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Mengapa batch number setiap chemical (penetran, developer, emulsifier) harus dicatat di logbook setiap inspeksi?",
+          "options": [
+            "Untuk traceability dan dokumentasi mutu inspeksi",
+            "Untuk menghitung pajak",
+            "Karena chemical akan kadaluarsa esok hari",
+            "Agar bisa dikembalikan ke supplier"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Pencatatan batch number memberikan traceability dan bukti dokumentasi mutu, sehingga jika ada masalah hasil dapat ditelusuri ke material yang dipakai. Ini bagian dari kontrol kualitas inspeksi.",
+          "category": "standards",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Pada akhir proses PT, mengapa dilakukan post-cleaning?",
+          "options": [
+            "Untuk membentuk indikasi baru",
+            "Untuk menambah sensitivitas",
+            "Untuk menghilangkan sisa penetran/developer yang dapat menyebabkan korosi atau mengganggu proses selanjutnya",
+            "Untuk memverifikasi crack"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Post-cleaning menghilangkan sisa penetran dan developer yang dapat menyebabkan korosi atau mengganggu proses berikutnya seperti pengelasan atau pengecatan. Ini langkah penutup standar dalam sequence PT.",
+          "category": "technique",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Berapa jarak pandang (viewing distance) yang dianjurkan dari permukaan saat melakukan inspeksi PT?",
+          "options": [
+            "5-10 cm",
+            "1-2 meter",
+            "30-60 cm",
+            "Lebih dari 2 meter"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Jarak pandang yang dianjurkan adalah 30-60 cm dari permukaan, dengan memvariasikan sudut untuk menangkap indikasi yang reflective. Untuk crack halus dapat digunakan hand magnifier 3-10x.",
+          "category": "technique",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Mengapa coating atau cat harus dihilangkan dari permukaan sebelum PT dilakukan?",
+          "options": [
+            "Karena coating dapat menutupi mulut crack sehingga penetran tidak bisa masuk",
+            "Agar penetran tidak luntur",
+            "Karena coating membuat developer terlalu tebal",
+            "Karena coating selalu berfluoresensi"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Coating atau cat dapat menutupi/menjembatani mulut crack sehingga penetran tidak dapat masuk dan cacat terlewat. Permukaan harus bebas coating dan kontaminan agar PT efektif.",
+          "category": "technique",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Tegangan permukaan penetran sengaja didesain lebih rendah dibanding air. Kira-kira berapa nilai tegangan permukaan air dan penetran tipikal?",
+          "options": [
+            "Air ~30 mN/m, penetran ~72 mN/m",
+            "Keduanya ~50 mN/m",
+            "Air ~10 mN/m, penetran ~100 mN/m",
+            "Air ~72 mN/m, penetran ~30 mN/m"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Air memiliki tegangan permukaan ~72 mN/m sedangkan penetran didesain rendah ~30 mN/m agar lebih mudah masuk celah halus. Tegangan permukaan yang lebih rendah meningkatkan kemampuan penetrasi.",
+          "category": "physics",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Pada nilai sudut kontak (contact angle) berapa cairan dikatakan memiliki wetting yang baik sehingga menyebar di permukaan?",
+          "options": [
+            "Kurang dari 90°",
+            "Lebih besar dari 90°",
+            "Tepat 180°",
+            "Tepat 90°"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Wetting yang baik terjadi saat sudut kontak <90°, di mana cairan menyebar dan masuk celah. Sudut >90° menyebabkan cairan menggumpal dan tidak masuk celah cacat.",
+          "category": "physics",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Pada animasi PT, indikasi yang terbentuk setelah developer bekerja umumnya tampak jauh lebih lebar dari retak aslinya. Apa penyebabnya?",
+          "options": [
+            "Developer melebarkan retak secara fisik",
+            "Developer menarik penetran keluar dan menyebarkannya (bleed-out) sehingga indikasi membesar dan mudah dilihat",
+            "Penetran memuai akibat panas inspeksi",
+            "Cahaya UV membesarkan bayangan retak"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Developer menarik penetran keluar dari celah lewat reverse capillary action lalu menyebarkannya sebagai bleed-out, sehingga indikasi tampak jauh lebih lebar dari retak asli dan mudah dilihat mata. Developer tidak melebarkan retak secara fisik.",
+          "category": "physics",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Menurut ASME V Article 6, berapa rentang temperatur standar (window) untuk pelaksanaan PT tanpa perlu kualifikasi prosedur tambahan?",
+          "options": [
+            "10-52°C (50-125°F)",
+            "0-100°C",
+            "20-30°C saja",
+            "52-80°C"
+          ],
+          "correctAnswer": 0,
+          "explanation": "ASME V Article 6 menetapkan window temperatur 10-52°C (50-125°F). Di luar rentang ini diperlukan kualifikasi prosedur karena penetran dapat menguap terlalu cepat (panas) atau viskositasnya naik (dingin).",
+          "category": "calibration",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Apa dampak utama temperatur tinggi (di atas 52°C) terhadap penetran selama dwell?",
+          "options": [
+            "Viskositas naik sehingga penetran lebih tahan",
+            "Penetran cepat menguap/mengering sehingga indikasi tidak terbentuk baik",
+            "Penetran berubah warna menjadi tidak kontras",
+            "Aksi kapiler menjadi lebih lambat"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Pada temperatur tinggi viskositas turun drastis dan penetran cepat menguap, sehingga indikasi tidak terbentuk dengan baik. Karena itu ASME V membatasi maksimum 52°C.",
+          "category": "physics",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Pada Method A (water washable), bagaimana excess penetran dihilangkan?",
+          "options": [
+            "Dengan air karena penetran sudah mengandung emulsifier",
+            "Dengan solvent dan lap",
+            "Dengan emulsifier yang diaplikasikan terpisah setelah dwell",
+            "Dengan menyeka kering saja"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Method A adalah water washable di mana penetran sudah mengandung emulsifier, sehingga excess dapat langsung dibilas dengan air. Method ini cepat tetapi sensitivitasnya lebih rendah dibanding post-emulsifiable.",
+          "category": "equipment",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Sensitivity level penetran fluorescent dikelompokkan dari 1 sampai 4. Level mana yang paling sering dipakai untuk inspeksi industri umum dan weld?",
+          "options": [
+            "Level 1 (Ultra-low)",
+            "Level 3 (High)",
+            "Level 4 (Ultra-high)",
+            "Level 2 (Medium)"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Level 2 (Medium) adalah sensitivitas yang paling sering dipakai untuk industri umum dan weld inspection. Level 1 untuk crack halus, sedangkan Level 4 untuk aplikasi kritis aerospace yang sangat ketat dan mahal.",
+          "category": "equipment",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Pada teknik water wash, manakah kombinasi tekanan, temperatur air, sudut, dan jarak nozzle yang benar agar indikasi tidak ter-wash?",
+          "options": [
+            "Maks 40 psi, 10-38°C, sudut 45°, jarak nozzle min 30 cm",
+            "Maks 100 psi, 50-70°C, sudut 90°, jarak 5 cm",
+            "Maks 150 psi, air panas, sudut 0°, jarak 10 cm",
+            "Tanpa batas tekanan, air dingin, sudut bebas, jarak bebas"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Water wash dibatasi tekanan maks 40 psi (276 kPa), temperatur 10-38°C, sudut semprot 45°, dan jarak nozzle minimal 30 cm agar excess hilang tanpa mencuci penetran keluar dari indikasi. Tekanan tinggi, air panas, sudut tegak lurus, atau jarak terlalu dekat berisiko over-wash.",
+          "category": "technique",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Developer Form apa yang paling sensitif dan umum dipakai untuk visible PT karena memberikan latar putih kontras?",
+          "options": [
+            "Form a — Dry powder",
+            "Form c — Wet non-aqueous (solvent based)",
+            "Form b — Wet aqueous",
+            "Form d — Water-soluble"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Form c (wet non-aqueous) menggunakan powder dalam solvent dan diaplikasikan dengan spray, memberikan lapisan putih kontras paling sensitif untuk visible PT. Form a cocok untuk fluorescent, sedangkan Form b/d kurang sensitif.",
+          "category": "equipment",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Menurut ASME V, berapa developer dwell time minimum sebelum interpretasi dilakukan?",
+          "options": [
+            "1 menit",
+            "7 menit",
+            "20 menit",
+            "60 menit"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Developer dwell minimum adalah 7 menit per ASME V, dengan maksimum sekitar 30 menit. Waktu ini memberi kesempatan bleed-out terbentuk; crack besar muncul cepat sedangkan crack halus butuh lebih lama.",
+          "category": "technique",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Untuk inspeksi PT fluorescent (Type I), berapa intensitas UV-A minimum dan batas cahaya putih ambient yang disyaratkan?",
+          "options": [
+            "UV-A 100 µW/cm² min, ambient white light 1000 lux",
+            "UV-A 500 µW/cm² min, tanpa batas ambient",
+            "UV-A 1000 µW/cm² min, ambient white light <20 lux",
+            "UV-A 2000 µW/cm² min, ambient white light <100 lux"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Fluorescent PT mensyaratkan UV-A minimum 1000 µW/cm² pada permukaan dan cahaya putih ambient di bawah 20 lux (booth gelap). Ini memastikan kontras fluoresensi indikasi terlihat jelas.",
+          "category": "calibration",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Saat menginspeksi PT fluorescent, mengapa kacamata pelindung UV (UV-blocking glasses) digunakan?",
+          "options": [
+            "Untuk meningkatkan kontras indikasi",
+            "Untuk keselamatan, melindungi mata dari paparan UV-A",
+            "Untuk membuat penetran lebih terang",
+            "Untuk menggantikan booth gelap"
+          ],
+          "correctAnswer": 1,
+          "explanation": "UV-blocking glasses dipakai untuk melindungi mata inspektor dari paparan radiasi UV-A selama inspeksi fluorescent. Ini aspek keselamatan, bukan untuk meningkatkan kontras.",
+          "category": "safety",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Sebelum aplikasi penetran, mengapa air yang terperangkap di dalam crack harus dihilangkan sempurna (low temperature drying)?",
+          "options": [
+            "Agar developer tidak menggumpal",
+            "Karena air dalam celah memblok masuknya penetran",
+            "Agar penetran tidak berubah warna",
+            "Karena air merusak emulsifier"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Air yang terperangkap di dalam crack akan memblok celah sehingga penetran tidak dapat masuk dan cacat terlewat. Permukaan dan celah harus benar-benar bersih dan kering sebelum penetran diaplikasikan.",
+          "category": "technique",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Seorang inspektor menemukan indikasi yang setelah re-clean dan re-test tidak muncul kembali di lokasi yang sama. Indikasi semula kemungkinan besar adalah?",
+          "options": [
+            "Crack asli yang dalam",
+            "False/process indication (mis. dari scratch, lap, atau penetran terjebak di ridge)",
+            "Lack of fusion",
+            "Indikasi yang harus langsung di-reject"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Indikasi yang hilang setelah re-clean dan re-test menandakan false/process indication, misalnya penetran terjebak di scratch, lap, atau ridge, bukan cacat asli. Cacat asli akan muncul kembali secara konsisten.",
+          "category": "interpretation",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Code mana yang menjadi acuan utama PT untuk pressure equipment (bejana tekan)?",
+          "options": [
+            "ASME V Article 6",
+            "AWS D1.1",
+            "ASTM E709",
+            "ISO 9934"
+          ],
+          "correctAnswer": 0,
+          "explanation": "ASME V Article 6 adalah code utama PT untuk pressure equipment yang mengatur material, teknik, pencahayaan, dan acceptance. ASTM E709/ISO 9934 adalah standar MT, dan AWS D1.1 adalah welding code struktur baja.",
+          "category": "standards",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Mengapa penetran, emulsifier, dan developer sebaiknya berasal dari satu manufacturer dan satu 'family' produk?",
+          "options": [
+            "Agar lebih murah saat membeli",
+            "Karena mencampur brand/family berbeda dapat membatalkan (cancel) sensitivitas sistem",
+            "Agar warnanya seragam saja",
+            "Karena diwajibkan oleh peraturan pajak"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Penetran, emulsifier, dan developer dari family yang sama dirancang kompatibel secara kimia; mencampur brand/family berbeda dapat membatalkan sensitivitas sistem. Manufacturer biasanya menerbitkan compatible family list.",
+          "category": "standards",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Dalam persamaan tinggi naik kapiler h = (2γcosθ)/(ρgr), apa yang terjadi pada tinggi naik penetran jika jari-jari celah (r) semakin kecil?",
+          "options": [
+            "Tinggi naik semakin kecil",
+            "Tinggi naik tidak berubah",
+            "Penetran tidak bisa naik sama sekali",
+            "Tinggi naik semakin besar"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Karena r berada di penyebut, semakin kecil jari-jari celah maka tinggi naik kapiler (h) semakin besar. Inilah sebabnya penetran sangat efektif masuk ke celah retak yang sangat halus.",
+          "category": "physics",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Apa perbedaan antara Method B dan Method D dalam hal emulsifier?",
+          "options": [
+            "Method B memakai air, Method D memakai solvent",
+            "Method B tidak memakai emulsifier, Method D memakai",
+            "Method B memakai emulsifier lipophilic (berbasis minyak), Method D hydrophilic (diencerkan air)",
+            "Keduanya identik"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Method B adalah post-emulsifiable lipophilic (emulsifier berbasis minyak), sedangkan Method D adalah post-emulsifiable hydrophilic dengan emulsifier yang diencerkan air sehingga memberi kontrol lebih baik daripada Method B.",
+          "category": "equipment",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Pada Method B (post-emulsifiable lipophilic), mengapa waktu kontak emulsifier harus dikontrol ketat (time-controlled)?",
+          "options": [
+            "Agar emulsifier tidak menguap",
+            "Agar emulsifier tidak bereaksi dengan developer",
+            "Agar emulsifier tidak masuk ke celah cacat dan mengeluarkan penetran dari sana",
+            "Agar warna penetran tidak berubah"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Emulsifier pada Method B harus time-controlled supaya hanya meng-emulsi penetran di permukaan dan tidak masuk ke celah cacat. Jika emulsifier masuk celah, penetran di dalam cacat ikut terangkat dan indikasi hilang.",
+          "category": "technique",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Jika selama excess removal dengan solvent wipe permukaan langsung dibasahi solvent (tanpa dry wipe lebih dulu) atau solvent disemprot langsung ke part, apa risikonya?",
+          "options": [
+            "Developer akan mengering terlalu cepat",
+            "Solvent dapat mendorong/menarik penetran keluar dari crack sehingga indikasi hilang",
+            "Penetran berubah menjadi fluorescent",
+            "Tidak ada risiko, justru mempercepat proses"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Membasahi langsung dengan solvent atau menyemprot solvent ke part dapat mendorong dan menarik penetran keluar dari celah crack sehingga indikasi hilang. Teknik benar: dry wipe dulu, lalu lap yang sedikit dibasahi solvent, lalu dry wipe akhir.",
+          "category": "technique",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Mengapa indikasi linear umumnya dianggap lebih kritis daripada indikasi round pada inspeksi weld?",
+          "options": [
+            "Karena lebih mudah dilihat",
+            "Karena round selalu false indication",
+            "Karena round selalu lebih besar",
+            "Karena linear cenderung mewakili crack/lack of fusion yang dapat merambat (propagate)"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Indikasi linear cenderung mewakili cacat seperti crack atau lack of fusion yang dapat merambat di bawah beban, sehingga lebih kritis. Indikasi round (porosity) umumnya kurang severe karena tidak setajam crack.",
+          "category": "interpretation",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Jika indikasi menyebar (spread) sangat cepat dan lebar saat developer dwell, kemungkinan penyebabnya adalah?",
+          "options": [
+            "Developer terlalu tebal",
+            "Crack besar ATAU temperatur komponen terlalu tinggi",
+            "Dwell penetran terlalu pendek",
+            "Pencahayaan kurang"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Indikasi yang spread cepat dapat menandakan crack besar atau temperatur yang terlalu tinggi. Jika penyebabnya temperatur, inspeksi harus dihentikan dan ditunggu hingga komponen mendingin ke window yang diizinkan.",
+          "category": "interpretation",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Sebuah crack halus diduga sangat tight (<1 µm). Penyesuaian apa yang tepat agar penetran dapat masuk?",
+          "options": [
+            "Memperpendek dwell time menjadi 1 menit",
+            "Memperpanjang dwell time penetran (sampai sekitar 30 menit)",
+            "Menaikkan temperatur ke 60°C",
+            "Menambah tekanan air saat wash"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Crack yang sangat tight membutuhkan dwell time penetran yang diperpanjang (sampai sekitar 30 menit) agar aksi kapiler sempat mengisi celah halus. Mempersingkat dwell atau menaikkan temperatur di atas batas justru kontraproduktif.",
+          "category": "technique",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Pada developer dwell, mengapa reading/interpretasi sebaiknya dilakukan beberapa kali selama periode dwell?",
+          "options": [
+            "Untuk menangkap perkembangan indikasi karena crack besar muncul cepat dan crack halus muncul lambat",
+            "Agar developer tidak mengering",
+            "Karena pencahayaan berubah-ubah",
+            "Agar penetran tidak menguap"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Crack besar memunculkan bleed-out dalam 2 menit sedangkan crack halus baru muncul setelah 10-15 menit, sehingga reading beberapa kali memastikan semua indikasi tertangkap. Reading sekali saja berisiko melewatkan crack halus.",
+          "category": "interpretation",
+          "difficulty": "hard"
+        }
+      ]
+    },
+    {
+      "code": "RT-L1",
+      "method": "RT",
+      "questions": [
+        {
+          "question": "Apa prinsip dasar Radiographic Testing (RT)?",
+          "options": [
+            "Menyemprotkan partikel besi ke permukaan yang dimagnetisasi",
+            "Memakai radiasi pengion (X-ray atau gamma) untuk membuat citra struktur internal material",
+            "Mengirim gelombang suara ultrasonik ke dalam material",
+            "Meresapkan cairan penetran ke celah retak permukaan"
+          ],
+          "correctAnswer": 1,
+          "explanation": "RT memakai radiasi pengion X-ray atau gamma yang menembus material; variasi kepadatan internal terekam pada film/detektor. Partikel besi adalah MT, gelombang suara adalah UT, dan penetran adalah PT.",
+          "category": "Pengantar RT",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Keunggulan utama RT dibanding PT dan MT adalah kemampuannya untuk:",
+          "options": [
+            "Hanya mendeteksi cacat permukaan dengan sangat cepat",
+            "Diterapkan tanpa peraturan keselamatan apa pun",
+            "Bekerja hanya pada material ferromagnetik",
+            "Mendeteksi cacat di dalam (volumetrik) seperti porosity dan slag di tengah weld"
+          ],
+          "correctAnswer": 3,
+          "explanation": "RT adalah metode volumetrik sehingga dapat melihat cacat internal seperti porosity, slag, dan lack of penetration di tengah weld, sedangkan PT/MT hanya mendeteksi cacat permukaan/near-surface.",
+          "category": "Pengantar RT",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Pada radiograph, area dengan kepadatan material lebih rendah (misalnya void/porosity) akan tampak:",
+          "options": [
+            "Lebih terang dari area sekitarnya",
+            "Lebih gelap dari area sekitarnya",
+            "Sama persis dengan base metal",
+            "Berwarna merah cerah"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Void/porosity meneruskan lebih banyak foton ke film sehingga area itu menjadi lebih gelap (density lebih tinggi). Material yang lebih padat menyerap lebih banyak radiasi sehingga tampak lebih terang.",
+          "category": "Pengantar RT",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Pada tabung X-ray, parameter yang mengontrol energi (daya tembus) radiasi adalah:",
+          "options": [
+            "mA (arus tabung)",
+            "kV (tegangan tinggi)",
+            "Exposure time",
+            "Focal-to-film distance"
+          ],
+          "correctAnswer": 1,
+          "explanation": "kV (tegangan tinggi) mengatur energi/penetrasi X-ray. mA mengontrol intensitas (jumlah radiasi) dan time menentukan total exposure.",
+          "category": "Sumber Radiasi",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Sumber gamma Iridium-192 memiliki half-life sekitar:",
+          "options": [
+            "5,27 tahun",
+            "120 hari",
+            "74 hari",
+            "30 menit"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Ir-192 ber-half-life ~74 hari (energi ~380 keV) sehingga source harus diganti tiap ~3 bulan. 5,27 tahun adalah Co-60 dan 120 hari adalah Se-75.",
+          "category": "Sumber Radiasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Sumber gamma yang paling cocok untuk menembus baja sangat tebal (>50 mm) adalah:",
+          "options": [
+            "Selenium-75",
+            "Iridium-192",
+            "Cobalt-60",
+            "X-ray 100 kV"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Co-60 berenergi ~1,25 MeV sehingga mampu menembus baja sangat tebal. Se-75 (~270 keV) dan Ir-192 (~380 keV) lebih cocok untuk baja tipis-menengah, dan X-ray 100 kV jauh terlalu lemah.",
+          "category": "Sumber Radiasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Untuk baja tipis (<=25 mm), sumber gamma yang memberi kontras lebih baik dibanding Ir-192 adalah:",
+          "options": [
+            "Selenium-75",
+            "Cobalt-60",
+            "X-ray 450 kV",
+            "Linear accelerator >1 MeV"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Se-75 (~270 keV, half-life 120 hari) berenergi lebih rendah dari Ir-192 sehingga memberi kontras lebih baik untuk baja tipis. Co-60 dan sumber energi sangat tinggi justru menurunkan kontras pada baja tipis.",
+          "category": "Sumber Radiasi",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Kepanjangan dan makna prinsip ALARA adalah:",
+          "options": [
+            "Always Limit All Radiation Areas — menutup semua area radiasi",
+            "As Long As Required Approved — selama disetujui",
+            "Annual Limit At Reactor Areas — batas tahunan di reaktor",
+            "As Low As Reasonably Achievable — menekan paparan serendah yang praktis"
+          ],
+          "correctAnswer": 3,
+          "explanation": "ALARA berarti As Low As Reasonably Achievable, yaitu filosofi optimasi untuk menekan paparan serendah yang masih praktis, bukan sekadar memenuhi angka batas.",
+          "category": "Keselamatan Radiasi",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Tiga pilar utama proteksi radiasi dalam ALARA adalah:",
+          "options": [
+            "Time, Distance, Shielding",
+            "Energy, Current, Voltage",
+            "Film, Screen, Developer",
+            "Source, Object, Film"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Tiga pilar ALARA adalah Time (kurangi durasi paparan), Distance (jauhi sumber), dan Shielding (pakai lapisan penahan). Opsi lain adalah parameter X-ray atau geometri exposure.",
+          "category": "Keselamatan Radiasi",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Menurut inverse square law, jika jarak ke sumber digandakan menjadi 2 kali, maka dose rate menjadi:",
+          "options": [
+            "1/2 dari semula",
+            "1/4 dari semula",
+            "2 kali semula",
+            "Tetap sama"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Dose rate sebanding dengan 1/r^2, sehingga jarak 2 kali menurunkan dose menjadi 1/4. Inilah mengapa jarak adalah perlindungan paling efektif.",
+          "category": "Keselamatan Radiasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Batas dosis seluruh tubuh tahunan untuk pekerja radiasi (occupational) adalah:",
+          "options": [
+            "1 mSv per tahun",
+            "5 mSv per tahun",
+            "50 mSv per tahun",
+            "500 mSv per tahun"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Batas dosis seluruh tubuh pekerja radiasi adalah 50 mSv (5 rem) per tahun. 1 mSv adalah batas untuk masyarakat umum.",
+          "category": "Keselamatan Radiasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Batas dosis radiasi tahunan untuk masyarakat umum (public) adalah:",
+          "options": [
+            "50 mSv per tahun",
+            "5 mSv per tahun",
+            "1 mSv per tahun",
+            "0,5 mSv per bulan"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Batas untuk masyarakat umum sangat ketat, yaitu 1 mSv (0,1 rem) per tahun. 50 mSv adalah batas pekerja dan 0,5 mSv/bulan adalah batas pekerja hamil yang dideklarasikan.",
+          "category": "Keselamatan Radiasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Untuk pekerja wanita yang telah mendeklarasikan kehamilan, batas dosis total sepanjang kehamilan adalah:",
+          "options": [
+            "50 mSv",
+            "5 mSv",
+            "1 mSv per bulan",
+            "20 mSv"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Pekerja hamil yang dideklarasikan dibatasi 0,5 mSv per bulan dengan total 5 mSv sepanjang kehamilan untuk melindungi janin.",
+          "category": "Keselamatan Radiasi",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Sebelum mendekati sumber gamma, alat yang dipakai untuk memastikan area benar-benar 'cold' (aman) adalah:",
+          "options": [
+            "Densitometer",
+            "Lux meter",
+            "Penetrameter",
+            "Survey meter (Geiger/ion chamber)"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Survey meter (Geiger counter atau ion chamber) dipakai untuk men-survey area dan memverifikasi sumber sudah aman sebelum approach. Densitometer membaca density film, lux meter mengukur cahaya.",
+          "category": "Keselamatan Radiasi",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Saat melakukan crank source gamma, source macet dan tidak bisa kembali ke posisi shielded. Tindakan yang benar adalah:",
+          "options": [
+            "Lanjutkan exposure berikutnya seperti biasa",
+            "Tarik kabel sekuat tenaga sampai source bergerak",
+            "Evakuasi dan isolasi area, lalu segera panggil RSO — ini keadaan darurat",
+            "Tinggalkan lokasi dan laporkan keesokan harinya"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Source stuck adalah keadaan darurat: area harus dievakuasi dan diisolasi, lalu RSO segera dipanggil. Menarik kabel sekuat tenaga atau melanjutkan kerja membahayakan jiwa.",
+          "category": "Keselamatan Radiasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Penyimpanan sumber radiasi yang benar adalah:",
+          "options": [
+            "Di laci meja biasa tanpa tanda",
+            "Di area terbuka dekat pekerja agar mudah diambil",
+            "Di dalam tas kain bersama film",
+            "Dalam shielded container terkunci dengan radiation symbol dan inventory check tiap shift"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Sumber harus disimpan dalam kontainer berperisai (shielded), terkunci, diberi simbol radiasi, dan diperiksa inventarisnya setiap shift untuk mencegah kehilangan dan paparan.",
+          "category": "Keselamatan Radiasi",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Pada klasifikasi industrial film, jenis film yang memberikan kontras tertinggi namun butuh exposure paling lama adalah:",
+          "options": [
+            "Class T4 (coarse grain)",
+            "Class T1 (ultra-fine grain)",
+            "Class T3 (medium grain)",
+            "Fluorescent screen film"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Class T1 (ultra-fine grain) memberi kontras tertinggi namun butuh exposure paling lama, dipakai untuk aerospace/nuclear. Class T4 paling cepat tetapi kontrasnya paling rendah.",
+          "category": "Film & Detektor",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Fungsi lead screen (foil timbal) yang ditempatkan di sisi depan dan belakang film adalah:",
+          "options": [
+            "Mengurangi scattered radiation dan menambah ketajaman citra",
+            "Mengubah X-ray menjadi cahaya untuk mempercepat exposure",
+            "Mengukur optical density film",
+            "Menahan dosis radiasi yang diterima operator"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Lead screen mengurangi hamburan (scattered radiation) dan menambah ketajaman citra. Yang mengubah X-ray menjadi cahaya untuk mempercepat exposure adalah fluorescent/salt screen, dengan konsekuensi resolusi menurun.",
+          "category": "Film & Detektor",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Apa perbedaan utama DR (Direct Radiography) dengan CR (Computed Radiography)?",
+          "options": [
+            "DR memakai film basah, CR memakai film kering",
+            "DR hanya untuk gamma, CR hanya untuk X-ray",
+            "DR menghasilkan citra digital langsung dari flat panel, CR memakai imaging plate yang di-scan setelah exposure",
+            "DR tidak menghasilkan citra digital sama sekali"
+          ],
+          "correctAnswer": 2,
+          "explanation": "DR memakai detektor flat panel yang langsung menghasilkan citra digital real-time, sedangkan CR memakai imaging plate fosfor yang harus di-scan setelah exposure dan dapat dipakai ulang.",
+          "category": "Film & Detektor",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Apa fungsi utama Image Quality Indicator (IQI / penetrameter) pada radiograph?",
+          "options": [
+            "Mengukur dosis radiasi yang diterima operator",
+            "Memverifikasi kualitas/sensitivitas radiograph melalui visibilitas wire atau hole",
+            "Menggantikan densitometer",
+            "Menahan scattered radiation"
+          ],
+          "correctAnswer": 1,
+          "explanation": "IQI adalah alat kalibrasi yang ditempatkan dalam radiograph; visibilitas wire/hole terkecil membuktikan sensitivitas dan kualitas citra memadai. IQI bukan alat dosimetri atau penahan radiasi.",
+          "category": "IQI",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Penempatan IQI yang menjadi standar utama menurut code adalah di sisi:",
+          "options": [
+            "Source-side (sisi sumber)",
+            "Film-side tanpa marker",
+            "Di luar area weld",
+            "Menempel pada survey meter"
+          ],
+          "correctAnswer": 0,
+          "explanation": "IQI standar ditempatkan di source-side karena merupakan kondisi paling sulit (terjauh dari film). Penempatan film-side hanya dipakai jika source-side tidak praktis dan harus diberi marker huruf 'F'.",
+          "category": "IQI",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Pada hole-type IQI, istilah '2T' mengacu pada hole dengan diameter sebesar:",
+          "options": [
+            "Setengah ketebalan IQI plate",
+            "2 mm tetap",
+            "2 kali ketebalan IQI plate",
+            "2 kali ketebalan part yang diinspeksi"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Pada hole-type IQI, '2T' berarti diameter hole sama dengan 2 kali ketebalan plate IQI. Visibilitas hole 2T menjadi acuan tingkat sensitivitas yang dicapai.",
+          "category": "IQI",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Jika ketebalan part 10 mm dan diameter wire terkecil yang terlihat adalah 0,2 mm, berapa persen sensitivitas radiograph?",
+          "options": [
+            "0,2%",
+            "2%",
+            "5%",
+            "20%"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Sensitivitas = (diameter wire terlihat / ketebalan) x 100 = (0,2 / 10) x 100 = 2%. Ini sesuai target sensitivitas yang baik (~2%).",
+          "category": "IQI",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Rumus geometric unsharpness (Ug) yang benar adalah:",
+          "options": [
+            "Ug = F x SOD / OFD",
+            "Ug = F x OFD / SOD",
+            "Ug = SOD / (F x OFD)",
+            "Ug = OFD x SOD / F"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Ug = F x OFD / SOD, dengan F = ukuran focal spot, OFD = jarak objek ke film, SOD = jarak sumber ke objek. Memperbesar SOD dan memperkecil OFD menurunkan Ug.",
+          "category": "Geometric Unsharpness",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Diketahui F = 3 mm, OFD = 20 mm, dan SOD = 500 mm. Berapa nilai Ug?",
+          "options": [
+            "0,06 mm",
+            "0,12 mm",
+            "0,24 mm",
+            "1,2 mm"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Ug = F x OFD / SOD = (3 x 20) / 500 = 60 / 500 = 0,12 mm. Nilai ini di bawah batas umum ASME V sebesar 0,5 mm untuk ketebalan <=2 inch.",
+          "category": "Geometric Unsharpness",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Cara yang benar untuk mengurangi geometric unsharpness (Ug) adalah:",
+          "options": [
+            "Memperbesar OFD dan memperkecil SOD",
+            "Menaikkan kV setinggi mungkin",
+            "Memperbesar focal spot size",
+            "Memperbesar SOD dan memperkecil OFD (objek serapat mungkin ke film)"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Karena Ug = F x OFD / SOD, menambah SOD dan mengurangi OFD (objek dirapatkan ke film) akan menurunkan Ug. Memperbesar OFD/focal spot atau menaikkan kV justru memperburuk atau tidak relevan.",
+          "category": "Geometric Unsharpness",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Apa definisi Half-Value Layer (HVL)?",
+          "options": [
+            "Tebal material yang mengurangi intensitas radiasi menjadi 50%",
+            "Tebal material yang menyerap seluruh radiasi",
+            "Jarak ganda dari sumber ke film",
+            "Waktu yang dibutuhkan untuk separuh exposure"
+          ],
+          "correctAnswer": 0,
+          "explanation": "HVL adalah tebal material yang mengurangi intensitas radiasi menjadi 50%, bersifat spesifik untuk tiap material dan energi. Berguna untuk perhitungan shielding dan transmisi.",
+          "category": "Exposure & HVL",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Rentang optical density yang dapat diterima untuk radiograph X-ray menurut ASME V umumnya adalah:",
+          "options": [
+            "0,5–1,0",
+            "1,8–4,0",
+            "5,0–8,0",
+            "0,1–0,5"
+          ],
+          "correctAnswer": 1,
+          "explanation": "ASME V mensyaratkan density 1,8–4,0 untuk X-ray (2,0–4,0 untuk gamma). Di luar rentang ini radiograph harus di-shoot ulang.",
+          "category": "Exposure & Density",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Urutan proses kimia pengembangan film radiografi yang benar adalah:",
+          "options": [
+            "Fixer → Developer → Wash → Stop bath → Dry",
+            "Wash → Fixer → Developer → Dry → Stop bath",
+            "Developer → Stop bath → Fixer → Wash → Dry",
+            "Developer → Fixer → Stop bath → Dry → Wash"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Urutan yang benar adalah Developer (ubah silver halide tereksposur menjadi metallic silver) → Stop bath (hentikan reaksi) → Fixer (larutkan halide tak tereksposur) → Wash → Dry.",
+          "category": "Pengembangan Film",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Cacat las yang tampak sebagai garis gelap linear sangat tajam, sering bercabang, dan paling kritikal adalah:",
+          "options": [
+            "Porosity",
+            "Slag inclusion",
+            "Crack",
+            "Undercut"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Crack tampak sebagai garis gelap linear yang sangat tajam dan sering bercabang; ini cacat paling kritikal dan selalu ditolak. Porosity berbentuk bulat dan slag berbentuk memanjang tidak beraturan.",
+          "category": "Interpretasi Cacat",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Pada radiograph, cacat porosity biasanya tampak sebagai:",
+          "options": [
+            "Indikasi bulat (round), gelap, dengan tepi tajam, tersebar atau menggerombol",
+            "Garis lurus sangat tajam yang bercabang",
+            "Indikasi memanjang tidak beraturan di dalam weld",
+            "Area lebih terang dari base metal"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Porosity tampak sebagai indikasi bulat gelap bertepi tajam, bisa tunggal atau cluster, karena merupakan rongga gas. Garis bercabang tajam adalah crack, dan indikasi memanjang tak beraturan adalah slag.",
+          "category": "Interpretasi Cacat",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Lack of penetration (LOP) pada radiograph weld biasanya muncul sebagai:",
+          "options": [
+            "Bintik bulat tersebar di seluruh weld",
+            "Garis gelap linear di centerline (root) dengan tepi tajam",
+            "Area lebih terang merata",
+            "Pola titik fluorescent"
+          ],
+          "correctAnswer": 1,
+          "explanation": "LOP tampak sebagai garis gelap linear di centerline/root weld dengan tepi tajam, sering sangat gelap karena void-nya besar. Bintik bulat adalah porosity.",
+          "category": "Interpretasi Cacat",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Lack of fusion (LOF) pada radiograph paling sering ditemukan di lokasi:",
+          "options": [
+            "Sidewall weld, tampak linear gelap namun subtle",
+            "Tepat di permukaan plate luar",
+            "Hanya di base metal jauh dari weld",
+            "Selalu di pusat lubang bor"
+          ],
+          "correctAnswer": 0,
+          "explanation": "LOF muncul sebagai indikasi linear gelap di sidewall weld dan sifatnya subtle, sehingga operator harus paham lokasi tipikalnya. LOP justru muncul di centerline/root.",
+          "category": "Interpretasi Cacat",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Manakah yang merupakan film artifact, bukan cacat material sebenarnya?",
+          "options": [
+            "Crimp mark, fingerprint, atau water spot pada film",
+            "Porosity bulat di tengah weld",
+            "Lack of penetration di root",
+            "Slag memanjang di dalam weld"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Crimp mark, fingerprint, dan water spot adalah artifact film yang berpola tidak natural (garis lurus, berulang). Porosity, LOP, dan slag adalah cacat material asli.",
+          "category": "Interpretasi Cacat",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Pada radiograph casting, inclusion berupa material asing yang lebih padat dari base metal akan tampak:",
+          "options": [
+            "Lebih terang (lighter) dari base metal",
+            "Lebih gelap (darker) dari base metal",
+            "Tidak terlihat sama sekali",
+            "Berwarna merah cerah"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Inclusion dengan densitas lebih tinggi menyerap lebih banyak radiasi sehingga tampak lebih terang dari base metal. Inclusion berdensitas rendah (mis. void) justru tampak lebih gelap.",
+          "category": "Interpretasi Cacat",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Code yang menjadi acuan utama RT untuk pressure equipment, berisi parameter dan acceptance detail, adalah:",
+          "options": [
+            "ASME Section V Article 2",
+            "AWS D1.1",
+            "ASTM E709",
+            "ISO 9934"
+          ],
+          "correctAnswer": 0,
+          "explanation": "ASME Section V Article 2 mengatur RT untuk pressure equipment dengan parameter dan acceptance terperinci. AWS D1.1 untuk struktur baja, sedangkan E709/ISO 9934 adalah standar MT.",
+          "category": "Prosedur & Code",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Menurut acceptance criteria umum (mis. ASME), cacat yang otomatis REJECT tanpa memandang ukuran adalah:",
+          "options": [
+            "Porosity tunggal kecil",
+            "Variasi penguatan weld minor",
+            "Density gradient ringan",
+            "Crack"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Crack (dan lack of fusion) bersifat reject otomatis karena tajam dan menjalar. Porosity/slag dinilai berdasarkan ukuran dan frekuensi per ketebalan, sedangkan density gradient ringan masih bisa diterima.",
+          "category": "Prosedur & Code",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Langkah post-job yang benar terkait sumber gamma setelah exposure selesai adalah:",
+          "options": [
+            "Tinggalkan source di posisi exposure agar siap dipakai lagi",
+            "Simpan source di saku selama perjalanan pulang",
+            "Crank source kembali ke posisi shielded, verify 'cold' dengan survey meter, lalu kunci storage",
+            "Lepas perisai agar source cepat dingin"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Setelah selesai, source di-crank kembali ke posisi berperisai, diverifikasi 'cold' dengan survey meter, lalu storage dikunci. Meninggalkan source terbuka atau membawanya tanpa perisai sangat berbahaya.",
+          "category": "Praktik Lapangan",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Informasi berikut yang WAJIB ada dalam RT report adalah:",
+          "options": [
+            "Hanya tanda tangan inspektor",
+            "Source type & activity, film type, kV/mA/time, distance, IQI sensitivity, density, dan temuan cacat",
+            "Hanya tanggal pengujian",
+            "Warna cat permukaan part"
+          ],
+          "correctAnswer": 1,
+          "explanation": "RT report harus memuat data peralatan (source, film, kV/mA/time, distance), kualitas (IQI/sensitivity, density), temuan cacat dengan klasifikasi dan accept/reject, serta sign-off. Hanya tanggal/tanda tangan saja tidak memadai.",
+          "category": "Reporting & Arsip",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Kondisi penyimpanan film radiograph untuk arsip jangka panjang yang benar adalah:",
+          "options": [
+            "Cool, dry, dalam archival sleeve dengan retensi sesuai code/kontrak (mis. 5 tahun)",
+            "Di tempat lembap dan panas agar awet",
+            "Ditumpuk tanpa pelindung di lantai",
+            "Dibuang setelah laporan dibuat"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Film disimpan di tempat sejuk dan kering dalam archival sleeve dengan masa retensi sesuai code/kontrak (umumnya 5 tahun). Kelembapan/panas merusak film dan membuang film menghilangkan rekaman permanen.",
+          "category": "Reporting & Arsip",
+          "difficulty": "easy"
+        }
+      ]
+    },
+    {
+      "code": "VT-L1",
+      "method": "VT",
+      "questions": [
+        {
+          "question": "Mengapa Visual Testing (VT) sering disebut sebagai metode NDT yang paling fundamental?",
+          "options": [
+            "Karena VT mampu mendeteksi cacat internal di tengah material",
+            "Karena VT tidak memerlukan inspector bersertifikat",
+            "Karena VT selalu dilakukan terlebih dahulu untuk mendeteksi cacat permukaan sebelum metode lain",
+            "Karena VT menggantikan kebutuhan semua metode NDT lainnya"
+          ],
+          "correctAnswer": 2,
+          "explanation": "VT adalah metode NDT pertama dan paling fundamental yang selalu dilakukan lebih dulu untuk menemukan cacat permukaan yang jelas. VT hanya mendeteksi cacat permukaan, bukan internal, dan tetap membutuhkan inspector bersertifikat serta tidak menggantikan metode lain.",
+          "category": "Principles",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Pernyataan mana yang paling tepat menggambarkan Visual Testing yang benar?",
+          "options": [
+            "Inspeksi sistematis dengan kriteria penerimaan, dokumentasi, dan tools seperti kaca pembesar dan gauge",
+            "Sekadar melihat permukaan secara sekilas tanpa alat",
+            "Hanya boleh dilakukan dengan kamera digital",
+            "Selalu memerlukan ruang gelap dan lampu UV"
+          ],
+          "correctAnswer": 0,
+          "explanation": "VT yang benar adalah inspeksi sistematis dengan kriteria penerimaan jelas, dokumentasi, dan penggunaan tools (kaca pembesar, mistar, gauge), bukan sekadar melihat sekilas. Ruang gelap/UV hanya diperlukan pada VT fluorescent tertentu.",
+          "category": "Principles",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Manakah yang termasuk aplikasi umum Visual Testing?",
+          "options": [
+            "Hanya pengukuran ketebalan dinding pipa",
+            "Deteksi cacat internal pada coran tebal",
+            "Pengukuran konduktivitas material",
+            "Pre-weld inspection, post-weld inspection, dan in-service inspection"
+          ],
+          "correctAnswer": 3,
+          "explanation": "VT digunakan untuk pre-weld inspection, post-weld inspection, in-service inspection, dan evaluasi fitness-for-service. Pengukuran ketebalan internal dan konduktivitas adalah ranah metode lain (UT dan ET).",
+          "category": "Principles",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Apa perbedaan utama antara direct visual inspection dan remote visual inspection?",
+          "options": [
+            "Direct memakai borescope, remote memakai mata telanjang",
+            "Direct hanya untuk las, remote hanya untuk coran",
+            "Direct memandang permukaan langsung dengan mata (jarak <=600 mm), remote memakai alat seperti borescope untuk area yang tak terjangkau",
+            "Remote tidak memerlukan pencahayaan minimum"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Direct visual berarti mata memandang permukaan secara langsung (jarak <=600 mm, sudut >=30 derajat), sedangkan remote visual memakai borescope/fiberscope/kamera untuk mengakses area sempit atau tersembunyi. Syarat pencahayaan tetap berlaku pada keduanya.",
+          "category": "Technique",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Pada direct visual inspection, berapa jarak maksimum mata inspector terhadap permukaan menurut ASME V Article 9?",
+          "options": [
+            "<= 300 mm (12 inch)",
+            "<= 900 mm (36 inch)",
+            "<= 1200 mm (48 inch)",
+            "<= 600 mm (24 inch)"
+          ],
+          "correctAnswer": 3,
+          "explanation": "ASME V Article 9 menetapkan jarak mata maksimum <=600 mm (24 inch) dari permukaan inspeksi pada direct visual. Jarak yang lebih jauh mengurangi resolusi detail cacat halus.",
+          "category": "Technique",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Berapa sudut pandang minimum terhadap permukaan pada direct visual inspection per ASME V Article 9?",
+          "options": [
+            ">= 30 derajat",
+            ">= 10 derajat",
+            ">= 20 derajat",
+            ">= 45 derajat"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Sudut pandang minimum adalah >=30 derajat terhadap permukaan. Sudut terlalu landai membuat detail cacat sulit dilihat dan menimbulkan distorsi pengamatan.",
+          "category": "Technique",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Berapa intensitas cahaya minimum yang disyaratkan pada permukaan inspeksi VT menurut ASME V dan AWS D1.1?",
+          "options": [
+            "500 lux",
+            "1000 lux",
+            "750 lux",
+            "2000 lux"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Minimum 1000 lux pada permukaan inspeksi disyaratkan oleh ASME V dan AWS D1.1. Nilai di bawah itu tidak cukup untuk mendeteksi cacat permukaan secara andal.",
+          "category": "Standards",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Untuk mendeteksi crack yang sangat halus, tingkat pencahayaan optimal yang dianjurkan adalah?",
+          "options": [
+            "1000 lux",
+            "1500-2000 lux",
+            "8000-10000 lux",
+            "3000-5000 lux"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Pencahayaan optimal 3000-5000 lux dianjurkan untuk inspeksi crack halus, idealnya dengan high-CRI LED agar warna akurat. 1000 lux hanyalah batas minimum, bukan optimal.",
+          "category": "Equipment",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Seberapa sering eye examination wajib dilakukan oleh inspector VT?",
+          "options": [
+            "Setiap bulan",
+            "Setiap 3 tahun",
+            "Setiap tahun (annual)",
+            "Hanya sekali saat sertifikasi awal"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Inspector wajib menjalani eye exam setiap tahun (annual), meliputi near vision (Jaeger 2 atau Snellen 20/40) dan pemeriksaan persepsi warna. Pemeriksaan sekali saja tidak cukup karena ketajaman penglihatan dapat menurun.",
+          "category": "Standards",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Standar near vision yang harus dipenuhi inspector VT pada eye exam tahunan adalah?",
+          "options": [
+            "Jaeger 2 atau Snellen 20/40",
+            "Jaeger 5 atau Snellen 20/100",
+            "Jaeger 1 atau Snellen 20/20",
+            "Tidak ada standar baku, tergantung inspector"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Standar near vision adalah Jaeger 2 atau Snellen 20/40, dengan atau tanpa kacamata. Persepsi warna juga harus diperiksa. Snellen 20/100 terlalu longgar dan 20/20 tidak diwajibkan.",
+          "category": "Standards",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Alat remote visual mana yang menggunakan tube rigid dengan kombinasi lens dan prism, cocok untuk lubang lurus seperti tube?",
+          "options": [
+            "Fiberscope",
+            "Pan-tilt camera",
+            "Borescope rigid",
+            "Pit gauge"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Borescope rigid adalah tube kaku dengan optik (lens & prism) di dalam untuk angle view, cocok untuk lubang lurus. Fiberscope fleksibel untuk lubang berkelok, dan pan-tilt camera untuk vessel internal.",
+          "category": "Equipment",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Alat remote visual mana yang menggunakan fiber optik fleksibel sehingga bisa masuk lubang berkelok, namun resolusinya lebih rendah dari rigid borescope?",
+          "options": [
+            "Video borescope",
+            "Pan-tilt crawler",
+            "Dental mirror",
+            "Fiberscope"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Fiberscope memakai fiber optik fleksibel yang dapat masuk lubang berkelok, tetapi resolusinya lebih rendah dibanding rigid borescope. Video borescope justru memberikan citra digital modern dengan kualitas baik.",
+          "category": "Equipment",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Alat remote visual mana yang menjadi standar untuk inspeksi turbine karena memiliki camera CCD/CMOS di tip dengan output video digital dan kemampuan recording?",
+          "options": [
+            "Video borescope",
+            "Borescope rigid",
+            "Fiberscope",
+            "Plain mirror"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Video borescope memiliki camera CCD/CMOS di tip dengan video output digital dan recording capability, menjadi standar untuk turbine inspection. Rigid dan fiberscope bersifat optik murni tanpa kamera digital di tip.",
+          "category": "Equipment",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Untuk inspeksi internal pressure vessel atau tank floor area yang luas, alat remote visual mana yang paling tepat?",
+          "options": [
+            "Magnifier genggam 3-10x",
+            "Dental mirror",
+            "Bridge cam gauge",
+            "Pan-tilt camera pada robotic crawler"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Pan-tilt camera pada robotic crawler dirancang untuk pressure vessel internal dan tank floor yang luas dan sulit dijangkau manusia. Magnifier, mirror, dan welding gauge adalah alat manual jarak dekat.",
+          "category": "Equipment",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Perbesaran magnifier yang umum dipakai untuk inspeksi crack halus pada VT adalah?",
+          "options": [
+            "1-2x",
+            "3-10x",
+            "20-50x",
+            "100-200x"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Magnifier 3-10x umum dipakai untuk inspeksi crack halus pada VT. Perbesaran yang sangat tinggi (>50x) lebih ke ranah mikroskopi/metalografi, bukan VT lapangan Level I.",
+          "category": "Equipment",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Alat mana yang digunakan khusus untuk mengukur kedalaman (depth) pitting akibat korosi?",
+          "options": [
+            "Fillet gauge",
+            "Bridge cam gauge",
+            "Pit gauge",
+            "Lux meter"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Pit gauge (tersedia tipe digital maupun analog dial) dipakai untuk mengukur depth pitting korosi. Fillet/bridge cam gauge mengukur profil las, sedangkan lux meter mengukur intensitas cahaya.",
+          "category": "Equipment",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Bridge cam gauge dan fillet gauge termasuk dalam kategori alat untuk?",
+          "options": [
+            "Mengukur intensitas cahaya permukaan",
+            "Mengukur profil las (weld profile)",
+            "Mengukur kedalaman korosi",
+            "Mendeteksi medan magnet bocor"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Bridge cam gauge dan fillet gauge adalah welding gauge untuk mengukur profil las seperti leg length, throat, dan reinforcement. Cahaya diukur dengan lux meter dan pitting dengan pit gauge.",
+          "category": "Equipment",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Penggunaan plain mirror atau dental mirror dalam VT paling tepat untuk?",
+          "options": [
+            "Mengukur intensitas cahaya",
+            "Mengukur kedalaman pitting",
+            "Menggantikan eye exam tahunan",
+            "Mengakses dan melihat sudut/sisi belakang yang tidak terlihat langsung"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Mirror digunakan untuk mengakses sudut atau sisi belakang yang tidak terlihat langsung, dan idealnya dipakai bersama light source langsung. Mirror bukan alat ukur cahaya maupun kedalaman.",
+          "category": "Equipment",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Bagaimana cara memverifikasi bahwa intensitas cahaya memenuhi syarat saat inspeksi VT?",
+          "options": [
+            "Memperkirakan secara visual oleh inspector",
+            "Mengandalkan spesifikasi watt lampu yang dipasang",
+            "Mengukur dengan lux meter tepat di permukaan inspeksi, bukan ambient umum",
+            "Cukup memastikan ruangan tidak gelap"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Lux meter harus mengukur cahaya tepat di permukaan inspeksi (bukan ambient umum) dan harus dikalibrasi (umumnya tahunan). Perkiraan visual atau spesifikasi watt lampu tidak menjamin 1000 lux pada titik kerja.",
+          "category": "Technique",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Berapa nilai minimum Color Rendering Index (CRI) sumber cahaya untuk inspeksi VT umum?",
+          "options": [
+            "Minimum 50",
+            "Minimum 80",
+            "Minimum 95",
+            "Tidak ada syarat CRI"
+          ],
+          "correctAnswer": 1,
+          "explanation": "CRI minimum 80 disyaratkan untuk inspeksi umum, sedangkan CRI 90+ dianjurkan untuk identifikasi warna yang kritis. CRI yang terlalu rendah menyebabkan warna tampak terdistorsi.",
+          "category": "Equipment",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Apa dampak glare (silau dari cahaya pantul yang terlalu kuat) terhadap inspeksi VT?",
+          "options": [
+            "Meningkatkan kontras retak halus",
+            "Tidak berpengaruh selama lux meter membaca >1000 lux",
+            "Membuat mata cepat lelah dan dapat menyembunyikan cacat",
+            "Membuat permukaan tampak lebih gelap dari sebenarnya"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Glare menyebabkan silau yang membuat mata cepat lelah dan dapat menutupi cacat; solusinya adalah menyesuaikan sudut cahaya atau memakai diffuse light. Glare justru menurunkan, bukan meningkatkan, kemampuan deteksi.",
+          "category": "Technique",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Dalam surface preparation untuk VT, apa yang umumnya harus dihilangkan dari permukaan?",
+          "options": [
+            "Hanya debu kasar saja",
+            "Dirt, oil, scale, dan paint (kecuali acceptance mengizinkan paint)",
+            "Logam dasar di sekitar las",
+            "Marking pen referensi"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Permukaan harus dibersihkan dari dirt, oil, scale, dan paint, kecuali bila kriteria penerimaan memang mengizinkan paint tetap ada. Marking pen referensi justru sengaja ditambahkan untuk dokumentasi.",
+          "category": "Technique",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Saat VT digabung dengan fluorescent dye, berapa intensitas minimum lampu UV-A yang disyaratkan?",
+          "options": [
+            "1000 microW/cm2 dengan booth gelap",
+            "100 microW/cm2 di ruang terang",
+            "500 lux putih biasa",
+            "Tidak ada syarat, cukup cahaya tampak 1000 lux"
+          ],
+          "correctAnswer": 0,
+          "explanation": "VT fluorescent membutuhkan lampu UV-A minimum 1000 microW/cm2 dengan booth gelap agar indikasi fluoresen tampak kontras. Cahaya tampak biasa atau intensitas UV yang rendah tidak akan memunculkan indikasi dengan jelas.",
+          "category": "Equipment",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Apa fungsi marking dengan pen marker pada area inspeksi VT?",
+          "options": [
+            "Menggantikan laporan tertulis",
+            "Meningkatkan intensitas cahaya",
+            "Memberi reference line, dimensi, dan lokasi defect",
+            "Membersihkan scale dari permukaan"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Pen marker dipakai untuk menandai reference line, dimensi, dan lokasi defect (permanent atau temporary), bukan untuk menggantikan laporan atau membersihkan permukaan.",
+          "category": "Documentation",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Pada fillet weld, dimensi las umumnya diukur dengan?",
+          "options": [
+            "Density radiograph",
+            "Leg length atau throat thickness",
+            "Skin depth",
+            "Half-life sumber"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Fillet weld (las antara dua permukaan tegak lurus) diukur dengan leg length atau throat thickness menggunakan fillet/welding gauge. Density, skin depth, dan half-life adalah parameter metode lain.",
+          "category": "Defects",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Pada full penetration groove weld, di mana inspeksi visual seharusnya dilakukan?",
+          "options": [
+            "Hanya di sisi face",
+            "Hanya di sisi root",
+            "Di kedua sisi (face dan root)",
+            "Hanya pada base metal di luar las"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Groove weld full penetration harus diinspeksi di kedua sisi, yaitu face dan root, karena las menembus penuh. Memeriksa satu sisi saja berisiko melewatkan cacat di sisi lainnya.",
+          "category": "Defects",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Apa ciri utama partial penetration weld dibanding full penetration?",
+          "options": [
+            "Selalu lebih kuat dari full penetration",
+            "Tidak boleh memiliki reinforcement",
+            "Wajib diinspeksi dengan UT saja",
+            "Terdapat unfused portion pada root yang penerimaannya bergantung pada desain"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Partial penetration weld tidak menembus penuh sehingga ada unfused portion di root, dan penerimaannya ditentukan per desain. Ini bukan cacat otomatis jika memang sesuai rancangan, dan tetap bisa diinspeksi secara visual.",
+          "category": "Defects",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Apa yang dimaksud dengan undercut pada las?",
+          "options": [
+            "Weld metal yang meluap ke base metal tanpa fusion",
+            "Cap las yang terlalu tinggi",
+            "Groove (alur) pada base metal di sebelah weld toe yang mengurangi cross-section",
+            "Depresi bulat di permukaan las"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Undercut adalah groove pada base metal di sebelah weld toe yang mengurangi cross-section dan menjadi stress concentration. Weld metal meluap tanpa fusion adalah overlap, sedangkan cap terlalu tinggi adalah excessive reinforcement.",
+          "category": "Defects",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Cacat las berupa weld metal yang meluap (overflow) ke base metal tanpa terjadi fusion disebut?",
+          "options": [
+            "Undercut",
+            "Overlap",
+            "Crater crack",
+            "Porosity"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Overlap adalah weld metal yang overflow ke base metal tanpa fusion, membentuk crevice yang dapat menampung media korosif. Undercut justru berupa alur, bukan overflow.",
+          "category": "Defects",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Crack yang muncul di ujung (end) suatu weld pass, sering berbentuk star shape, disebut?",
+          "options": [
+            "Undercut",
+            "Excessive reinforcement",
+            "Overlap",
+            "Crater crack"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Crater crack adalah retak di end of weld pass yang sering berbentuk bintang (star shape), umumnya akibat pendinginan cepat di crater. Distraktor lain bukan retak ujung pass.",
+          "category": "Defects",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Mengapa excessive reinforcement (cap las terlalu tinggi) dianggap sebagai cacat?",
+          "options": [
+            "Karena mengurangi cross-section las",
+            "Karena menjadi fatigue concern / stress raiser",
+            "Karena selalu menyebabkan porosity",
+            "Karena menurunkan intensitas cahaya inspeksi"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Excessive reinforcement membuat cap las terlalu tinggi sehingga menjadi fatigue concern karena transisi tajam berperan sebagai stress raiser. Ini menambah, bukan mengurangi, material di cap.",
+          "category": "Defects",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Cacat permukaan las berupa depresi bulat (round depression) di permukaan weld disebut?",
+          "options": [
+            "Pit/blowhole",
+            "Undercut",
+            "Overlap",
+            "Crater crack"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Pit atau blowhole adalah round depression di permukaan las akibat gas yang terperangkap. Undercut berupa alur memanjang dan crater crack berupa retak bintang di ujung pass.",
+          "category": "Defects",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Menurut AWS D1.1 untuk sambungan statically loaded dengan thickness > 25 mm, berapa kedalaman undercut maksimum yang masih dapat diterima?",
+          "options": [
+            "0,25 mm",
+            "0,5 mm",
+            "1 mm",
+            "2 mm"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Untuk statically loaded dengan thickness > 25 mm, AWS D1.1 mengizinkan undercut maksimum 1 mm. Nilai 0,25 mm adalah batas yang lebih ketat untuk kondisi cyclically loaded.",
+          "category": "Standards",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Untuk sambungan cyclically loaded menurut AWS D1.1, berapa kedalaman undercut maksimum yang diizinkan?",
+          "options": [
+            "1 mm",
+            "0,25 mm",
+            "1,5 mm",
+            "3 mm"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Cyclically loaded memiliki kriteria lebih ketat: undercut maksimum 0,25 mm, dan profil harus smooth transition. Beban siklik sangat sensitif terhadap stress concentration sehingga toleransinya lebih kecil.",
+          "category": "Standards",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Menurut AWS D1.1, bagaimana penerimaan crack (retak) pada las?",
+          "options": [
+            "Diterima jika kedalaman < 1 mm",
+            "Diterima jika hanya di base metal",
+            "Diterima untuk statically loaded saja",
+            "REJECT semua, tanpa pengecualian"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Crack di-REJECT semua tanpa pengecualian menurut AWS D1.1, baik statically maupun cyclically loaded. Retak adalah cacat paling kritis karena cenderung merambat di bawah beban.",
+          "category": "Standards",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Mengapa convexity berlebih pada fillet weld dibatasi oleh AWS D1.1?",
+          "options": [
+            "Karena menambah penetrasi root",
+            "Karena mengurangi leg length",
+            "Karena excess convexity menjadi stress raiser",
+            "Karena menyebabkan undercut otomatis"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Convexity fillet weld tidak boleh melebihi rumus AWS karena kelebihan convexity menjadi stress raiser pada transisi toe. Convexity tidak menambah penetrasi root maupun otomatis menimbulkan undercut.",
+          "category": "Standards",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Informasi mana yang wajib ada pada header sebuah laporan VT?",
+          "options": [
+            "Hanya nama inspector saja",
+            "Hanya hasil accept/reject",
+            "Project, weld ID, drawing, procedure, date, dan inspector cert",
+            "Spesifikasi merk lampu yang dipakai"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Header laporan VT mencakup project, weld ID, drawing, procedure, date, dan inspector cert sebagai informasi identifikasi dan traceability. Hasil accept/reject masuk di bagian findings, bukan header.",
+          "category": "Documentation",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Bagian findings pada laporan VT seharusnya mencantumkan?",
+          "options": [
+            "Defect type, lokasi (datum reference), dimensi, dan accept/reject per code",
+            "Hanya foto tanpa keterangan",
+            "Daftar harga peralatan",
+            "Riwayat eye exam inspector"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Findings harus memuat defect type, lokasi dengan datum reference, dimensi, serta keputusan accept/reject per code agar laporan jelas dan dapat ditelusuri. Foto tanpa keterangan tidak memenuhi standar pelaporan.",
+          "category": "Documentation",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Selain header dan findings, bagian sign-off pada laporan VT wajib memuat?",
+          "options": [
+            "Nama dan level inspector, supervisor, serta tanggal",
+            "Hanya nomor halaman",
+            "Daftar weld berikutnya",
+            "Spesifikasi lux meter saja"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Bagian sign-off mencantumkan inspector beserta level-nya, supervisor, dan tanggal sebagai pengesahan dan pertanggungjawaban laporan. Tanpa sign-off, laporan tidak sah secara administratif.",
+          "category": "Documentation",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Standar simbol las yang dipakai pada sketch laporan VT mengacu pada?",
+          "options": [
+            "AWS A2.4",
+            "ASME V Article 9",
+            "ISO 9712",
+            "Jaeger chart"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Simbol las pada sketch mengikuti AWS A2.4 agar konsisten dengan standar industri. ASME V Article 9 mengatur teknik VT, ISO 9712 mengatur sertifikasi personel, dan Jaeger chart untuk eye exam.",
+          "category": "Documentation",
+          "difficulty": "hard"
+        }
+      ]
+    },
+    {
+      "code": "ET-L1",
+      "method": "ET",
+      "questions": [
+        {
+          "question": "Prinsip fisika yang menjadi dasar semua Eddy Current Testing adalah...",
+          "options": [
+            "Induksi elektromagnetik (hukum Faraday)",
+            "Refleksi gelombang suara",
+            "Kapilaritas cairan",
+            "Atenuasi radiasi gamma"
+          ],
+          "correctAnswer": 0,
+          "explanation": "ET berlandaskan induksi elektromagnetik: perubahan medan magnet dari coil AC menginduksi tegangan dan eddy current di material konduktif (hukum Faraday). Refleksi suara adalah UT, kapilaritas adalah PT, dan atenuasi radiasi adalah RT.",
+          "category": "Prinsip Dasar",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Jenis material apa yang DAPAT diinspeksi dengan Eddy Current Testing?",
+          "options": [
+            "Plastik",
+            "Material konduktif listrik seperti aluminum dan baja",
+            "Keramik",
+            "Kayu"
+          ],
+          "correctAnswer": 1,
+          "explanation": "ET hanya bekerja pada material konduktif listrik (baja, aluminum, copper, brass, titanium) karena eddy current hanya dapat terinduksi pada konduktor. Plastik, keramik, dan kayu bukan konduktor sehingga tidak dapat diuji dengan ET.",
+          "category": "Prinsip Dasar",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Aplikasi terbesar Eddy Current Testing di industri adalah...",
+          "options": [
+            "Pengukuran kekasaran permukaan beton",
+            "Deteksi kebocoran gas",
+            "Inspeksi tubing heat exchanger",
+            "Pengujian kekerasan baja"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Aplikasi ET terbesar adalah inspeksi tubing heat exchanger karena tubing tersusun rapat dan tidak dapat diakses secara visual atau RT; bobbin probe ET menjadi satu-satunya cara feasibel. Opsi lain bukan aplikasi utama ET.",
+          "category": "Aplikasi",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Selain deteksi cacat, ET juga lazim dipakai untuk aplikasi pengukuran...",
+          "options": [
+            "Kadar air dalam beton",
+            "Tingkat kebisingan mesin",
+            "Ketebalan coating non-konduktif di atas logam dan conductivity sorting",
+            "Suhu permukaan tungku"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Karena lift-off berkaitan dengan jarak coil-logam, ET dipakai mengukur ketebalan coating non-konduktif di atas logam, dan perubahan konduktivitas dimanfaatkan untuk conductivity/material sorting. Kadar air, kebisingan, dan suhu bukan ranah ET.",
+          "category": "Aplikasi",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Apa yang sebenarnya diukur/berubah pada coil ketika eddy current terganggu oleh sebuah cacat?",
+          "options": [
+            "Suhu coil",
+            "Massa coil",
+            "Warna coil",
+            "Impedansi coil"
+          ],
+          "correctAnswer": 3,
+          "explanation": "Cacat mengganggu pola eddy current sehingga medan oposisi berubah dan menyebabkan perubahan impedansi coil yang ditampilkan sebagai sinyal. Suhu, massa, dan warna coil tidak digunakan sebagai parameter deteksi.",
+          "category": "Prinsip Dasar",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Fenomena terkonsentrasinya eddy current di dekat permukaan material dan menurun secara eksponensial ke dalam disebut...",
+          "options": [
+            "Lift-off effect",
+            "Skin effect",
+            "Lenz effect",
+            "Hall effect"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Skin effect adalah kecenderungan eddy current terkonsentrasi dekat permukaan dan meluruh eksponensial terhadap kedalaman. Lift-off adalah perubahan jarak probe-permukaan, sedangkan Lenz dan Hall adalah fenomena lain.",
+          "category": "Fisika ET",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Surface probe (pencil probe) paling tepat digunakan untuk...",
+          "options": [
+            "Inspeksi cepat seluruh keliling bar dalam satu pass",
+            "Inspeksi interior tube heat exchanger",
+            "Inspeksi titik per titik crack pada permukaan datar atau lengkung ringan",
+            "Mengukur dosis radiasi"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Surface (pencil) probe berupa coil kecil di tip silindris untuk inspeksi titik per titik crack pada permukaan datar/lengkung ringan. Inspeksi keliling bar memakai encircling probe, interior tube memakai bobbin, dan dosis radiasi bukan ranah ET.",
+          "category": "Probe",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Bobbin probe pada inspeksi heat exchanger dimasukkan ke...",
+          "options": [
+            "Bagian luar (OD) tube",
+            "Bagian dalam (interior/ID) tube",
+            "Antara dua tube sheet",
+            "Permukaan datar pelat"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Bobbin probe adalah coil internal yang dimasukkan ke dalam (interior/ID) tube dan menjadi standar inspeksi heat exchanger. Encircling probe-lah yang melingkupi OD bar/rod, bukan bobbin.",
+          "category": "Probe",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Apa yang dimaksud dengan LIFT-OFF pada Eddy Current Testing?",
+          "options": [
+            "Sudut datang gelombang suara",
+            "Tegangan baterai instrumen",
+            "Jarak antara coil dan permukaan material yang berubah-ubah",
+            "Suhu ruang inspeksi"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Lift-off adalah jarak antara coil dan permukaan material; perubahan jarak ini mengubah impedansi dan bisa salah dibaca sebagai defect. Pilihan lain tidak berkaitan dengan definisi lift-off.",
+          "category": "Probe",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Pada impedance plane, sumbu mendatar (X) dan tegak (Y) masing-masing merepresentasikan...",
+          "options": [
+            "X = perubahan resistance, Y = perubahan reactance",
+            "X = waktu, Y = amplitudo",
+            "X = frekuensi, Y = suhu",
+            "X = dosis, Y = jarak"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Impedance plane adalah tampilan X-Y dengan sumbu X = perubahan resistance dan Y = perubahan reactance; setiap kondisi material/defect menjadi titik di plane. Sumbu lain (waktu, frekuensi, dosis) bukan definisi impedance plane.",
+          "category": "Impedance Plane",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Reference standard berupa notch presisi yang dibuat dengan electrical-discharge machining disebut...",
+          "options": [
+            "FBH (flat bottom hole)",
+            "EDM notch",
+            "IQI",
+            "Step wedge"
+          ],
+          "correctAnswer": 1,
+          "explanation": "EDM notch adalah takik yang dimesin dengan electrical-discharge machining berdimensi presisi, menjadi standar reference untuk crack. FBH adalah lubang untuk defect volumetrik, sedangkan IQI dan step wedge adalah istilah dari metode lain.",
+          "category": "Kalibrasi",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Sebuah pit pada tube heat exchanger umumnya menghasilkan sinyal...",
+          "options": [
+            "Tajam dan terlokalisasi (sharp localized)",
+            "Lebar dan bertahap (broad gradual)",
+            "Berulang teratur seperti support plate",
+            "Tidak menghasilkan sinyal apa pun"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Pit menghasilkan sinyal tajam dan terlokalisasi karena defect-nya kecil dan lokal. Sinyal lebar bertahap menandakan wall loss umum, dan sinyal berulang teratur adalah support plate.",
+          "category": "Interpretasi",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Code utama yang mengatur Eddy Current Testing pada pressure equipment adalah...",
+          "options": [
+            "ASME Section IX",
+            "AWS D1.1",
+            "API 1104",
+            "ASME Section V Article 8"
+          ],
+          "correctAnswer": 3,
+          "explanation": "ASME Section V Article 8 adalah code utama untuk ET pada pressure equipment. ASME IX mengatur kualifikasi welding, sedangkan AWS D1.1 dan API 1104 adalah code welding/pipeline, bukan ET.",
+          "category": "Kode & Standar",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Salah satu elemen yang WAJIB ada dalam written procedure ET adalah...",
+          "options": [
+            "Scope berisi material, OD/ID tubing, ketebalan, dan jenis defect yang dicari",
+            "Resep makan siang teknisi",
+            "Merek mobil perusahaan",
+            "Jadwal libur nasional"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Written procedure ET harus memuat scope (material, OD/ID tubing, ketebalan, jenis defect), equipment, kalibrasi, dan acceptance. Item non-teknis seperti resep, merek mobil, atau jadwal libur jelas bukan bagian prosedur.",
+          "category": "Prosedur",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Standar ASTM yang dipakai sebagai standard practice untuk inspeksi tubing dengan eddy current adalah...",
+          "options": [
+            "ASTM E309",
+            "ASTM A36",
+            "ASTM D638",
+            "ASTM C150"
+          ],
+          "correctAnswer": 0,
+          "explanation": "ASTM E309 adalah standard practice untuk inspeksi tubing dengan eddy current (dan E243 untuk pipe & tube manufacturing). A36 spesifikasi baja struktural, D638 untuk plastik, C150 untuk semen - bukan standar ET.",
+          "category": "Kode & Standar",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Sebagai metode NDT, salah satu KEUNGGULAN keselamatan ET dibanding RT adalah...",
+          "options": [
+            "ET tidak memerlukan akses ke kedua sisi benda uji",
+            "ET dapat menguji material non-konduktif",
+            "ET tidak memerlukan kalibrasi",
+            "ET tidak menggunakan radiasi pengion sehingga tidak ada bahaya radiasi"
+          ],
+          "correctAnswer": 3,
+          "explanation": "ET memakai medan elektromagnetik non-pengion, sehingga tidak ada bahaya radiasi seperti pada RT dan tidak perlu area terkontrol radiasi. ET justru terbatas pada material konduktif dan tetap memerlukan kalibrasi.",
+          "category": "Keselamatan",
+          "difficulty": "easy"
+        },
+        {
+          "question": "Menurut hukum Lenz, eddy current yang terinduksi pada material akan mengalir dengan arah yang...",
+          "options": [
+            "Searah dengan perubahan medan coil",
+            "Berlawanan untuk menentang perubahan medan coil",
+            "Tegak lurus terhadap permukaan material",
+            "Acak tergantung suhu material"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Hukum Lenz menyatakan eddy current mengalir berlawanan untuk menentang perubahan medan magnet asalnya; medan oposisi inilah yang mengubah impedansi coil dan terdeteksi sebagai sinyal. Arahnya tidak searah, tidak tegak lurus, dan tidak acak.",
+          "category": "Prinsip Dasar",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Rumus standar kedalaman penetrasi (skin depth) yang diajarkan di modul (f dalam kHz, sigma dalam %IACS, mu_r relatif) adalah...",
+          "options": [
+            "delta ~ 21 / akar(f x sigma x mu_r) mm",
+            "delta ~ 21 x f x sigma x mu_r mm",
+            "delta ~ akar(f x sigma x mu_r) / 21 mm",
+            "delta ~ 21 / (f + sigma + mu_r) mm"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Skin depth standar delta ~ 21/akar(f x sigma x mu_r) mm; penetrasi berbanding terbalik dengan akar dari frekuensi, konduktivitas, dan permeabilitas. Bentuk perkalian langsung atau penjumlahan tidak benar.",
+          "category": "Fisika ET",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Sesuai rumus skin depth, jika frekuensi pengujian DINAIKKAN maka kedalaman penetrasi eddy current akan...",
+          "options": [
+            "Bertambah dalam",
+            "Berkurang/lebih dangkal",
+            "Tidak berubah",
+            "Menjadi nol seketika"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Karena delta berbanding terbalik dengan akar f, menaikkan frekuensi memperkecil skin depth sehingga penetrasi lebih dangkal namun sensitivitas permukaan meningkat. Penetrasi tidak bertambah dan tidak konstan.",
+          "category": "Fisika ET",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Untuk deteksi crack di PERMUKAAN dengan sensitivitas tinggi, rentang frekuensi yang paling tepat adalah...",
+          "options": [
+            "Frekuensi sangat rendah (<1 kHz)",
+            "DC (arus searah)",
+            "Frekuensi tinggi (>1 MHz)",
+            "Tanpa frekuensi sama sekali"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Frekuensi tinggi (>1 MHz) memberi sensitivitas tinggi terhadap cacat permukaan meski penetrasi dangkal (<0,5 mm), sehingga cocok untuk crack permukaan. Frekuensi rendah cocok untuk penetrasi dalam, dan DC tidak menghasilkan medan bergetar.",
+          "category": "Fisika ET",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Mengapa memilih frekuensi RENDAH (<10 kHz) berguna dalam inspeksi tertentu?",
+          "options": [
+            "Memberi penetrasi lebih dalam untuk near-surface defect, walau sensitivitas turun",
+            "Menghasilkan sensitivitas permukaan tertinggi",
+            "Menghilangkan kebutuhan kalibrasi",
+            "Membuat probe tidak peka lift-off"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Frekuensi rendah memperbesar skin depth sehingga penetrasi lebih dalam (untuk near-surface defect), namun konsekuensinya sensitivitas menurun. Frekuensi rendah bukan untuk sensitivitas permukaan tertinggi dan tidak menghapus kalibrasi maupun lift-off.",
+          "category": "Fisika ET",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Perbedaan utama konfigurasi DIFFERENTIAL dan ABSOLUTE pada bobbin probe adalah...",
+          "options": [
+            "Differential tidak butuh kalibrasi; absolute butuh",
+            "Differential hanya untuk plastik; absolute untuk logam",
+            "Differential memakai dua coil yang membaca selisih (peka defect kecil/lokal); absolute satu coil (peka perubahan gradual)",
+            "Keduanya identik, hanya beda merek"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Differential menggunakan dua coil yang membaca beda sehingga peka terhadap defect kecil/lokal seperti pitting; absolute menggunakan satu coil yang cocok mendeteksi perubahan gradual seperti wall thinning. Keduanya tetap butuh kalibrasi dan hanya untuk material konduktif.",
+          "category": "Probe",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Keunggulan utama ARRAY probe dibanding single-coil probe adalah...",
+          "options": [
+            "Lebih murah secara elektronik",
+            "Tidak terpengaruh konduktivitas material",
+            "Memindai area lebar dalam satu pass dengan resolusi tinggi",
+            "Tidak perlu balance/kalibrasi"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Array probe menyusun banyak coil sehingga memindai area lebar dalam satu pass dengan resolusi tinggi (boost produktivitas). Kelemahannya justru lebih mahal, dan tetap dipengaruhi konduktivitas serta memerlukan kalibrasi.",
+          "category": "Probe",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Probe modern dapat menghilangkan sinyal lift-off secara otomatis dengan teknik...",
+          "options": [
+            "Two-frequency atau lift-off mixing",
+            "Menambah panjang kabel",
+            "Mencelupkan probe ke air",
+            "Memperbesar diameter coil 10x"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Two-frequency atau lift-off mixing dapat membatalkan sinyal lift-off secara otomatis pada instrumen modern. Memanjangkan kabel, mencelup ke air, atau memperbesar coil bukan metode kompensasi lift-off.",
+          "category": "Probe",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Pada impedance plane, parameter yang membedakan sinyal CRACK dari sinyal LIFT-OFF adalah...",
+          "options": [
+            "Panjang kabel probe",
+            "Phase angle (sudut fasa)",
+            "Warna layar instrumen",
+            "Nomor seri probe"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Crack dan lift-off bergerak ke arah/sudut yang berbeda di impedance plane, sehingga phase angle digunakan untuk membedakan keduanya. Panjang kabel, warna layar, dan nomor seri tidak relevan untuk diskriminasi sinyal.",
+          "category": "Impedance Plane",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Tujuan melakukan PHASE ROTATION pada instrumen ET modern adalah...",
+          "options": [
+            "Menaikkan tegangan baterai",
+            "Mengubah material menjadi konduktif",
+            "Meng-align sinyal lift-off ke horizontal sehingga sinyal defect tampil vertikal/lebih jelas",
+            "Menghapus kebutuhan reference standard"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Phase rotation memutar fasa agar sinyal lift-off sejajar horizontal, sehingga sinyal defect muncul vertikal dan lebih mudah dibaca sebagai sinyal murni. Rotasi fasa tidak mengubah baterai, material, atau menghapus reference standard.",
+          "category": "Impedance Plane",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Sebelum scanning, probe perlu di-BALANCE. Balance dilakukan dengan menempatkan probe di...",
+          "options": [
+            "Tepat di atas notch terdalam",
+            "Area tanpa defect (reference) agar operating point ke center display",
+            "Di atas support plate",
+            "Di atas pit yang paling dalam"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Balance dilakukan di area no-defect sehingga operating point berada di center display sebagai titik nol acuan. Menempatkan probe di notch, pit, atau support plate justru memasukkan sinyal defect/geometrik ke titik balance.",
+          "category": "Kalibrasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Dalam urutan kalibrasi ET, setelah balance probe, gain diatur sehingga sinyal dari notch reference mencapai amplitudo predetermined yang tipikalnya...",
+          "options": [
+            "20% FSH",
+            "50% FSH",
+            "80% FSH",
+            "120% FSH"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Gain diatur agar sinyal dari notch reference mencapai amplitudo tipikal 80% FSH (full screen height) sesuai prosedur. 20% dan 50% terlalu rendah, sedangkan 120% melebihi skala layar.",
+          "category": "Kalibrasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Menurut ASME V, verifikasi kalibrasi (mid-shift) ET tipikal dilakukan...",
+          "options": [
+            "Setiap 4 jam atau saat pergantian operator",
+            "Sekali per tahun",
+            "Hanya jika ditemukan defect",
+            "Setiap 30 detik"
+          ],
+          "correctAnswer": 0,
+          "explanation": "ASME V menetapkan verifikasi kalibrasi setiap 4 jam atau saat operator berganti. Sekali setahun terlalu jarang, hanya saat ditemukan defect tidak menjamin validitas, dan tiap 30 detik tidak praktis.",
+          "category": "Kalibrasi",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Pada inspeksi heat exchanger, pull rate (kecepatan tarik) bobbin probe yang tipikal adalah...",
+          "options": [
+            "10-20 m/s secepat mungkin",
+            "0,5-1 m/s dan dijaga konstan",
+            "Tidak penting, boleh berubah-ubah",
+            "Hanya 1 mm/jam"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Pull rate bobbin probe tipikal 0,5-1 m/s dan harus konstan; kecepatan yang tidak konsisten menimbulkan artifact sinyal. Kecepatan terlalu tinggi atau berubah-ubah merusak interpretasi, dan 1 mm/jam tidak praktis.",
+          "category": "Teknik",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Pada banyak prosedur tubing, pit dengan kedalaman melebihi ambang tertentu memerlukan tindakan plug/repair. Ambang yang umum diajarkan adalah kedalaman...",
+          "options": [
+            ">10% wall",
+            ">40% wall",
+            ">90% wall",
+            ">5% wall"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Pit yang lebih dalam dari 40% ketebalan dinding (>40% wall) umumnya memerlukan repair/plug sesuai materi. Ambang 10% atau 5% terlalu konservatif untuk batas ini, sedangkan menunggu hingga 90% terlalu berbahaya.",
+          "category": "Acceptance",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Standar internasional yang khusus mengatur pengujian eddy current adalah...",
+          "options": [
+            "ISO 9712",
+            "ISO 15549",
+            "ISO 9001",
+            "ISO 14001"
+          ],
+          "correctAnswer": 1,
+          "explanation": "ISO 15549 adalah standar internasional untuk pengujian eddy current. ISO 9712 mengatur kualifikasi & sertifikasi personel NDT, ISO 9001 sistem manajemen mutu, dan ISO 14001 manajemen lingkungan.",
+          "category": "Kode & Standar",
+          "difficulty": "medium"
+        },
+        {
+          "question": "Pada 100 kHz aluminum (sigma=40%IACS, mu_r=1), skin depth dengan delta ~ 21/akar(f x sigma x mu_r) kira-kira sebesar...",
+          "options": [
+            "~ 3,3 mm",
+            "~ 0,33 mm",
+            "~ 33 mm",
+            "~ 0,03 mm"
+          ],
+          "correctAnswer": 1,
+          "explanation": "delta ~ 21/akar(100x40x1) = 21/akar(4000) ~ 21/63,2 ~ 0,33 mm, sesuai contoh modul. Nilai lain berbeda satu hingga dua orde dari hasil yang benar.",
+          "category": "Fisika ET",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Mengapa baja (steel) memiliki skin depth jauh lebih kecil daripada aluminum pada frekuensi yang sama?",
+          "options": [
+            "Karena baja tidak konduktif",
+            "Karena permeabilitas relatif (mu_r) baja jauh lebih besar",
+            "Karena baja lebih ringan",
+            "Karena baja tidak ferromagnetik"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Baja ferromagnetik punya mu_r tinggi (mis. ~100); karena delta berbanding terbalik dengan akar mu_r, skin depth-nya jadi sangat kecil (mis. ~0,07 mm pada 100 kHz). Baja justru konduktif dan ferromagnetik, dan beratnya tidak relevan dengan skin depth.",
+          "category": "Fisika ET",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Pada teknik MIXING dua-frekuensi, sinyal support plate dan lift-off dapat dihilangkan dengan cara...",
+          "options": [
+            "Mengurangkan reference channel dari signal channel sehingga tersisa display defect-only",
+            "Menjumlahkan amplitudo semua channel",
+            "Mengalikan frekuensi dengan suhu",
+            "Menonaktifkan operating point"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Mixing two-frequency mengurangkan reference channel dari signal channel untuk membatalkan sinyal lift-off dan support plate, menyisakan tampilan defect-only. Menjumlahkan amplitudo atau mengalikan frekuensi-suhu bukan cara mixing.",
+          "category": "Impedance Plane",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Jika verifikasi kalibrasi mid-shift GAGAL (kalibrasi tidak valid), tindakan yang benar adalah...",
+          "options": [
+            "Lanjut scanning karena hasil sebelumnya pasti benar",
+            "Recalibrate dari awal dan re-scan semua weld/tube sejak last good calibration",
+            "Menaikkan gain hingga sinyal kembali muncul lalu lanjut",
+            "Mengabaikan dan menandatangani laporan"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Jika verifikasi gagal, harus recalibrate dari awal dan re-scan semua weld/tube sejak kalibrasi valid terakhir karena hasil di antaranya diragukan. Melanjutkan, menaikkan gain sembarangan, atau mengabaikan akan membuat hasil tidak andal.",
+          "category": "Kalibrasi",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Pada impedance plane, perbedaan material atau temper (kondisi metalurgi) akan menggeser titik sinyal di sepanjang...",
+          "options": [
+            "Lift-off line",
+            "Conductivity curve",
+            "Sumbu waktu",
+            "Garis dosis"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Perubahan konduktivitas akibat beda material atau temper menggeser sinyal sepanjang conductivity curve. Lift-off line khusus untuk perubahan jarak probe, dan sumbu waktu/dosis tidak ada pada impedance plane.",
+          "category": "Impedance Plane",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Pada interpretasi tubing, sinyal kuat yang muncul di ujung tube (tube end / tube sheet) sebaiknya...",
+          "options": [
+            "Dikenali sebagai end signal yang berbeda signature-nya dari pit di mid-tube",
+            "Langsung dianggap pit terdalam",
+            "Diabaikan sepenuhnya tanpa evaluasi",
+            "Dihitung sebagai support plate baru"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Ujung tube (tube sheet) menghasilkan sinyal kuat dengan signature berbeda dari pit di tengah tube, sehingga harus dikenali sebagai end signal agar tidak salah diklasifikasikan. Menganggapnya langsung sebagai pit, mengabaikannya, atau menyebutnya support plate adalah keliru.",
+          "category": "Interpretasi",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Untuk mengkuantifikasi wall loss UMUM (general/gradual) pada tubing, teknik yang paling tepat adalah...",
+          "options": [
+            "Hanya melihat warna tube",
+            "Sengaja menambah lift-off",
+            "Multi-frequency mixing",
+            "Mematikan threshold"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Wall loss umum berupa sinyal lebar bertahap dan paling tepat dikuantifikasi dengan multi-frequency mixing yang membantu memisahkan kontribusi geometri dari penipisan. Melihat warna, menambah lift-off, atau mematikan threshold tidak mengukur penipisan dinding.",
+          "category": "Interpretasi",
+          "difficulty": "hard"
+        },
+        {
+          "question": "Sebuah pit kecil yang sangat terlokalisasi berisiko TERLEWAT (under-call) jika diinspeksi memakai probe absolute. Penjelasan paling tepat adalah...",
+          "options": [
+            "Probe absolute hanya bisa membaca material non-konduktif",
+            "Probe absolute peka terhadap perubahan gradual/drift sehingga indikasi lokal kecil bisa tenggelam, sedangkan differential lebih unggul untuk defect lokal",
+            "Probe absolute tidak memerlukan kalibrasi sehingga selalu salah",
+            "Probe absolute hanya bekerja pada frekuensi DC"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Absolute (satu coil) responsif terhadap perubahan gradual dan rentan drift (mis. akibat suhu), sehingga indikasi lokal kecil seperti pit dapat tenggelam; differential (dua coil) membaca selisih lokal sehingga lebih unggul mendeteksi defect kecil/terlokalisasi. Absolute tetap untuk material konduktif, memerlukan kalibrasi, dan bekerja dengan AC.",
+          "category": "Probe",
+          "difficulty": "hard"
+        }
+      ]
+    }
+  ]
+}

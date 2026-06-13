@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Radiation, Layers, Maximize, AlertTriangle, FileOutput, Info, CheckCircle, RefreshCw } from 'lucide-react';
 
 export default function RadiographyLab() {
+    const prefersReducedMotion = useReducedMotion();
     const [focalSpot, setFocalSpot] = useState(3);
     const [sod, setSod] = useState(500);
     const [ofd, setOfd] = useState(20);
@@ -39,8 +40,8 @@ export default function RadiographyLab() {
                     <div className="flex items-center gap-3">
                         <motion.div
                             className="p-2 bg-white/20 rounded-lg"
-                            animate={{ rotate: [0, 5, -5, 0] }}
-                            transition={{ repeat: Infinity, duration: 3 }}
+                            animate={prefersReducedMotion ? { rotate: 0 } : { rotate: [0, 5, -5, 0] }}
+                            transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, duration: 3 }}
                         >
                             <Radiation className="h-5 w-5 sm:h-6 sm:w-6" />
                         </motion.div>
@@ -79,8 +80,8 @@ export default function RadiographyLab() {
                     </div>
                     <motion.span
                         className={`font-mono font-bold text-lg ${isCompliant ? 'text-green-600' : 'text-amber-600'}`}
-                        animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ duration: 0.2 }}
+                        animate={prefersReducedMotion ? { scale: 1 } : { scale: [1, 1.1, 1] }}
+                        transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2 }}
                         key={ug.toFixed(3)}
                     >
                         {ug.toFixed(3)} mm
@@ -103,18 +104,20 @@ export default function RadiographyLab() {
                                         borderRight: '100px solid transparent',
                                         borderTop: '200px solid rgba(250,204,21,0.1)',
                                     }}
-                                    animate={{ opacity: [0.1, 0.2, 0.1] }}
-                                    transition={{ repeat: Infinity, duration: 2 }}
+                                    animate={prefersReducedMotion ? { opacity: 0.15 } : { opacity: [0.1, 0.2, 0.1] }}
+                                    transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, duration: 2 }}
                                 />
 
                                 {/* Source */}
                                 <div className="relative z-10 text-center">
                                     <motion.div
                                         className="w-0 h-0 border-l-[15px] sm:border-l-[20px] border-l-transparent border-r-[15px] sm:border-r-[20px] border-r-transparent border-t-[30px] sm:border-t-[40px] border-t-yellow-400 mx-auto"
-                                        animate={{
-                                            filter: ['drop-shadow(0 0 8px rgba(250,204,21,0.6))', 'drop-shadow(0 0 15px rgba(250,204,21,0.9))', 'drop-shadow(0 0 8px rgba(250,204,21,0.6))']
-                                        }}
-                                        transition={{ repeat: Infinity, duration: 1.5 }}
+                                        animate={prefersReducedMotion
+                                            ? { filter: 'drop-shadow(0 0 12px rgba(250,204,21,0.8))' }
+                                            : {
+                                                filter: ['drop-shadow(0 0 8px rgba(250,204,21,0.6))', 'drop-shadow(0 0 15px rgba(250,204,21,0.9))', 'drop-shadow(0 0 8px rgba(250,204,21,0.6))']
+                                            }}
+                                        transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, duration: 1.5 }}
                                     />
                                     <span className="text-yellow-400 text-[10px] sm:text-xs font-bold mt-1 block">
                                         SOURCE (F={focalSpot.toFixed(1)}mm)
@@ -134,10 +137,12 @@ export default function RadiographyLab() {
                                 {/* Film/Detector */}
                                 <motion.div
                                     className="relative z-10 w-4/5 h-3 bg-blue-500 rounded"
-                                    animate={{
-                                        boxShadow: ['0 0 10px rgba(59,130,246,0.4)', '0 0 20px rgba(59,130,246,0.7)', '0 0 10px rgba(59,130,246,0.4)']
-                                    }}
-                                    transition={{ repeat: Infinity, duration: 2 }}
+                                    animate={prefersReducedMotion
+                                        ? { boxShadow: '0 0 15px rgba(59,130,246,0.6)' }
+                                        : {
+                                            boxShadow: ['0 0 10px rgba(59,130,246,0.4)', '0 0 20px rgba(59,130,246,0.7)', '0 0 10px rgba(59,130,246,0.4)']
+                                        }}
+                                    transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, duration: 2 }}
                                 >
                                     <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-blue-400 text-[10px] sm:text-xs font-bold">DETECTOR</span>
                                 </motion.div>
@@ -171,8 +176,8 @@ export default function RadiographyLab() {
                                 {/* Defect indications with blur based on Ug */}
                                 <motion.div
                                     className="relative flex items-center justify-center gap-6"
-                                    animate={{ opacity: [0.9, 1, 0.9] }}
-                                    transition={{ repeat: Infinity, duration: 2 }}
+                                    animate={prefersReducedMotion ? { opacity: 1 } : { opacity: [0.9, 1, 0.9] }}
+                                    transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, duration: 2 }}
                                 >
                                     <div className="w-40 h-0.5 bg-white" style={{ filter: `blur(${blurAmount}px)` }} />
                                     <div className="w-1 h-10 bg-white rotate-12" style={{ filter: `blur(${blurAmount}px)` }} />

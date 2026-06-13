@@ -1,63 +1,190 @@
-import { useState } from 'react';
-import { Check, X, RotateCcw, ChevronDown, ChevronUp } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { Check, X, RotateCcw, ChevronDown, ChevronUp, AlertTriangle, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PASSING_SCORE } from '@/config/elearning';
 
-const SAMPLE_QUESTIONS = [
-  {
-    id: 'sample-1',
-    question: 'Which property of a couplant is most directly responsible for efficient ultrasonic energy transfer into the test piece?',
-    options: ['Color', 'Acoustic impedance close to the specimen', 'Smell', 'Density alone'],
-    correctAnswer: 1,
-    explanation: 'Couplant must have acoustic impedance roughly halfway between the probe and specimen to minimize reflection at the interface.'
-  },
-  {
-    id: 'sample-2',
-    question: 'In a DAC curve construction, you typically use reflectors at multiple known depths. Why?',
-    options: ['To make the test piece heavier', 'To create reference amplitudes that compensate for attenuation with depth', 'To disable the gate', 'For decoration'],
-    correctAnswer: 1,
-    explanation: 'DAC compensates the operator for the natural amplitude drop with increasing distance.'
-  }
-];
+// QuizRunner is PRESENTATIONAL ONLY. It never scores locally and never sees the
+// answer key until the server returns it inside `review` after submission.
+//   props.questions : [{ id, question, options, difficulty }]  (no correctAnswer)
+//   props.onSubmit  : (answers) => Promise<{ score, passed, passingScore, review, certificate? }>
+//                       review: [{ id, correctAnswer, explanation, yourAnswer, isCorrect }]
+//   props.onComplete: ({ score, passed, certificate }) => void  (called after result shown)
+export default function QuizRunner({
+  questions,
+  onSubmit,
+  onComplete,
+  passingScore = PASSING_SCORE,
+  className,
+}) {
+  const list = Array.isArray(questions) ? questions : [];
 
-export default function QuizRunner({ questions, onComplete, className }) {
-  const list = questions && questions.length > 0 ? questions : SAMPLE_QUESTIONS;
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [submitted, setSubmitted] = useState(false);
   const [reviewMode, setReviewMode] = useState(false);
+  const [status, setStatus] = useState('idle'); // idle | submitting | done | error
+  const [result, setResult] = useState(null); // server result
+  const [errorMsg, setErrorMsg] = useState('');
+
+  // Refs to the radio option buttons for roving-tabindex keyboard navigation.
+  const optionRefs = useRef([]);
+
+  // —— Fail-closed: no questions => never grade, never issue a certificate ——
+  if (list.length === 0) {
+    return (
+      <div className={cn('rounded-xl border-2 border-amber-300 bg-amber-50 p-6 sm:p-8', className)}>
+        <div className="flex items-start gap-3">
+          <span className="inline-grid h-9 w-9 place-items-center rounded-full bg-amber-100 text-amber-700 shrink-0">
+            <AlertTriangle className="h-5 w-5" />
+          </span>
+          <div>
+            <h3 className="text-[18px] font-bold leading-snug text-slate-900">Asesmen belum tersedia</h3>
+            <p className="mt-1.5 text-[14px] leading-relaxed text-slate-700">
+              Bank soal untuk asesmen ini sedang disiapkan. Tidak ada penilaian atau
+              sertifikat yang diterbitkan dari halaman ini sampai soal tersedia.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const current = list[idx];
   const userAnswer = answers[current.id];
   const isLast = idx === list.length - 1;
 
+  // Drop stale option refs when the option count shrinks between questions.
+  optionRefs.current.length = current.options?.length ?? 0;
+
   function selectOption(optIndex) {
-    if (submitted) return;
+    if (status === 'submitting' || status === 'done') return;
     setAnswers((prev) => ({ ...prev, [current.id]: optIndex }));
+  }
+
+  // Roving-tabindex keyboard handling for the radiogroup. Arrow keys move and
+  // select (native radio behaviour); Space/Enter select the focused option.
+  function focusOption(optIndex) {
+    const node = optionRefs.current[optIndex];
+    if (node) node.focus();
+  }
+
+  function onOptionKeyDown(e, i) {
+    if (status === 'submitting' || status === 'done') return;
+    const count = current.options.length;
+    switch (e.key) {
+      case 'ArrowDown':
+      case 'ArrowRight': {
+        e.preventDefault();
+        const nextIdx = (i + 1) % count;
+        selectOption(nextIdx);
+        focusOption(nextIdx);
+        break;
+      }
+      case 'ArrowUp':
+      case 'ArrowLeft': {
+        e.preventDefault();
+        const prevIdx = (i - 1 + count) % count;
+        selectOption(prevIdx);
+        focusOption(prevIdx);
+        break;
+      }
+      case ' ':
+      case 'Enter': {
+        e.preventDefault();
+        selectOption(i);
+        break;
+      }
+      default:
+        break;
+    }
+  }
+
+  async function submit() {
+    setStatus('submitting');
+    setErrorMsg('');
+    try {
+      const res = await onSubmit?.(answers);
+      if (!res || typeof res.score !== 'number') {
+        throw new Error('invalid_result');
+      }
+      setResult(res);
+      setStatus('done');
+      const passed =
+        typeof res.passed === 'boolean'
+          ? res.passed
+          : res.score >= (res.passingScore ?? passingScore);
+      onComplete?.({ score: res.score, passed, certificate: res.certificate });
+    } catch {
+      // Never fabricate a score — surface an error and let the user retry.
+      setStatus('error');
+      setErrorMsg('Gagal menilai, coba lagi');
+    }
   }
 
   function next() {
     if (!isLast) {
       setIdx(idx + 1);
     } else {
-      setSubmitted(true);
-      const correctCount = list.filter((q) => answers[q.id] === q.correctAnswer).length;
-      const score = Math.round((correctCount / list.length) * 100);
-      onComplete?.({ score, answers });
+      submit();
     }
   }
 
+  // 'Coba ulang' — reset answers to retry (only offered when not passed).
   function retry() {
     setIdx(0);
     setAnswers({});
-    setSubmitted(false);
     setReviewMode(false);
+    setStatus('idle');
+    setResult(null);
+    setErrorMsg('');
   }
 
-  // —— Submitted state: result + review toggle ——
-  if (submitted) {
-    const correctCount = list.filter((q) => answers[q.id] === q.correctAnswer).length;
-    const score = Math.round((correctCount / list.length) * 100);
-    const passed = score >= 75;
+  // —— Submitting state ——
+  if (status === 'submitting') {
+    return (
+      <div className={cn('rounded-xl border-2 border-slate-200 bg-white p-8 text-center', className)}>
+        <Loader2 className="mx-auto h-7 w-7 animate-spin text-orange-600" />
+        <p className="mt-3 text-[14px] text-slate-600">Menilai jawaban…</p>
+      </div>
+    );
+  }
+
+  // —— Error state ——
+  if (status === 'error') {
+    return (
+      <div className={cn('rounded-xl border-2 border-rose-300 bg-rose-50 p-6 sm:p-8 text-center', className)}>
+        <div className="flex flex-col items-center gap-3">
+          <span className="inline-grid h-10 w-10 place-items-center rounded-full bg-rose-100 text-rose-700">
+            <X className="h-5 w-5" strokeWidth={2.5} />
+          </span>
+          <div>
+            <h3 className="text-[17px] font-bold text-slate-900">{errorMsg || 'Gagal menilai, coba lagi'}</h3>
+            <p className="mt-1 text-[13.5px] text-slate-600">Terjadi kendala saat mengirim jawaban ke server.</p>
+          </div>
+          <button
+            type="button"
+            onClick={submit}
+            className="inline-flex items-center gap-2 rounded-md bg-slate-900 px-4 py-2.5 text-[13px] font-semibold text-white hover:bg-orange-600"
+          >
+            <RotateCcw className="h-4 w-4" />
+            Coba lagi
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // —— Result + review (from server) ——
+  if (status === 'done' && result) {
+    const score = result.score;
+    const effPassing = result.passingScore ?? passingScore;
+    const passed =
+      typeof result.passed === 'boolean' ? result.passed : score >= effPassing;
+    const review = Array.isArray(result.review) ? result.review : [];
+    const reviewById = review.reduce((acc, r) => {
+      acc[r.id] = r;
+      return acc;
+    }, {});
+    const correctCount = review.filter((r) => r.isCorrect).length;
 
     return (
       <div className={cn('space-y-5', className)}>
@@ -81,8 +208,8 @@ export default function QuizRunner({ questions, onComplete, className }) {
             <span className="text-2xl text-slate-500">%</span>
           </div>
           <div className="mt-2 text-[14px] text-slate-700">
-            <b className="text-slate-900">{correctCount}</b> dari <b className="text-slate-900">{list.length}</b> jawaban benar
-            {!passed && <> · butuh ≥75% untuk lulus</>}
+            <b className="text-slate-900">{correctCount}</b> dari <b className="text-slate-900">{review.length || list.length}</b> jawaban benar
+            {!passed && <> · butuh ≥{effPassing}% untuk lulus</>}
           </div>
 
           <div className="mt-5 flex flex-wrap justify-center gap-2">
@@ -107,16 +234,17 @@ export default function QuizRunner({ questions, onComplete, className }) {
           </div>
         </div>
 
-        {/* Review per-question */}
+        {/* Review per-question — join props.questions with server review entries */}
         {reviewMode && (
           <div className="space-y-3">
             <div className="font-plexMono text-[11px] uppercase tracking-[0.12em] text-slate-500 px-1">
               Review · {list.length} questions
             </div>
             {list.map((q, qi) => {
-              const userIdx = answers[q.id];
-              const correctIdx = q.correctAnswer;
-              const isCorrect = userIdx === correctIdx;
+              const r = reviewById[q.id] || {};
+              const userIdx = r.yourAnswer ?? null;
+              const correctIdx = r.correctAnswer;
+              const isCorrect = r.isCorrect === true;
               return (
                 <div
                   key={q.id}
@@ -172,12 +300,12 @@ export default function QuizRunner({ questions, onComplete, className }) {
                     })}
                   </div>
 
-                  {q.explanation && (
+                  {r.explanation && (
                     <div className="ml-9 mt-3 rounded-md bg-slate-50 border-l-4 border-orange-amber p-3 text-[13px] text-slate-700">
                       <div className="font-plexMono text-[10.5px] uppercase tracking-[0.12em] text-orange-700 font-bold mb-1">
                         ◉ Explanation
                       </div>
-                      <p className="leading-relaxed">{q.explanation}</p>
+                      <p className="leading-relaxed">{r.explanation}</p>
                     </div>
                   )}
                 </div>
@@ -200,20 +328,33 @@ export default function QuizRunner({ questions, onComplete, className }) {
         {current.question}
       </div>
 
-      <div className="space-y-2.5">
+      <div
+        role="radiogroup"
+        aria-label={current.question}
+        className="space-y-2.5"
+      >
         {current.options.map((opt, i) => {
           const selected = userAnswer === i;
+          // Roving tabindex: the selected option is tabbable; if none selected
+          // yet, the first option is the tab stop so keyboard users can enter.
+          const isTabStop = userAnswer === undefined ? i === 0 : selected;
           return (
             <button
               key={i}
               type="button"
+              role="radio"
+              aria-checked={selected}
+              tabIndex={isTabStop ? 0 : -1}
+              ref={(el) => { optionRefs.current[i] = el; }}
               onClick={() => selectOption(i)}
+              onKeyDown={(e) => onOptionKeyDown(e, i)}
               className={cn(
                 'w-full grid grid-cols-[20px_1fr] items-center gap-3 rounded-md border-2 px-4 py-3 text-left text-[14.5px] transition-all',
                 selected ? 'border-orange-500 bg-orange-50' : 'border-slate-200 hover:border-slate-400'
               )}
             >
               <span
+                aria-hidden="true"
                 className={cn(
                   'inline-grid h-4 w-4 place-items-center rounded-full border-2',
                   selected ? 'border-orange-600 bg-orange-600' : 'border-slate-300'

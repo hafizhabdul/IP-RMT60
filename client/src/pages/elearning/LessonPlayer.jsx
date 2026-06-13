@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { X, Menu } from 'lucide-react';
+import { X, Menu, Info, Award, Beaker } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 import { usePathDetail } from '@/hooks/useLearningPaths';
-import { useStartStep, useCompleteStep } from '@/hooks/useProgress';
+import { useStartStep, useCompleteStep, useGradeQuiz } from '@/hooks/useProgress';
+import { SIM_AVAILABLE_METHODS } from '@/config/elearning';
 import {
   CourseSidebar,
   LessonHero,
@@ -21,10 +22,13 @@ export default function LessonPlayer() {
   const { user } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [quizScore, setQuizScore] = useState(null);
+  const [quizPassed, setQuizPassed] = useState(false);
+  const [earnedCertificate, setEarnedCertificate] = useState(null);
 
   const { data: path, isLoading, refetch } = usePathDetail(code);
   const startStep = useStartStep();
   const completeStep = useCompleteStep();
+  const gradeQuiz = useGradeQuiz();
 
   const moduleNumber = parseInt(number, 10);
   const module = path?.modules?.find((m) => m.orderIndex === moduleNumber);
@@ -39,9 +43,29 @@ export default function LessonPlayer() {
     return path.enrollment?.completionPercent ?? 0;
   }, [path]);
 
-  // Mark step as in_progress on mount
+  // Derive the NDT method for an animated step: prefer the simulationRef prefix
+  // (e.g. 'ut-couplant-intro' -> 'UT'), fall back to the path's method/code.
+  const stepMethod = useMemo(() => {
+    const fromRef = typeof step?.simulationRef === 'string'
+      ? step.simulationRef.split('-')[0]
+      : null;
+    const raw = fromRef || path?.method || path?.code;
+    return raw ? String(raw).toUpperCase() : null;
+  }, [step?.simulationRef, path?.method, path?.code]);
+
+  const simMethodAvailable = stepMethod && SIM_AVAILABLE_METHODS.includes(stepMethod);
+
+  // Reset quiz state whenever the active step changes.
+  useEffect(() => {
+    setQuizScore(null);
+    setQuizPassed(false);
+    setEarnedCertificate(null);
+  }, [step?.id]);
+
+  // Mark step as in_progress on mount (authenticated only, silently).
   useEffect(() => {
     if (step?.id && user) {
+      // Never block preview on a failed start call.
       startStep.mutate(step.id);
     }
   }, [step?.id, user]);
@@ -81,37 +105,49 @@ export default function LessonPlayer() {
     navigate(`/e-learning/paths/${code}/modules/${moduleNumber}/steps/${prevStep.id}`);
   }
 
-  async function handleNext() {
-    try {
-      const payload = { stepId: step.id, code };
-      if (step.kind === 'quiz' && quizScore !== null) {
-        payload.score = quizScore;
-      }
-      await completeStep.mutateAsync(payload);
-
-      // Navigate
-      if (nextStep) {
-        navigate(`/e-learning/paths/${code}/modules/${moduleNumber}/steps/${nextStep.id}`);
+  function goToNext() {
+    if (nextStep) {
+      navigate(`/e-learning/paths/${code}/modules/${moduleNumber}/steps/${nextStep.id}`);
+    } else {
+      // End of module — find next module's first step
+      const nextModule = path.modules.find((m) => m.orderIndex > moduleNumber && m.steps?.length > 0);
+      if (nextModule) {
+        navigate(`/e-learning/paths/${code}/modules/${nextModule.orderIndex}/steps/${nextModule.steps[0].id}`);
       } else {
-        // End of module — find next module's first step
-        const nextModule = path.modules.find((m) => m.orderIndex > moduleNumber && m.steps?.length > 0);
-        if (nextModule) {
-          navigate(`/e-learning/paths/${code}/modules/${nextModule.orderIndex}/steps/${nextModule.steps[0].id}`);
-        } else {
-          navigate(`/e-learning/paths/${code}`);
-        }
+        navigate(`/e-learning/paths/${code}`);
       }
-      await refetch();
-    } catch (e) {
-      // toast via interceptor
     }
+  }
+
+  async function handleNext() {
+    // Quiz steps were already persisted server-side by gradeQuiz — never call
+    // completeStep for them (it must not mint certificates or touch scores).
+    if (step.kind !== 'quiz' && user) {
+      try {
+        await completeStep.mutateAsync({ stepId: step.id, code });
+        await refetch();
+      } catch {
+        // Guest / transient failures must never block navigation (silent).
+      }
+    }
+    goToNext();
   }
 
   function handleExit() {
     navigate(`/e-learning/paths/${code}`);
   }
 
-  const stepCanAdvance = step.kind !== 'quiz' || quizScore !== null;
+  // MASTERY GATE: a quiz step only unlocks Next once the server says it passed.
+  const stepCanAdvance = step.kind !== 'quiz' || quizPassed === true;
+
+  async function handleQuizSubmit(answers) {
+    // Server-authoritative grading. Returns { score, passed, passingScore, review, certificate }.
+    const result = await gradeQuiz.mutateAsync({ stepId: step.id, answers, code });
+    setQuizScore(result.score);
+    setQuizPassed(result.passed === true);
+    if (result.certificate) setEarnedCertificate(result.certificate);
+    return result;
+  }
 
   return (
     <div className="elearning-surface el-player min-h-screen bg-white">
@@ -161,6 +197,20 @@ export default function LessonPlayer() {
           />
 
           <section className="px-6 sm:px-12 py-10 sm:py-14 max-w-[920px]">
+            {/* Guest preview banner — informs guests progress/certs won't save. */}
+            {!user && (
+              <div className="mb-7 flex items-start gap-3 rounded-lg border border-orange-200 bg-orange-50 px-4 py-3 text-[13.5px] text-slate-700">
+                <Info className="mt-0.5 h-4 w-4 shrink-0 text-orange-600" />
+                <p className="leading-relaxed">
+                  Anda sedang melihat pratinjau.{' '}
+                  <Link to="/login" className="font-semibold text-orange-700 underline">
+                    Masuk
+                  </Link>{' '}
+                  untuk menyimpan progres &amp; mendapatkan sertifikat.
+                </p>
+              </div>
+            )}
+
             <div className="flex items-center gap-3 font-plexMono text-[11px] uppercase tracking-[0.14em] text-slate-500 mb-7 flex-wrap">
               <span>Step <span className="text-orange-600 font-semibold">{step.orderIndex} / {steps.length}</span></span>
               <span className="opacity-50">·</span>
@@ -174,6 +224,14 @@ export default function LessonPlayer() {
               )}>
                 {step.kind}
               </span>
+              {step.kind === 'quiz' && quizScore !== null && (
+                <>
+                  <span className="opacity-50">·</span>
+                  <span className={cn('font-semibold', quizPassed ? 'text-emerald-600' : 'text-rose-600')}>
+                    Skor {quizScore}%
+                  </span>
+                </>
+              )}
             </div>
 
             <h1 className="text-[28px] sm:text-[38px] font-bold leading-[1.12] tracking-[-0.018em] mb-7">
@@ -187,6 +245,17 @@ export default function LessonPlayer() {
                   simulationRef={step.simulationRef}
                   caption={step.contentJson?.sceneCaption}
                 />
+                {simMethodAvailable && (
+                  <div className="mt-4">
+                    <Link
+                      to={`/e-learning/simulations/${stepMethod.toLowerCase()}`}
+                      className="inline-flex items-center gap-2 rounded-lg border border-orange-200 bg-orange-50 px-4 py-2.5 text-[13.5px] font-semibold text-orange-700 transition-colors hover:border-orange-300 hover:bg-orange-100"
+                    >
+                      <Beaker className="h-4 w-4" aria-hidden="true" />
+                      Buka simulasi interaktif {stepMethod}
+                    </Link>
+                  </div>
+                )}
                 {step.contentJson?.body && (
                   <div className="el-prose mt-6">
                     <p>{step.contentJson.body}</p>
@@ -195,10 +264,33 @@ export default function LessonPlayer() {
               </>
             )}
             {step.kind === 'quiz' && (
-              <QuizRunner
-                questions={step.quizQuestions || step.contentJson?.questions}
-                onComplete={({ score }) => setQuizScore(score)}
-              />
+              <>
+                <QuizRunner
+                  questions={step.quizQuestions || step.contentJson?.questions}
+                  onSubmit={handleQuizSubmit}
+                  onComplete={({ score, passed, certificate }) => {
+                    setQuizScore(score);
+                    setQuizPassed(passed === true);
+                    if (certificate) setEarnedCertificate(certificate);
+                  }}
+                />
+                {earnedCertificate && (
+                  <div className="mt-6 flex items-start gap-3 rounded-xl border-2 border-emerald-500 bg-emerald-50 p-5">
+                    <span className="inline-grid h-10 w-10 place-items-center rounded-full bg-emerald-100 text-emerald-700 shrink-0">
+                      <Award className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <h3 className="text-[16px] font-bold text-slate-900">Selamat! Sertifikat diterbitkan</h3>
+                      <p className="mt-1 text-[13.5px] text-slate-700">
+                        Anda telah lulus asesmen akhir.{' '}
+                        <Link to="/e-learning/certificates" className="font-semibold text-emerald-700 underline">
+                          Lihat sertifikat
+                        </Link>
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
 
             {step.contentJson?.callout && (

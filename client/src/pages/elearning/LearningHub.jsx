@@ -1,6 +1,7 @@
-import { Search, Flame, BookOpen, Clock, Trophy } from 'lucide-react';
+import { Flame, BookOpen, Clock, Trophy, Award } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useMyProgress } from '@/hooks/useProgress';
+import { useMyCertificates } from '@/hooks/useCertificates';
 import { useLearningPaths, usePathDetail } from '@/hooks/useLearningPaths';
 import {
   KPICard,
@@ -21,12 +22,20 @@ export default function LearningHub() {
   const { user } = useAuth();
   const { data: paths = [], isLoading: pathsLoading } = useLearningPaths();
   const { data: progress } = useMyProgress({ enabled: !!user });
+  const { data: certificates = [] } = useMyCertificates({ enabled: !!user });
+  const certificatesCount = certificates.length;
 
   const summary = progress?.summary || {};
   const enrollments = progress?.enrollments || [];
   const activity = progress?.activity || [];
 
-  const activeEnrollment = enrollments.find((e) => e.status === 'active') || enrollments[0];
+  // Prefer an in-progress enrollment that has a resolvable resume target,
+  // then any active enrollment, then any enrollment at all.
+  const activeEnrollment =
+    enrollments.find((e) => e.status === 'active' && e.resume) ||
+    enrollments.find((e) => e.status === 'active') ||
+    enrollments.find((e) => e.resume) ||
+    enrollments[0];
   const activePath = activeEnrollment?.learningPath;
 
   return (
@@ -38,11 +47,13 @@ export default function LearningHub() {
             {new Date().toISOString().slice(0, 10)} · {paths.length} paths total
           </div>
         </div>
-        <div className="flex items-center gap-2 sm:gap-2.5 rounded-md border border-slate-200 bg-white px-3 py-2 text-[13px] text-slate-500 min-w-[260px]">
-          <Search className="h-4 w-4" />
-          <span>Cari path, modul, quiz…</span>
-          <kbd className="ml-auto rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 font-plexMono text-[10px] text-slate-400">⌘K</kbd>
-        </div>
+        {certificatesCount > 0 && (
+          <div className="flex items-center gap-2 rounded-md border border-orange-200 bg-orange-50 px-3 py-2 text-[13px] font-semibold text-orange-700">
+            <Award className="h-4 w-4" />
+            <span className="tabular-nums">{certificatesCount}</span>
+            <span className="font-normal text-orange-600">sertifikat diraih</span>
+          </div>
+        )}
       </div>
 
       <div data-el-reveal="2">

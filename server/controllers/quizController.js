@@ -182,7 +182,7 @@ class QuizController {
                     totalQuestions: answers.length,
                     correctAnswers: correctCount,
                     score: Math.round(score * 100) / 100,
-                    passed: score >= 70,
+                    passed: score >= 75,
                     timeSpent,
                     gradedAnswers
                 }
@@ -216,7 +216,7 @@ class QuizController {
                     ? Math.round((attempts.reduce((sum, a) => sum + a.score, 0) / attempts.length) * 100) / 100
                     : 0,
                 passRate: attempts.length > 0
-                    ? Math.round((attempts.filter(a => a.score >= 70).length / attempts.length) * 100)
+                    ? Math.round((attempts.filter(a => a.score >= 75).length / attempts.length) * 100)
                     : 0
             };
 

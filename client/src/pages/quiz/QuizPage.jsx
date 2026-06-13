@@ -6,10 +6,11 @@ import QuizCard from '../../components/quiz/QuizCard';
 import QuizResults from '../../components/quiz/QuizResults';
 import { getQuizQuestions, submitQuiz } from '../../services/quizService';
 import { useAuth } from '../../hooks/useAuth';
+import { PASSING_SCORE } from '@/config/elearning';
 
 export default function QuizPage() {
     const navigate = useNavigate();
-    const { user, token, isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuth();
 
     const [questions, setQuestions] = useState([]);
     const [answers, setAnswers] = useState({});
@@ -82,8 +83,9 @@ export default function QuizPage() {
         setSubmitting(true);
         clearInterval(timerRef.current);
 
-        // If authenticated, submit to backend for history
-        if (isAuthenticated && token) {
+        // If authenticated, grade server-side via the shared `api` instance
+        // (it attaches the Bearer token automatically — no manual token needed).
+        if (isAuthenticated) {
             try {
                 const submissionData = {
                     method,
@@ -95,7 +97,7 @@ export default function QuizPage() {
                     }))
                 };
 
-                const response = await submitQuiz(submissionData, token);
+                const response = await submitQuiz(submissionData);
 
                 // Merge results with questions for display
                 const gradedQuestionsMap = {};
@@ -110,14 +112,20 @@ export default function QuizPage() {
                     isCorrect: gradedQuestionsMap[q.id]?.isCorrect
                 })));
 
-                setResults(response.data);
+                // Use the shared passing threshold for the pass/fail display,
+                // computed from the server-authoritative score.
+                setResults({
+                    ...response.data,
+                    passed: response.data.score >= PASSING_SCORE
+                });
             } catch (err) {
                 console.error('Failed to save to history:', err);
                 // Still calculate locally if server fails
                 calculateLocalResults();
             }
         } else {
-            // Calculate results locally without authentication
+            // Guests cannot be graded (no answer key client-side); show an
+            // honest "answered" summary with a prompt to log in.
             calculateLocalResults();
         }
 

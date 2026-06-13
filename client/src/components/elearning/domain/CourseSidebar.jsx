@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronDown, Search, Check, Lock } from 'lucide-react';
+import { ChevronDown, Check, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function CourseSidebar({ pathDetail, currentStepId, className }) {
@@ -13,13 +13,7 @@ export default function CourseSidebar({ pathDetail, currentStepId, className }) 
       'el-scroll flex flex-col bg-gradient-to-b from-orange-600 to-orange-700 text-white overflow-hidden',
       className
     )}>
-      <div className="flex justify-end px-5 pt-3.5 pb-1">
-        <button className="rounded-full p-2 transition-colors hover:bg-black/10" aria-label="Search">
-          <Search className="h-4 w-4" />
-        </button>
-      </div>
-
-      <div className="px-5 pb-4">
+      <div className="px-5 pt-5 pb-4">
         <h1 className="text-[28px] font-bold leading-[1.12] tracking-tight">{path.title.replace(/ — .*$/, '')}</h1>
         <div className="mt-1 font-plexMono text-[11px] tracking-[0.1em] text-white/80 uppercase">
           {path.code} · {path.level}
@@ -64,6 +58,8 @@ function SidebarSection({ module, pathCode, currentStepId, onNavigate }) {
         className="w-full grid grid-cols-[20px_1fr] gap-2 items-center px-5 py-4 font-plexMono text-[12.5px] font-semibold tracking-[0.08em] uppercase text-left transition-colors hover:bg-black/8 disabled:cursor-not-allowed"
         disabled={locked}
         aria-expanded={open}
+        title={locked ? 'Selesaikan modul sebelumnya untuk membuka' : undefined}
+        aria-label={locked ? `Module ${module.orderIndex} terkunci. Selesaikan modul sebelumnya untuk membuka.` : undefined}
       >
         <ChevronDown className={cn('h-3 w-3 transition-transform', open ? 'rotate-0' : '-rotate-90')} />
         <span className="truncate">
@@ -114,9 +110,12 @@ function SidebarSection({ module, pathCode, currentStepId, onNavigate }) {
       )}
 
       {locked && (
-        <div className="grid grid-cols-[20px_1fr] gap-3 items-center pl-9 pr-5 py-2.5 text-[13px] text-white/60">
-          <Lock className="h-3.5 w-3.5" />
-          <span>Complete previous module to unlock</span>
+        <div
+          className="grid grid-cols-[20px_1fr] gap-3 items-center pl-9 pr-5 py-2.5 text-[13px] text-white/60"
+          title="Selesaikan modul sebelumnya untuk membuka"
+        >
+          <Lock className="h-3.5 w-3.5" aria-hidden="true" />
+          <span>Selesaikan modul sebelumnya untuk membuka</span>
         </div>
       )}
     </div>

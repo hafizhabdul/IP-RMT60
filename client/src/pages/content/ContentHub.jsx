@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Clock, Search, ChevronLeft, ChevronRight, BookOpen } from 'lucide-react';
+import { ArrowRight, Clock, Search, ChevronLeft, ChevronRight, BookOpen, BookA } from 'lucide-react';
 import { getArticles, getArticleFilters } from '../../services/articleService';
 import { MethodIcon } from '@/components/elearning/primitives';
 
@@ -65,8 +65,31 @@ export default function ContentHub() {
                 </p>
             </div>
 
+            {/* Glossary link */}
+            <Link
+                to="/e-learning/glossary"
+                className="group flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 sm:p-5 hover:border-orange-300 hover:shadow-el-card-hover transition-all"
+                data-el-reveal="2"
+            >
+                <span className="inline-flex h-11 w-11 shrink-0 rounded-lg bg-orange-amber items-center justify-center shadow-el-orange">
+                    <BookA className="h-5 w-5 text-white" />
+                </span>
+                <div className="min-w-0 flex-1">
+                    <div className="font-plexMono text-[10.5px] uppercase tracking-[0.1em] text-slate-500">
+                        Referensi cepat
+                    </div>
+                    <div className="text-[16px] font-bold tracking-tight leading-snug group-hover:text-orange-700 transition-colors">
+                        Glosarium NDT
+                    </div>
+                    <p className="text-[13px] text-slate-600 line-clamp-1">
+                        Definisi ringkas istilah penting Level I lintas method — cari dan filter per method.
+                    </p>
+                </div>
+                <ArrowRight className="h-4 w-4 shrink-0 text-slate-400 group-hover:text-orange-600 group-hover:translate-x-0.5 transition-all" />
+            </Link>
+
             {/* Filters */}
-            <div className="flex flex-wrap gap-3 items-center" data-el-reveal="2">
+            <div className="flex flex-wrap gap-3 items-center" data-el-reveal="3">
                 <div className="font-plexMono text-[11px] uppercase tracking-[0.1em] text-slate-500">Filter:</div>
                 <select
                     value={selectedMethod}

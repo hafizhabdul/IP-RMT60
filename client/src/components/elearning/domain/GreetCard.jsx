@@ -13,9 +13,25 @@ function getGreeting(date = new Date()) {
 
 export default function GreetCard({ user, summary, resumeEnrollment, className }) {
   const name = user?.username || 'Inspector';
-  const hasResume = !!resumeEnrollment;
   const path = resumeEnrollment?.learningPath;
   const completionPercent = resumeEnrollment?.completionPercent ?? 0;
+
+  // Server-provided deep-link target: { code, moduleOrderIndex, stepId }.
+  // Fall back to raw enrollment fields/associations for backward compatibility.
+  const resume = resumeEnrollment?.resume || null;
+  const code = resume?.code || path?.code || null;
+  const moduleOrderIndex =
+    resume?.moduleOrderIndex ??
+    resumeEnrollment?.currentStep?.module?.orderIndex ??
+    resumeEnrollment?.currentModule?.orderIndex ??
+    null;
+  const stepId = resume?.stepId ?? resumeEnrollment?.currentStepId ?? null;
+
+  // A resume link is only usable when we can build the full lesson URL.
+  const hasResume = !!(code && moduleOrderIndex != null && stepId);
+  const resumeUrl = hasResume
+    ? `/e-learning/paths/${code}/modules/${moduleOrderIndex}/steps/${stepId}`
+    : null;
 
   return (
     <div className={cn(
@@ -30,8 +46,8 @@ export default function GreetCard({ user, summary, resumeEnrollment, className }
         </div>
         {hasResume ? (
           <h1 className="mt-1.5 text-[26px] sm:text-[30px] font-bold leading-[1.12] tracking-tight">
-            Lanjutkan ke <em className="not-italic bg-orange-amber bg-clip-text text-transparent">Module {resumeEnrollment.currentModule?.orderIndex || '?'}</em>,<br className="hidden sm:block" />
-            {' '}path {path?.code || ''}.
+            Lanjutkan ke <em className="not-italic bg-orange-amber bg-clip-text text-transparent">Module {moduleOrderIndex ?? '?'}</em>,<br className="hidden sm:block" />
+            {' '}path {code || ''}.
           </h1>
         ) : (
           <h1 className="mt-1.5 text-[26px] sm:text-[30px] font-bold leading-[1.12] tracking-tight">
@@ -60,8 +76,8 @@ export default function GreetCard({ user, summary, resumeEnrollment, className }
           </div>
           <h4 className="mt-1.5 text-[17px] font-bold tracking-tight">{path?.title?.replace(/ — .*$/, '') || 'Path'}</h4>
           <div className="mt-1 text-[13px] text-slate-300">
-            Module {resumeEnrollment.currentModule?.orderIndex ?? '?'}
-            {resumeEnrollment.currentStep && (
+            Module {moduleOrderIndex ?? '?'}
+            {resumeEnrollment?.currentStep?.orderIndex != null && (
               <> · Step {resumeEnrollment.currentStep.orderIndex}</>
             )}
           </div>
@@ -71,10 +87,10 @@ export default function GreetCard({ user, summary, resumeEnrollment, className }
           <div className="mt-3.5 flex items-center justify-between">
             <div className="font-plexMono text-[12px] font-semibold text-amber-400">{completionPercent}% COMPLETE</div>
             <Link
-              to={`/e-learning/paths/${path?.code}/modules/${resumeEnrollment.currentModule?.orderIndex || 1}/steps/${resumeEnrollment.currentStepId || ''}`}
+              to={resumeUrl}
               className="inline-flex items-center gap-2 rounded-md bg-orange-600 px-4 py-2.5 text-[13px] font-semibold transition-colors hover:bg-orange-700"
             >
-              Lanjutkan <ArrowRight className="h-3.5 w-3.5" />
+              Lanjutkan belajar <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
         </div>
@@ -82,11 +98,26 @@ export default function GreetCard({ user, summary, resumeEnrollment, className }
 
       {!hasResume && (
         <div className="relative rounded-lg border-2 border-dashed border-slate-200 p-6 text-center bg-slate-50">
-          <div className="font-plexMono text-[10.5px] font-medium uppercase tracking-[0.12em] text-slate-500 mb-2">No active path</div>
-          <p className="text-[13.5px] text-slate-600 mb-4">Pilih salah satu method dari panel di bawah untuk memulai.</p>
-          <Link to="#paths" className="inline-flex items-center gap-2 rounded-md bg-orange-amber px-4 py-2.5 text-[13px] font-semibold text-white shadow-el-orange hover:opacity-90">
-            Pilih path <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
+          {code ? (
+            <>
+              <div className="font-plexMono text-[10.5px] font-medium uppercase tracking-[0.12em] text-slate-500 mb-2">Mulai belajar</div>
+              <p className="text-[13.5px] text-slate-600 mb-4">Kamu sudah terdaftar di path {code}. Buka untuk mulai dari module pertama.</p>
+              <Link
+                to={`/e-learning/paths/${code}`}
+                className="inline-flex items-center gap-2 rounded-md bg-orange-amber px-4 py-2.5 text-[13px] font-semibold text-white shadow-el-orange hover:opacity-90"
+              >
+                Mulai belajar <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </>
+          ) : (
+            <>
+              <div className="font-plexMono text-[10.5px] font-medium uppercase tracking-[0.12em] text-slate-500 mb-2">No active path</div>
+              <p className="text-[13.5px] text-slate-600 mb-4">Pilih salah satu method dari panel di bawah untuk memulai.</p>
+              <Link to="#paths" className="inline-flex items-center gap-2 rounded-md bg-orange-amber px-4 py-2.5 text-[13px] font-semibold text-white shadow-el-orange hover:opacity-90">
+                Pilih path <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </>
+          )}
         </div>
       )}
     </div>

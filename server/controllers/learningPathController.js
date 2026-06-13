@@ -1,5 +1,69 @@
-const { LearningPath, Module, LessonStep, UserEnrollment, UserModuleProgress, UserStepProgress, User, QuizQuestion, sequelize } = require('../models');
+const { LearningPath, Module, LessonStep, UserEnrollment, UserModuleProgress, UserStepProgress, User, QuizQuestion, Certificate, sequelize } = require('../models');
 const { Op } = require('sequelize');
+const crypto = require('crypto');
+
+// Recompute a user's module progress from their step records.
+// Replicated from progressController (those helpers are internal/not exported)
+// so gradeQuiz can keep module + path progress consistent after a passed assessment.
+async function recomputeModuleProgress(userId, moduleId, transaction) {
+  const totalSteps = await LessonStep.count({ where: { ModuleId: moduleId }, transaction });
+  if (totalSteps === 0) return null;
+
+  const doneSteps = await UserStepProgress.count({
+    where: { UserId: userId, status: 'done' },
+    include: [{ model: LessonStep, as: 'lessonStep', where: { ModuleId: moduleId }, required: true }],
+    transaction
+  });
+
+  const completionPercent = Math.round((doneSteps / totalSteps) * 100);
+  const status = completionPercent >= 100 ? 'done' : completionPercent > 0 ? 'in_progress' : 'not_started';
+
+  const [moduleProgress] = await UserModuleProgress.findOrCreate({
+    where: { UserId: userId, ModuleId: moduleId },
+    defaults: {
+      UserId: userId,
+      ModuleId: moduleId,
+      status,
+      completionPercent,
+      startedAt: new Date()
+    },
+    transaction
+  });
+
+  await moduleProgress.update({
+    status,
+    completionPercent,
+    completedAt: status === 'done' ? new Date() : null
+  }, { transaction });
+
+  return moduleProgress;
+}
+
+async function recomputePathProgress(userId, pathId, transaction) {
+  const totalModules = await Module.count({ where: { LearningPathId: pathId }, transaction });
+  if (totalModules === 0) return null;
+
+  const doneModules = await UserModuleProgress.count({
+    where: { UserId: userId, status: 'done' },
+    include: [{ model: Module, as: 'module', where: { LearningPathId: pathId }, required: true }],
+    transaction
+  });
+
+  const completionPercent = Math.round((doneModules / totalModules) * 100);
+  const enrollment = await UserEnrollment.findOne({
+    where: { UserId: userId, LearningPathId: pathId },
+    transaction
+  });
+
+  if (enrollment) {
+    await enrollment.update({
+      completionPercent,
+      status: completionPercent >= 100 ? 'completed' : 'active',
+      completedAt: completionPercent >= 100 ? new Date() : null
+    }, { transaction });
+  }
+  return enrollment;
+}
 
 async function computePathProgressFromSteps(userId, pathId) {
   // Count total steps across all modules in this path
@@ -138,7 +202,7 @@ class LearningPathController {
                 model: QuizQuestion,
                 as: 'quizQuestions',
                 required: false,
-                attributes: ['id', 'question', 'options', 'correctAnswer', 'explanation', 'difficulty']
+                attributes: ['id', 'question', 'options', 'difficulty']
               }]
             }]
           },
@@ -346,7 +410,7 @@ class LearningPathController {
             model: QuizQuestion,
             as: 'quizQuestions',
             required: false,
-            attributes: ['id', 'question', 'options', 'correctAnswer', 'explanation', 'difficulty']
+            attributes: ['id', 'question', 'options', 'difficulty']
           }]
         }]
       });
@@ -377,6 +441,143 @@ class LearningPathController {
         module: { ...json, pathCode: path.code, pathTitle: path.title }
       });
     } catch (err) {
+      next(err);
+    }
+  }
+
+  // Server-authoritative quiz grading. Optional auth: anonymous users get graded
+  // feedback (review) but no progress is persisted and no certificate is issued.
+  static async gradeQuiz(req, res, next) {
+    const userId = req.user?.id || null;
+    const t = userId ? await sequelize.transaction() : null;
+    try {
+      const { stepId } = req.params;
+      const answers = (req.body && req.body.answers) || {};
+
+      const step = await LessonStep.findByPk(stepId, {
+        include: [
+          {
+            model: Module,
+            as: 'module',
+            include: [{ model: LearningPath, as: 'learningPath' }]
+          },
+          {
+            model: QuizQuestion,
+            as: 'quizQuestions',
+            required: false,
+            attributes: ['id', 'question', 'options', 'correctAnswer', 'explanation', 'difficulty']
+          }
+        ],
+        transaction: t || undefined
+      });
+
+      if (!step) {
+        if (t) await t.rollback().catch(() => {});
+        throw { name: 'NotFound', message: 'Step not found' };
+      }
+
+      const questions = step.quizQuestions || [];
+
+      // FAIL CLOSED: never grade an empty assessment.
+      if (questions.length === 0) {
+        if (t) await t.rollback().catch(() => {});
+        return res.status(422).json({
+          success: false,
+          code: 'assessment_unavailable',
+          message: 'Soal untuk asesmen ini belum tersedia.'
+        });
+      }
+
+      const module = step.module;
+      const passingScore = (module && module.passingScore) || 75;
+
+      const total = questions.length;
+      let correctCount = 0;
+      const review = questions.map((q) => {
+        const hasAnswer = Object.prototype.hasOwnProperty.call(answers, q.id);
+        const yourAnswer = hasAnswer ? Number(answers[q.id]) : null;
+        const isCorrect = Number(answers[q.id]) === q.correctAnswer;
+        if (isCorrect) correctCount++;
+        return {
+          id: q.id,
+          correctAnswer: q.correctAnswer,
+          explanation: q.explanation,
+          yourAnswer,
+          isCorrect
+        };
+      });
+
+      const score = Math.round((correctCount / total) * 100);
+      const passed = score >= passingScore;
+
+      let certificate = null;
+
+      // Persist progress + issue certificate only for authenticated users (MASTERY GATE).
+      if (userId) {
+        const [progress] = await UserStepProgress.findOrCreate({
+          where: { UserId: userId, LessonStepId: step.id },
+          defaults: {
+            UserId: userId,
+            LessonStepId: step.id,
+            status: passed ? 'done' : 'in_progress',
+            score,
+            startedAt: new Date(),
+            completedAt: passed ? new Date() : null
+          },
+          transaction: t
+        });
+
+        const existingScore = typeof progress.score === 'number' ? progress.score : 0;
+        const bestScore = Math.max(existingScore, score);
+        await progress.update({
+          // MASTERY GATE: only mark done when passed; otherwise keep/set in_progress.
+          status: passed ? 'done' : (progress.status === 'done' ? 'done' : 'in_progress'),
+          score: bestScore,
+          completedAt: passed ? (progress.completedAt || new Date()) : progress.completedAt
+        }, { transaction: t });
+
+        // Recompute module + path progress.
+        await recomputeModuleProgress(userId, step.ModuleId, t);
+        await recomputePathProgress(userId, module.LearningPathId, t);
+
+        // Final assessment certificate — issued ONLY here, with the SERVER score.
+        if (module.isFinalAssessment && passed && module.learningPath) {
+          const path = module.learningPath;
+          const existing = await Certificate.findOne({
+            where: { UserId: userId, LearningPathId: path.id },
+            transaction: t
+          });
+          if (!existing) {
+            const serial = `SNS-${path.code}-${String(Date.now()).slice(-6)}`;
+            const qrToken = crypto.randomBytes(16).toString('hex');
+            certificate = await Certificate.create({
+              UserId: userId,
+              LearningPathId: path.id,
+              serialNumber: serial,
+              score,
+              issuedAt: new Date(),
+              qrToken
+            }, { transaction: t });
+          } else {
+            certificate = existing;
+          }
+        }
+
+        await t.commit();
+      }
+
+      res.status(200).json({
+        success: true,
+        score,
+        passed,
+        passingScore,
+        correctCount,
+        total,
+        review,
+        certificate: certificate ? certificate.toJSON() : null
+      });
+    } catch (err) {
+      if (t) await t.rollback().catch(() => {});
       next(err);
     }
   }

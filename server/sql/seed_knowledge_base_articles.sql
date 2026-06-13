@@ -830,11 +830,11 @@ Eddy current TIDAK distribusi merata — terkonsentrasi dekat permukaan, decay e
 
 ### Formula
 ```
-δ = 50 / √(f × σ × μᵣ)  [mm]
+δ = 21 / √(f × σ × μᵣ)  [mm]
 
 Dimana:
 δ = skin depth (kedalaman saat amplitudo turun ke 37%)
-f = frequency (Hz)
+f = frequency (kHz)
 σ = conductivity (% IACS)
 μᵣ = relative permeability
 ```
@@ -842,13 +842,13 @@ f = frequency (Hz)
 ### Aplikasi Praktis
 
 **Aluminum 6061 (σ = 40% IACS, μᵣ = 1):**
-- 100 kHz: δ ≈ 0.8 mm
-- 1 MHz: δ ≈ 0.25 mm
-- 10 kHz: δ ≈ 2.5 mm
+- 100 kHz: δ ≈ 0.33 mm
+- 1 MHz: δ ≈ 0.10 mm
+- 10 kHz: δ ≈ 1.0 mm
 
 **Steel 1018 (σ = 10% IACS, μᵣ = 100):**
-- 100 kHz: δ ≈ 0.16 mm (very shallow!)
-- 1 kHz: δ ≈ 1.6 mm
+- 100 kHz: δ ≈ 0.07 mm (very shallow!)
+- 1 kHz: δ ≈ 0.66 mm
 
 > **Insight**: Steel ferromagnetic punya skin depth jauh lebih dangkal daripada aluminum — sebab μᵣ tinggi.
 
@@ -1353,7 +1353,17 @@ Per ASME V Article 4: setiap 4 jam atau saat:
 ## Kesimpulan
 
 Calibration block bukan "tools tambahan" — adalah heart of UT reliability. IIW V1 untuk full calibration, V2 untuk field, step wedge untuk thickness. Master sequence kalibrasi, document everything, dan re-verify konsisten — itulah Level I yang dipercaya.',
- 'UT', 'Level I', 'technique', 13, true, false);
+ 'UT', 'Level I', 'technique', 13, true, false)
+ON CONFLICT (slug) DO UPDATE SET
+  title         = EXCLUDED.title,
+  excerpt       = EXCLUDED.excerpt,
+  content       = EXCLUDED.content,
+  method        = EXCLUDED.method,
+  level         = EXCLUDED.level,
+  category      = EXCLUDED.category,
+  "readingTime" = EXCLUDED."readingTime",
+  published     = EXCLUDED.published,
+  featured      = EXCLUDED.featured;
 
 -- Verify
 SELECT method, level, COUNT(*) AS articles

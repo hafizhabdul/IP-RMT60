@@ -56,8 +56,8 @@ export default function MinimalContact() {
           <div className="rounded-lg border border-gray-200 p-6">
             <h2 className="text-base font-semibold text-gray-900">Informasi Perusahaan</h2>
             <div className="mt-4 space-y-2 text-sm text-gray-700">
-              <div>Email: info@sns-ndt.com</div>
-              <div>Telepon: +62 812-9258-8446</div>
+              <div>Email: <a href="mailto:info@sns-ndt.com" className="text-gray-900 underline hover:text-black">info@sns-ndt.com</a></div>
+              <div>WhatsApp: <a href="https://wa.me/628129258446" target="_blank" rel="noopener noreferrer" className="text-green-700 underline hover:text-green-800">+62 812-9258-446</a></div>
               <div>Alamat: Tangerang - Banten</div>
             </div>
           </div>

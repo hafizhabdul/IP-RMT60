@@ -103,7 +103,7 @@ CROSS JOIN (VALUES
    '{"slides":[{"heading":"Geometric (Ug)","body":"Source size > 0 menyebabkan penumbra di edge defect. Lebih besar source, lebih unsharp."},{"heading":"Movement","body":"Source bergerak selama exposure → blur. Stabilkan dengan tripod/clamp."},{"heading":"Inherent (Uh)","body":"Film grain & screen response. Limit fundamental dari media."}]}',
    360, NULL),
   (2, 'reading', 'Rumus geometric unsharpness',
-   '{"slides":[{"heading":"Ug = (F × t) / (D - t)","body":"F = focal spot size, t = source-to-object distance, D = source-to-film distance. Hafalkan."},{"heading":"Limit per code","body":"ASME V: Ug ≤ 0.020 inch (0.5 mm) untuk thickness ≤2 inch. Ug ≤ 0.030 inch untuk thickness ≤3 inch."},{"heading":"Mengurangi Ug","body":"Tambah SDD (D-t lebih besar). Source size tidak bisa dikurangi (fixed per equipment)."}]}',
+   '{"slides":[{"heading":"Ug = F × OFD / SOD","body":"F = focal spot size (ukuran sumber), SOD = source-to-object distance (sumber ke objek), OFD = object-to-film distance (objek ke film). Hafalkan. Contoh: F=3 mm, OFD=20 mm, SOD=500 mm → Ug = (3 × 20) / 500 = 0.12 mm."},{"heading":"Limit per code","body":"ASME V: Ug ≤ 0.020 inch (0.5 mm) untuk thickness ≤2 inch. Ug ≤ 0.030 inch untuk thickness ≤3 inch."},{"heading":"Mengurangi Ug","body":"Perbesar SOD, perkecil OFD (objek serapat mungkin ke film), atau pakai source kecil. Source size umumnya fixed per equipment."}]}',
    460, NULL),
   (3, 'animated', 'Geometric unsharpness visualization',
    '{"sceneCaption":"Lihat bagaimana focal spot size dan distance mempengaruhi penumbra di edge defect. Demo geometris jelas.","slides":[]}',
@@ -247,7 +247,7 @@ SELECT m.id, s."orderIndex", s.kind::lesson_step_kind, s.title, s."contentJson":
 FROM "Modules" m JOIN "LearningPaths" lp ON m."LearningPathId" = lp.id
 CROSS JOIN (VALUES
   (1, 'reading', 'Comprehensive review',
-   '{"slides":[{"heading":"Sources & energy","body":"X-ray vs gamma, kV vs MeV, half-life Ir-192/Co-60."},{"heading":"Safety","body":"ALARA: time/distance/shielding. Inverse square law. Dose limits."},{"heading":"Image quality","body":"IQI sensitivity, geometric unsharpness Ug = Ft/(D-t), density 1.8-4.0."},{"heading":"Defect interpretation","body":"Porosity round, slag elongated, LOP/LOF linear, crack sharp branched."}]}',
+   '{"slides":[{"heading":"Sources & energy","body":"X-ray vs gamma, kV vs MeV, half-life Ir-192/Co-60."},{"heading":"Safety","body":"ALARA: time/distance/shielding. Inverse square law. Dose limits."},{"heading":"Image quality","body":"IQI sensitivity, geometric unsharpness Ug = F×OFD/SOD, density 1.8-4.0."},{"heading":"Defect interpretation","body":"Porosity round, slag elongated, LOP/LOF linear, crack sharp branched."}]}',
    500, NULL),
   (2, 'quiz', 'Practice exam — 25 soal mixed',
    '{"description":"Latihan komprehensif RT-L1.","questionCount":25,"passingScore":75}',

@@ -128,6 +128,11 @@ export function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         user,
+        // Expose the access token from its canonical localStorage key so
+        // callers that still need it can read it reliably. Prefer using the
+        // shared `api` axios instance (which attaches the Bearer header) over
+        // manually passing this token.
+        token: localStorage.getItem("access_token"),
         loading,
         login,
         googleLogin,

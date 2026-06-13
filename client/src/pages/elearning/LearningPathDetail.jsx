@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, GraduationCap, Clock, Award } from 'lucide-react
 import { usePathDetail, useEnroll } from '@/hooks/useLearningPaths';
 import { useAuth } from '@/hooks/useAuth';
 import { ModuleAccordion, CertificatePreviewCard } from '@/components/elearning/domain';
+import { isPathInDevelopment } from '@/components/elearning/domain/PathRow';
 import { MethodIcon, ELProgressBar } from '@/components/elearning/primitives';
 
 export default function LearningPathDetail() {
@@ -34,6 +35,7 @@ export default function LearningPathDetail() {
   }
 
   const progress = path.enrollment?.completionPercent ?? 0;
+  const inDevelopment = isPathInDevelopment(path);
   const onEnroll = async () => {
     if (!user) { navigate('/login'); return; }
     try {
@@ -60,8 +62,15 @@ export default function LearningPathDetail() {
       <section className="rounded-xl border border-slate-200 bg-white p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] gap-6 items-center" data-el-reveal="1">
         <MethodIcon method={path.method} size="lg" />
         <div>
-          <div className="font-plexMono text-[11px] uppercase tracking-[0.1em] text-slate-500">
-            NDT / {path.method} · {path.level}
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <div className="font-plexMono text-[11px] uppercase tracking-[0.1em] text-slate-500">
+              NDT / {path.method} · {path.level}
+            </div>
+            {inDevelopment && (
+              <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 font-plexMono text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                Dalam pengembangan
+              </span>
+            )}
           </div>
           <h1 className="mt-1 text-[28px] sm:text-[36px] font-bold tracking-tight leading-tight">{path.title}</h1>
           <p className="mt-2 text-[14px] text-slate-600 max-w-[60ch]">{path.description}</p>
@@ -91,7 +100,16 @@ export default function LearningPathDetail() {
         </div>
 
         <div className="flex flex-col gap-2.5">
-          {!path.isEnrolled ? (
+          {inDevelopment ? (
+            <button
+              type="button"
+              disabled
+              aria-disabled="true"
+              className="inline-flex items-center justify-center gap-2 rounded-md border border-dashed border-slate-300 px-5 py-3 text-[14px] font-semibold text-slate-400 cursor-not-allowed"
+            >
+              Segera hadir
+            </button>
+          ) : !path.isEnrolled ? (
             <button
               type="button"
               onClick={onEnroll}

@@ -30,6 +30,8 @@ export default function ModuleAccordion({ module, pathCode, defaultOpen = false,
           module.locked && 'cursor-not-allowed'
         )}
         aria-expanded={open}
+        title={module.locked ? 'Selesaikan modul sebelumnya untuk membuka' : undefined}
+        aria-label={module.locked ? `${module.title} — terkunci. Selesaikan modul sebelumnya untuk membuka.` : undefined}
       >
         <span className={cn(
           'inline-grid h-8 w-8 place-items-center rounded-full font-plexMono text-[13px] font-semibold tabular-nums',

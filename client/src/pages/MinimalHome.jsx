@@ -483,7 +483,7 @@ export default function MinimalHome() {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
               <a
-                href={createWhatsAppLink('6281292584460', formatWhatsAppMessage({
+                href={createWhatsAppLink('628129258446', formatWhatsAppMessage({
                   name: 'Calon Peserta',
                   email: 'email@example.com',
                   phone: 'Nomor WhatsApp',
@@ -512,8 +512,8 @@ export default function MinimalHome() {
               <h2 className="text-xl font-semibold text-gray-900">{t.home.contactTitle}</h2>
               <p className="text-gray-600 mt-1">{t.home.contactSub}</p>
               <div className="mt-6 space-y-2 text-sm text-gray-700">
-                <div>Email: info@sns-ndt.com</div>
-                <div>Telepon: +62 812-3456-7890</div>
+                <div>Email: <a href="mailto:info@sns-ndt.com" className="text-gray-900 underline hover:text-black">info@sns-ndt.com</a></div>
+                <div>WhatsApp: <a href="https://wa.me/628129258446" target="_blank" rel="noopener noreferrer" className="text-green-700 underline hover:text-green-800">+62 812-9258-446</a></div>
               </div>
             </div>
             <div className="rounded-lg border border-gray-200 p-5">

@@ -33,6 +33,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Silent requests (e.g. progress/grading) handle their own errors:
+    // no toast, no localStorage wipe, no auth redirect. Just reject.
+    if (error.config?.meta?.silent) {
+      return Promise.reject(error);
+    }
+
     // Handle errors globally
     const message = error.response?.data?.message || 'An error occurred';
     showToast.error(message);

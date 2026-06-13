@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Droplets, Clock, Eraser, Search, RotateCcw, CheckCircle, Info, X, Sparkles } from 'lucide-react';
 
 export default function PenetrantLab() {
+    const prefersReducedMotion = useReducedMotion();
     const [step, setStep] = useState(0);
     const [dwellTimer, setDwellTimer] = useState(0);
     const [isDwelling, setIsDwelling] = useState(false);
@@ -143,8 +144,8 @@ export default function PenetrantLab() {
                     <div className="flex items-center gap-3">
                         <motion.div
                             className="p-2 bg-white/20 rounded-lg"
-                            animate={step === 2 ? { scale: [1, 1.1, 1] } : {}}
-                            transition={{ repeat: step === 2 ? Infinity : 0, duration: 1 }}
+                            animate={step === 2 && !prefersReducedMotion ? { scale: [1, 1.1, 1] } : {}}
+                            transition={{ repeat: step === 2 && !prefersReducedMotion ? Infinity : 0, duration: 1 }}
                         >
                             <Droplets className="h-5 w-5 sm:h-6 sm:w-6" />
                         </motion.div>
@@ -245,10 +246,12 @@ export default function PenetrantLab() {
                                             ? 'linear-gradient(to bottom, #ef4444, #dc2626, #ef4444)'
                                             : 'transparent'
                                     }}
-                                    animate={step >= 5 ? {
-                                        boxShadow: ['0 0 10px rgba(239,68,68,0.5)', '0 0 30px rgba(239,68,68,0.9)', '0 0 10px rgba(239,68,68,0.5)']
-                                    } : {}}
-                                    transition={{ repeat: Infinity, duration: 1.2 }}
+                                    animate={step >= 5
+                                        ? (prefersReducedMotion
+                                            ? { boxShadow: '0 0 30px rgba(239,68,68,0.9)' }
+                                            : { boxShadow: ['0 0 10px rgba(239,68,68,0.5)', '0 0 30px rgba(239,68,68,0.9)', '0 0 10px rgba(239,68,68,0.5)'] })
+                                        : {}}
+                                    transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, duration: 1.2 }}
                                 />
                             </div>
 
@@ -277,8 +280,8 @@ export default function PenetrantLab() {
                                         <div className="text-center text-white">
                                             <motion.div
                                                 className="text-7xl font-bold font-mono"
-                                                animate={{ scale: [1, 1.1, 1] }}
-                                                transition={{ repeat: Infinity, duration: 1 }}
+                                                animate={prefersReducedMotion ? { scale: 1 } : { scale: [1, 1.1, 1] }}
+                                                transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, duration: 1 }}
                                             >
                                                 {dwellTimer}
                                             </motion.div>
@@ -360,8 +363,8 @@ export default function PenetrantLab() {
                                             isCompleted ? 'bg-gray-50 border-gray-200' :
                                                 'bg-white border-gray-100 opacity-40'
                                         }`}
-                                    animate={isActive ? { scale: [1, 1.01, 1] } : {}}
-                                    transition={{ repeat: isActive ? Infinity : 0, duration: 2 }}
+                                    animate={isActive && !prefersReducedMotion ? { scale: [1, 1.01, 1] } : {}}
+                                    transition={{ repeat: isActive && !prefersReducedMotion ? Infinity : 0, duration: 2 }}
                                 >
                                     <div className="flex items-center justify-between gap-3">
                                         <div className="flex items-center gap-3">

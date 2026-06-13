@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Waves, RefreshCw, Info, X, CheckCircle, Volume2 } from 'lucide-react';
 
 /**
@@ -7,6 +7,7 @@ import { Waves, RefreshCw, Info, X, CheckCircle, Volume2 } from 'lucide-react';
  * User scans a probe over a weld to find hidden defects using A-Scan display
  */
 export default function UTFlawScanner() {
+    const prefersReducedMotion = useReducedMotion();
     const [probePosition, setProbePosition] = useState({ x: 50, y: 120 });
     const [isScanning, setIsScanning] = useState(false);
     const [couplantApplied, setCouplantApplied] = useState(false);
@@ -89,8 +90,8 @@ export default function UTFlawScanner() {
                     <div className="flex items-center gap-3">
                         <motion.div
                             className="p-2 bg-white/20 rounded-lg"
-                            animate={isScanning ? { scale: [1, 1.1, 1] } : {}}
-                            transition={{ repeat: isScanning ? Infinity : 0, duration: 0.5 }}
+                            animate={isScanning && !prefersReducedMotion ? { scale: [1, 1.1, 1] } : {}}
+                            transition={{ repeat: isScanning && !prefersReducedMotion ? Infinity : 0, duration: 0.5 }}
                         >
                             <Waves className="h-5 w-5 sm:h-6 sm:w-6" />
                         </motion.div>
@@ -113,8 +114,8 @@ export default function UTFlawScanner() {
                     </span>
                     <motion.span
                         className={`px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 ${isScanning ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}
-                        animate={isScanning ? { opacity: [1, 0.7, 1] } : {}}
-                        transition={{ repeat: isScanning ? Infinity : 0, duration: 1 }}
+                        animate={isScanning && !prefersReducedMotion ? { opacity: [1, 0.7, 1] } : {}}
+                        transition={{ repeat: isScanning && !prefersReducedMotion ? Infinity : 0, duration: 1 }}
                     >
                         <Volume2 className="h-3 w-3" />
                         {isScanning ? 'Scanning...' : 'Not Scanning'}
@@ -178,8 +179,10 @@ export default function UTFlawScanner() {
                                     >
                                         <motion.div
                                             className="w-full h-full border-2 border-red-500 rounded bg-red-500/20"
-                                            animate={{ boxShadow: ['0 0 10px rgba(239,68,68,0.5)', '0 0 20px rgba(239,68,68,0.8)', '0 0 10px rgba(239,68,68,0.5)'] }}
-                                            transition={{ repeat: Infinity, duration: 1 }}
+                                            animate={prefersReducedMotion
+                                                ? { boxShadow: '0 0 20px rgba(239,68,68,0.8)' }
+                                                : { boxShadow: ['0 0 10px rgba(239,68,68,0.5)', '0 0 20px rgba(239,68,68,0.8)', '0 0 10px rgba(239,68,68,0.5)'] }}
+                                            transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, duration: 1 }}
                                         />
                                         <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[10px] text-red-400 font-bold whitespace-nowrap">DEFECT</span>
                                     </motion.div>
@@ -220,7 +223,7 @@ export default function UTFlawScanner() {
 
                                     {/* Sound waves animation */}
                                     <AnimatePresence>
-                                        {isScanning && couplantApplied && (
+                                        {isScanning && couplantApplied && !prefersReducedMotion && (
                                             <motion.div
                                                 className="absolute -bottom-8 left-1/2 -translate-x-1/2 pointer-events-none"
                                                 initial={{ opacity: 0 }}
@@ -328,8 +331,8 @@ export default function UTFlawScanner() {
                                                 height={echoData.defect * 0.8}
                                                 fill="#ef4444"
                                                 initial={{ scaleY: 0 }}
-                                                animate={{ scaleY: [0.8, 1, 0.8] }}
-                                                transition={{ repeat: Infinity, duration: 0.3 }}
+                                                animate={prefersReducedMotion ? { scaleY: 1 } : { scaleY: [0.8, 1, 0.8] }}
+                                                transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, duration: 0.3 }}
                                                 style={{ originY: 1 }}
                                             />
                                         )}
@@ -340,8 +343,8 @@ export default function UTFlawScanner() {
                                             width="3" height={echoData.backwall * 0.8}
                                             fill="#22c55e"
                                             initial={{ scaleY: 0 }}
-                                            animate={{ scaleY: [0.95, 1, 0.95] }}
-                                            transition={{ repeat: Infinity, duration: 0.5 }}
+                                            animate={prefersReducedMotion ? { scaleY: 1 } : { scaleY: [0.95, 1, 0.95] }}
+                                            transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, duration: 0.5 }}
                                             style={{ originY: 1 }}
                                         />
 
@@ -355,8 +358,8 @@ export default function UTFlawScanner() {
                                                 height={Math.random() * 5 + 2}
                                                 fill="#22c55e"
                                                 opacity={0.3}
-                                                animate={{ height: [2, 5, 2] }}
-                                                transition={{ repeat: Infinity, duration: 0.3 + Math.random() * 0.3, delay: Math.random() }}
+                                                animate={prefersReducedMotion ? { height: 3 } : { height: [2, 5, 2] }}
+                                                transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, duration: 0.3 + Math.random() * 0.3, delay: Math.random() }}
                                             />
                                         ))}
                                     </svg>

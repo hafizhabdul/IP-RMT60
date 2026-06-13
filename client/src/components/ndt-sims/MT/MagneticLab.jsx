@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Magnet, Droplets, RefreshCw, Info, RotateCw, CheckCircle, X } from 'lucide-react';
 
 export default function MagneticLab() {
+    const prefersReducedMotion = useReducedMotion();
     const [yokePosition, setYokePosition] = useState({ x: 60, y: 80 });
     const [yokeRotation, setYokeRotation] = useState(0);
     const [isMagnetized, setIsMagnetized] = useState(false);
@@ -76,8 +77,8 @@ export default function MagneticLab() {
                     <div className="flex items-center gap-3">
                         <motion.div
                             className="p-2 bg-white/20 rounded-lg"
-                            animate={{ rotate: isMagnetized ? [0, 5, -5, 0] : 0 }}
-                            transition={{ repeat: isMagnetized ? Infinity : 0, duration: 0.5 }}
+                            animate={{ rotate: isMagnetized && !prefersReducedMotion ? [0, 5, -5, 0] : 0 }}
+                            transition={{ repeat: isMagnetized && !prefersReducedMotion ? Infinity : 0, duration: 0.5 }}
                         >
                             <Magnet className="h-5 w-5 sm:h-6 sm:w-6" />
                         </motion.div>
@@ -97,8 +98,8 @@ export default function MagneticLab() {
                 <div className="flex flex-wrap gap-2 mb-4">
                     <motion.span
                         className={`px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 ${isMagnetized ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-500'}`}
-                        animate={{ scale: isMagnetized ? [1, 1.05, 1] : 1 }}
-                        transition={{ repeat: isMagnetized ? Infinity : 0, duration: 1 }}
+                        animate={{ scale: isMagnetized && !prefersReducedMotion ? [1, 1.05, 1] : 1 }}
+                        transition={{ repeat: isMagnetized && !prefersReducedMotion ? Infinity : 0, duration: 1 }}
                     >
                         <span className={`w-2 h-2 rounded-full ${isMagnetized ? 'bg-red-500' : 'bg-gray-400'}`} />
                         {isMagnetized ? 'Magnetized' : 'Not Magnetized'}
@@ -221,8 +222,8 @@ export default function MagneticLab() {
                                 >
                                     <motion.div
                                         className="flex gap-1"
-                                        animate={{ x: [0, 3, 0, -3, 0] }}
-                                        transition={{ repeat: Infinity, duration: 0.8 }}
+                                        animate={prefersReducedMotion ? { x: 0 } : { x: [0, 3, 0, -3, 0] }}
+                                        transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, duration: 0.8 }}
                                     >
                                         {[...Array(5)].map((_, i) => (
                                             <div key={i} className="w-0.5 h-6 bg-red-400/60 rounded-full" />

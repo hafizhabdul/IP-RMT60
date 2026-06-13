@@ -1,5 +1,6 @@
 import { Trophy, Target, Clock, TrendingUp, LogIn, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { PASSING_SCORE } from '@/config/elearning';
 
 export default function QuizResults({ results, onRetry, onBackToHub }) {
     const { totalQuestions, correctAnswers, score, passed, timeSpent, isLocalResult, answeredQuestions } = results;
@@ -101,7 +102,7 @@ export default function QuizResults({ results, onRetry, onBackToHub }) {
                 <p className={`text-lg mb-4 ${passed ? 'text-green-700' : 'text-red-700'}`}>
                     {passed
                         ? 'You passed the quiz! Great understanding of the material.'
-                        : 'You need 70% to pass. Review the material and try again.'}
+                        : `You need ${PASSING_SCORE}% to pass. Review the material and try again.`}
                 </p>
 
                 {/* Score Display */}
@@ -148,7 +149,7 @@ export default function QuizResults({ results, onRetry, onBackToHub }) {
 
             {/* Pass Info */}
             <p className="text-center text-sm text-gray-500 mt-4">
-                Passing score: 70% | Based on ASNT certification standards
+                Passing score: {PASSING_SCORE}% | Based on ASNT certification standards
             </p>
         </div>
     );

@@ -43,6 +43,7 @@ const QuizHub = lazy(() => import("./pages/quiz/QuizHub"));
 const QuizPage = lazy(() => import("./pages/quiz/QuizPage"));
 const ContentHub = lazy(() => import("./pages/content/ContentHub"));
 const ArticlePage = lazy(() => import("./pages/content/ArticlePage"));
+const GlossaryPage = lazy(() => import("./pages/elearning/GlossaryPage"));
 
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -121,6 +122,7 @@ function AppRoutes() {
           <Route path="certificates" element={<CertificatesPage />} />
           <Route path="content" element={<ContentHub />} />
           <Route path="content/:slug" element={<ArticlePage />} />
+          <Route path="glossary" element={<GlossaryPage />} />
           <Route path="simulations" element={<SimulationsHub />} />
           <Route path="simulations/ut" element={<UTSimulationPage />} />
           <Route path="simulations/mt" element={<MTSimulationPage />} />

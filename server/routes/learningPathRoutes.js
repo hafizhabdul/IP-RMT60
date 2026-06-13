@@ -20,6 +20,8 @@ async function optionalAuth(req, res, next) {
 }
 
 router.get('/', optionalAuth, LearningPathController.list);
+// Server-authoritative quiz grading. MUST be registered before '/:code' so ':code' does not capture 'steps'.
+router.post('/steps/:stepId/grade', optionalAuth, LearningPathController.gradeQuiz);
 router.get('/:code', optionalAuth, LearningPathController.detail);
 router.get('/:code/modules/:number', optionalAuth, LearningPathController.getModule);
 router.post('/:code/enroll', authentication, LearningPathController.enroll);

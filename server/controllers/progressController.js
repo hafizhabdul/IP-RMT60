@@ -1,6 +1,5 @@
-const { LessonStep, Module, LearningPath, UserEnrollment, UserStepProgress, UserModuleProgress, Certificate, sequelize } = require('../models');
+const { LessonStep, Module, LearningPath, UserEnrollment, UserStepProgress, UserModuleProgress, sequelize } = require('../models');
 const { Op } = require('sequelize');
-const crypto = require('crypto');
 
 async function recomputeModuleProgress(userId, moduleId, transaction) {
   const totalSteps = await LessonStep.count({ where: { ModuleId: moduleId }, transaction });
@@ -170,32 +169,10 @@ class ProgressController {
         }
       }
 
-      // Final assessment cert generation
-      let certificate = null;
-      if (step.module.isFinalAssessment && typeof score === 'number') {
-        const passingScore = step.module.passingScore || 75;
-        if (score >= passingScore) {
-          const path = step.module.learningPath;
-          const existing = await Certificate.findOne({
-            where: { UserId: userId, LearningPathId: path.id },
-            transaction: t
-          });
-          if (!existing) {
-            const serial = `SNS-${path.code}-${String(Date.now()).slice(-6)}`;
-            const qrToken = crypto.randomBytes(16).toString('hex');
-            certificate = await Certificate.create({
-              UserId: userId,
-              LearningPathId: path.id,
-              serialNumber: serial,
-              score,
-              issuedAt: new Date(),
-              qrToken
-            }, { transaction: t });
-          } else {
-            certificate = existing;
-          }
-        }
-      }
+      // NOTE: Certificates are NEVER issued here. Client-supplied scores are not
+      // trustworthy. Certificate issuance (with a server-computed score) happens only
+      // in LearningPathController.gradeQuiz. completeStep only marks steps done and
+      // advances the enrollment cursor.
 
       await t.commit();
 
@@ -204,7 +181,7 @@ class ProgressController {
         progress: progress.toJSON(),
         moduleProgress: moduleProgress?.toJSON() || null,
         nextStepId: nextStep?.id || null,
-        certificate: certificate?.toJSON() || null
+        certificate: null
       });
     } catch (err) {
       await t.rollback().catch(() => {});
@@ -223,6 +200,19 @@ class ProgressController {
             model: LearningPath,
             as: 'learningPath',
             attributes: ['id', 'code', 'method', 'level', 'title', 'totalModules']
+          },
+          {
+            model: Module,
+            as: 'currentModule',
+            attributes: ['id', 'orderIndex', 'title'],
+            required: false
+          },
+          {
+            model: LessonStep,
+            as: 'currentStep',
+            attributes: ['id', 'orderIndex', 'title', 'ModuleId'],
+            required: false,
+            include: [{ model: Module, as: 'module', attributes: ['id', 'orderIndex'] }]
           }
         ],
         order: [['updatedAt', 'DESC']]
@@ -297,7 +287,26 @@ class ProgressController {
           streak,
           quizAverage: avgQuiz
         },
-        enrollments: enrollments.map((e) => e.toJSON()),
+        enrollments: enrollments.map((e) => {
+          const json = e.toJSON();
+          // Build a deep-link-ready resume target.
+          // Prefer the module that actually owns the current step (guards against a
+          // stale currentModuleId), then fall back to the enrollment's currentModule.
+          const stepId = json.currentStep?.id ?? json.currentStepId ?? null;
+          const moduleOrderIndex =
+            json.currentStep?.module?.orderIndex ??
+            json.currentModule?.orderIndex ??
+            null;
+          json.resume =
+            stepId && moduleOrderIndex != null && json.learningPath?.code
+              ? {
+                  code: json.learningPath.code,
+                  moduleOrderIndex,
+                  stepId
+                }
+              : null;
+          return json;
+        }),
         activity
       });
     } catch (err) {
