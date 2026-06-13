@@ -290,6 +290,7 @@ export default function ImpedanceLab() {
                                     <motion.line
                                         x1={ORIGIN.x}
                                         y1={ORIGIN.y}
+                                        initial={false}
                                         animate={{ x2: liftOffPoint.x, y2: liftOffPoint.y }}
                                         transition={motionTransition}
                                         stroke="#3b82f6"
@@ -300,6 +301,7 @@ export default function ImpedanceLab() {
                                     {/* Flaw vector (red) — drawn from lift-off point */}
                                     {hasDefect && (
                                         <motion.line
+                                            initial={false}
                                             animate={{
                                                 x1: liftOffPoint.x,
                                                 y1: liftOffPoint.y,
@@ -318,6 +320,7 @@ export default function ImpedanceLab() {
 
                                     {/* Lift-off node */}
                                     <motion.circle
+                                        initial={false}
                                         animate={{ cx: liftOffPoint.x, cy: liftOffPoint.y }}
                                         transition={motionTransition}
                                         r="1.5"
@@ -326,13 +329,15 @@ export default function ImpedanceLab() {
 
                                     {/* Live operating point (with flaw) */}
                                     <motion.circle
+                                        initial={false}
                                         animate={{ cx: operatingPoint.x, cy: operatingPoint.y }}
                                         transition={motionTransition}
-                                        r={prefersReducedMotion ? 2.6 : undefined}
+                                        r={2.6}
                                         fill={hasDefect ? '#ef4444' : '#60a5fa'}
                                     />
                                     {!prefersReducedMotion && (
                                         <motion.circle
+                                            initial={false}
                                             animate={{
                                                 cx: operatingPoint.x,
                                                 cy: operatingPoint.y,

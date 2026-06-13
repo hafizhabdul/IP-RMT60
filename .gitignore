@@ -4,3 +4,6 @@ porto
 *.env
 .claude/
 
+
+# Playwright MCP browsing artifacts
+.playwright-mcp/

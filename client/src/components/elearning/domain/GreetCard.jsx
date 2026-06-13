@@ -51,7 +51,7 @@ export default function GreetCard({ user, summary, resumeEnrollment, className }
           </h1>
         ) : (
           <h1 className="mt-1.5 text-[26px] sm:text-[30px] font-bold leading-[1.12] tracking-tight">
-            Pilih path pertama lo,<br className="hidden sm:block" />
+            Pilih path pertama kamu,<br className="hidden sm:block" />
             mulai belajar <em className="not-italic bg-orange-amber bg-clip-text text-transparent">NDT</em> hari ini.
           </h1>
         )}

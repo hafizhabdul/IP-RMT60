@@ -22,7 +22,7 @@ export const optimizeVideoForDevice = (deviceInfo) => {
       preload: 'metadata',
       autoplay: false,
       controls: true,
-      poster: '/video-poster-mobile.jpg'
+      poster: null
     };
   } else if (isTablet) {
     return {
@@ -31,7 +31,7 @@ export const optimizeVideoForDevice = (deviceInfo) => {
       preload: 'metadata',
       autoplay: true,
       controls: false,
-      poster: '/video-poster.jpg'
+      poster: null
     };
   } else {
     return {
@@ -40,7 +40,7 @@ export const optimizeVideoForDevice = (deviceInfo) => {
       preload: 'metadata',
       autoplay: true,
       controls: false,
-      poster: '/video-poster.jpg'
+      poster: null
     };
   }
 };

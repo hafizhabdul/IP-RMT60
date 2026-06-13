@@ -201,6 +201,10 @@ class LearningPathController {
               include: [{
                 model: QuizQuestion,
                 as: 'quizQuestions',
+                // separate query: avoids step.contentJson being duplicated across
+                // every quiz-question row (huge cartesian blow-up on the 40-question
+                // final-assessment step → multi-second detail() responses).
+                separate: true,
                 required: false,
                 attributes: ['id', 'question', 'options', 'difficulty']
               }]
@@ -409,6 +413,7 @@ class LearningPathController {
           include: [{
             model: QuizQuestion,
             as: 'quizQuestions',
+            separate: true, // batched query instead of a duplicating JOIN (perf)
             required: false,
             attributes: ['id', 'question', 'options', 'difficulty']
           }]
