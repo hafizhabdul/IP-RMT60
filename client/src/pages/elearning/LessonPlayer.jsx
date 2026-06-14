@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { X, Menu, Info, Award, Beaker, Bookmark, BookmarkCheck, StickyNote, ChevronDown } from 'lucide-react';
+import { X, Info, Award, Beaker, Bookmark, BookmarkCheck, StickyNote, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
-import { usePathDetail } from '@/hooks/useLearningPaths';
+import { usePathDetail, useModuleDetail } from '@/hooks/useLearningPaths';
 import { useStartStep, useCompleteStep, useGradeQuiz } from '@/hooks/useProgress';
 import { useStepNotes } from '@/hooks/useStepNotes';
 import { SIM_AVAILABLE_METHODS } from '@/config/elearning';
@@ -27,13 +27,20 @@ export default function LessonPlayer() {
   const [earnedCertificate, setEarnedCertificate] = useState(null);
   const [notesOpen, setNotesOpen] = useState(false);
 
+  const moduleNumber = parseInt(number, 10);
+
   const { data: path, isLoading, refetch } = usePathDetail(code);
+  // Path detail is now lightweight (structure only). The current module's full
+  // content (contentJson + quizQuestions) is fetched lazily here so the roadmap
+  // and sidebar stay fast. getModule is optional-auth, so guests get it too.
+  const { data: moduleData, isLoading: moduleLoading, isError: moduleError, refetch: refetchModule } = useModuleDetail(code, moduleNumber);
   const startStep = useStartStep();
   const completeStep = useCompleteStep();
   const gradeQuiz = useGradeQuiz();
 
-  const moduleNumber = parseInt(number, 10);
-  const module = path?.modules?.find((m) => m.orderIndex === moduleNumber);
+  // Prefer the content-rich module fetch; fall back to the path structure while it loads.
+  const moduleStruct = path?.modules?.find((m) => m.orderIndex === moduleNumber);
+  const module = moduleData || moduleStruct;
   const steps = module?.steps || [];
   const currentIndex = steps.findIndex((s) => String(s.id) === String(stepId));
   const step = steps[currentIndex] || steps[0];
@@ -87,7 +94,7 @@ export default function LessonPlayer() {
     return () => window.removeEventListener('keydown', handler);
   }, [prevStep, nextStep]);
 
-  if (isLoading) {
+  if (isLoading || moduleLoading) {
     return (
       <div className="elearning-surface min-h-screen bg-white grid place-items-center">
         <div className="text-slate-500 text-sm">Loading lesson…</div>
@@ -101,6 +108,25 @@ export default function LessonPlayer() {
         <div className="text-center">
           <p className="text-slate-600 mb-4">Lesson tidak ditemukan.</p>
           <Link to={`/e-learning/paths/${code}`} className="text-orange-600 underline">Kembali ke path</Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Module content fetch failed (transient) — offer a retry instead of letting the
+  // lightweight path structure render as empty content.
+  if (!moduleData && moduleError) {
+    return (
+      <div className="elearning-surface min-h-screen bg-white grid place-items-center p-6">
+        <div className="text-center">
+          <p className="text-slate-600 mb-4">Gagal memuat konten modul.</p>
+          <button
+            type="button"
+            onClick={() => refetchModule()}
+            className="rounded-md bg-orange-amber px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+          >
+            Coba lagi
+          </button>
         </div>
       </div>
     );

@@ -23,7 +23,7 @@ export function useModuleDetail(code, number, options = {}) {
   return useQuery({
     queryKey: ['learning-path', code, 'module', number],
     queryFn: () => learningPathService.module(code, number),
-    enabled: !!code && number != null,
+    enabled: !!code && Number.isFinite(number),
     staleTime: 30 * 1000,
     ...options,
   });

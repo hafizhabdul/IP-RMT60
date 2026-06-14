@@ -196,18 +196,12 @@ class LearningPathController {
             include: [{
               model: LessonStep,
               as: 'steps',
-              attributes: ['id', 'orderIndex', 'kind', 'title', 'durationSeconds', 'simulationRef', 'contentJson'],
-              order: [['orderIndex', 'ASC']],
-              include: [{
-                model: QuizQuestion,
-                as: 'quizQuestions',
-                // separate query: avoids step.contentJson being duplicated across
-                // every quiz-question row (huge cartesian blow-up on the 40-question
-                // final-assessment step → multi-second detail() responses).
-                separate: true,
-                required: false,
-                attributes: ['id', 'question', 'options', 'difficulty']
-              }]
+              // Lightweight structure only — step content (contentJson) and quiz
+              // questions are loaded lazily per-module via getModule(), so the
+              // path-detail roadmap/sidebar never ships the whole path's reading
+              // content + question banks (that made detail() take 7-17s).
+              attributes: ['id', 'orderIndex', 'kind', 'title', 'durationSeconds'],
+              order: [['orderIndex', 'ASC']]
             }]
           },
           {

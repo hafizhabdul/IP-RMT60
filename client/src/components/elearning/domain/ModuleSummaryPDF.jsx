@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
 import { FileText } from 'lucide-react';
+import { learningPathService } from '@/services/learningPathService';
 
 // Register IBM Plex Sans (Google Fonts CDN — works in @react-pdf), mirroring CertificatePDF.jsx
 Font.register({
@@ -267,6 +268,7 @@ function buildFileName({ pathCode, module }) {
 
 export function DownloadModuleSummaryButton({
   module,
+  moduleNumber,
   pathTitle,
   methodLabel,
   pathCode,
@@ -278,10 +280,23 @@ export function DownloadModuleSummaryButton({
     if (loading) return;
     setLoading(true);
     try {
+      // Path detail is lightweight (no step contentJson), so fetch the module's
+      // full content on demand before rendering the PDF. Fall back to whatever
+      // module data we already have if the fetch fails.
+      let fullModule = module;
+      const num = moduleNumber ?? module?.orderIndex;
+      try {
+        if (pathCode && num != null) {
+          const fetched = await learningPathService.module(pathCode, num);
+          if (fetched) fullModule = fetched;
+        }
+      } catch {
+        /* keep fallback module */
+      }
       // Lazy/dynamic import so the PDF lib never bloats the main bundle.
       const { pdf } = await import('@react-pdf/renderer');
       const blob = await pdf(
-        <ModuleSummaryDocument module={module} pathTitle={pathTitle} methodLabel={methodLabel} />
+        <ModuleSummaryDocument module={fullModule} pathTitle={pathTitle} methodLabel={methodLabel} />
       ).toBlob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');

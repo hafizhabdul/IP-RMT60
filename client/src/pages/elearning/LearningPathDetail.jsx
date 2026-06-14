@@ -7,11 +7,11 @@ import { DownloadModuleSummaryButton } from '@/components/elearning/domain/Modul
 import { isPathInDevelopment } from '@/components/elearning/domain/PathRow';
 import { MethodIcon, ELProgressBar } from '@/components/elearning/primitives';
 
-// A module is summarisable when it has at least one reading step with slides.
+// A module is summarisable when it has at least one reading step. (Path detail is
+// lightweight now — no contentJson here — so key on kind; the PDF button fetches
+// the full module content on demand.)
 function moduleHasReadingContent(mod) {
-  return (mod?.steps || []).some(
-    (s) => s?.kind === 'reading' && Array.isArray(s?.contentJson?.slides) && s.contentJson.slides.length > 0
-  );
+  return (mod?.steps || []).some((s) => s?.kind === 'reading');
 }
 
 export default function LearningPathDetail() {
@@ -55,7 +55,7 @@ export default function LearningPathDetail() {
       if (firstModule && firstStep) {
         navigate(`/e-learning/paths/${code}/modules/${firstModule.orderIndex}/steps/${firstStep.id}`);
       }
-    } catch (e) {
+    } catch {
       // toast handled by axios interceptor
     }
   };
@@ -167,6 +167,7 @@ export default function LearningPathDetail() {
                 <div className="mt-1 flex justify-end px-1">
                   <DownloadModuleSummaryButton
                     module={mod}
+                    moduleNumber={mod.orderIndex}
                     pathCode={path.code}
                     pathTitle={path.title}
                     methodLabel={`${path.method} · ${path.level}`}
